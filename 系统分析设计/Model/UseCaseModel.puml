@@ -1,0 +1,38 @@
+@startuml
+
+skinparam packageStyle rectangle
+left to right direction
+
+actor 用户 as u1
+package admin{
+actor 系统管理员 as ad1
+actor 社团管理员 as ad2
+}
+
+ad2 <|--ad1
+
+note top of 消息中心:类似一个与我相关
+package 消息中心{
+    usecase 私信 as u11
+    usecase 点赞 as u12
+    usecase 评论 as u13
+    usecase 社团动态 as u14
+    note right of u14:包含社团发布的新闻通知和活动
+}
+
+
+
+package 设置中心{
+    usecase 资料设置 as u21
+    package 隐私设置{
+        usecase 拒收陌生人消息
+        usecase 消息免提醒
+    }
+    usecase 黑名单设置 as u23
+
+}
+
+
+footer Online-Club 系统用例图
+
+@enduml

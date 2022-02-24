@@ -1,13 +1,18 @@
 package com.ljy.oneclub.controller;
 
 import com.ljy.oneclub.utils.JedisUtil;
+import com.ljy.oneclub.utils.RandomValidateCodeUtil;
 import com.ljy.oneclub.utils.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
+
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -15,6 +20,8 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 
 public class UserControllerTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserControllerTest.class);
 //    @Autowired
 //    JedisUtil jedisUtil;
 //    @Test
@@ -28,7 +35,8 @@ public class UserControllerTest {
 
     @Test
     public void testA(){
-        System.out.println("55666");
+        logger.info("nba啊哈哈哈");
+        logger.error("哦豁l");
     }
 
 

@@ -1,0 +1,9 @@
+2022-02-25 01:52:18,444 - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+2022-02-25 01:52:18,471 - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6b1274d2, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@7bc1a03d, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@70b0b186, org.springframework.test.context.support.DirtiesContextTestExecutionListener@ba8d91c, org.springframework.test.context.transaction.TransactionalTestExecutionListener@7364985f, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@5d20e46]
+2022-02-25 01:52:18,541 - Loading XML bean definitions from class path resource [applicationContext.xml]
+2022-02-25 01:52:18,825 - Refreshing org.springframework.context.support.GenericApplicationContext@5e4c8041: startup date [Fri Feb 25 01:52:18 CST 2022]; root of context hierarchy
+2022-02-25 01:52:19,112 - MLog clients using log4j logging.
+2022-02-25 01:52:20,466 - Initializing c3p0-0.9.1.2 [built 21-May-2007 15:04:56; debug? true; trace: 10]
+2022-02-25 01:52:20,604 - nba啊哈哈哈
+2022-02-25 01:52:20,604 - 哦豁l
+2022-02-25 01:52:20,609 - Closing org.springframework.context.support.GenericApplicationContext@5e4c8041: startup date [Fri Feb 25 01:52:18 CST 2022]; root of context hierarchy

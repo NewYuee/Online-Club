@@ -21,10 +21,16 @@
     </div>
     <input type="button" onclick="aVerify()" value="提交">
 </div>
+
+<div>
+    <input  type="tel" id="mailcode" placeholder="请输入验证码" maxlength="4">
+    <input type="button" onclick="commitCode()" value="提交">
+</div>
+
 </body>
 
 <!--js中的代码-->
-<script type="text/javascript" src="http://120.78.196.234:2022/res/static/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="https://mmad.top:82/res/static/js/jquery-1.8.2.min.js"></script>
 <script>
 
     //获取验证码
@@ -37,6 +43,23 @@
         // $("#imgCode").on("click", function() {
         $("#imgVerify").attr("src", 'login/getVerify?' + Math.random());//jquery方式
         // });
+    }
+
+    function commitCode() {
+        var code =$("#mailcode").val();
+        $.ajax({
+            type: 'post',
+            url: 'login/mailcode',
+            dataType: "json",
+            data: {
+                codeInput:code,
+                mail:'1219904057@qq.com'
+            },
+            success:function (data) {
+                //window.location.href()
+                console.log("finished");
+            }
+        });
     }
 
     function aVerify(){

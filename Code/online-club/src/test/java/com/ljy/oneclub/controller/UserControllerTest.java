@@ -12,13 +12,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-
 public class UserControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(UserControllerTest.class);
@@ -35,8 +36,17 @@ public class UserControllerTest {
 
     @Test
     public void testA(){
-        logger.info("nba啊哈哈哈");
-        logger.error("哦豁l");
+        Date date=new Date();
+        long time = date.getTime();
+        long l = System.currentTimeMillis();
+
+        long outdate=l+900000;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println("datetime===>"+sdf.format(date));
+        System.out.println("time==>"+time);
+        System.out.println("current==>"+l);
+        if (System.currentTimeMillis()<outdate)
+            System.out.println("15mins later===>"+(l+15*60*1000));
     }
 
 

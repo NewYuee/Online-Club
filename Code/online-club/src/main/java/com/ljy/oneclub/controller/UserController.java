@@ -47,6 +47,11 @@ public class UserController {
         return msg.success().addData("str",msgStr);
     }
 
+    @RequestMapping("chat/online")
+    public String getChat(){
+        return "chat/chat";
+    }
+
     @RequestMapping(value = "login/mailcode",method = RequestMethod.POST)
     public ModelAndView verifyMailCode(@RequestParam String codeInput,@RequestParam String mail){
         ModelAndView modelAndView = new ModelAndView();

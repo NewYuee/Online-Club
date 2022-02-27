@@ -7,6 +7,7 @@ import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.MailService;
 import com.ljy.oneclub.utils.RandomValidateCodeUtil;
 import com.ljy.oneclub.utils.RedisUtil;
+import com.ljy.oneclub.ws.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +48,13 @@ public class UserController {
         return msg.success().addData("str",msgStr);
     }
 
-    @RequestMapping("chat/online")
-    public String getChat(){
+    @RequestMapping("chat/{name}/{toname}")
+    public String getChat(HttpSession session,@PathVariable String name,@PathVariable String toname){
+        session.setAttribute("name",name);
+        session.setAttribute("toname",toname);
         return "chat/chat";
     }
+
 
     @RequestMapping(value = "login/mailcode",method = RequestMethod.POST)
     public ModelAndView verifyMailCode(@RequestParam String codeInput,@RequestParam String mail){

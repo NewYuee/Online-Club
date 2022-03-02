@@ -3,11 +3,16 @@ package com.ljy.oneclub.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ljy.oneclub.entity.Mail;
+import com.ljy.oneclub.entity.User;
+import com.ljy.oneclub.msg.BootStrapValidator;
 import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.MailService;
+import com.ljy.oneclub.service.UserService;
 import com.ljy.oneclub.utils.RandomValidateCodeUtil;
 import com.ljy.oneclub.utils.RedisUtil;
 import com.ljy.oneclub.ws.WebSocketServer;
+import io.github.yedaxia.apidocs.ApiDoc;
+import io.github.yedaxia.apidocs.Ignore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +44,17 @@ public class UserController {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    UserService userService;
+
+
+    /**
+     *试试index
+     * @param code 代码
+     * @param msgStr msg的string实体
+     * @return
+     */
+    @ApiDoc
     @RequestMapping("index/{code}")
     @ResponseBody
     public Msg index(@PathVariable int code, @RequestParam(value = "msg") String msgStr){
@@ -46,6 +62,14 @@ public class UserController {
         System.out.println("lianjiecheng==>"+jedis.ping());
         Msg msg = new Msg();
         return msg.success().addData("str",msgStr);
+    }
+    @RequestMapping(value = "user/login",method = RequestMethod.POST)
+    public String login(User user){
+        User userone = userService.selectOne(user);
+        if (userone!=null){
+            return "success";
+        }
+        return "login";
     }
 
     @RequestMapping("chat/{name}/{toname}")
@@ -55,17 +79,21 @@ public class UserController {
         return "chat/chat";
     }
 
-
+    /**
+     * 验证邮箱验证码
+     * @param codeInput 输入的验证码
+     * @param mail      当前邮箱账号
+     * @return
+     */
+    @ApiDoc
     @RequestMapping(value = "login/mailcode",method = RequestMethod.POST)
-    public ModelAndView verifyMailCode(@RequestParam String codeInput,@RequestParam String mail){
-        ModelAndView modelAndView = new ModelAndView();
+    public String verifyMailCode(@RequestParam String codeInput,@RequestParam String mail){
         Jedis jedis = redisUtil.getJedis();
         String s = jedis.get(mail);
         redisUtil.release();
         if (s==null){
             logger.error("验证失败，邮件过期，请等待重新发送验证码");
-            modelAndView.setViewName("fail");
-            return modelAndView;
+            return "fail";
         }
         JSONObject jsonObject= JSON.parseObject(s);
         String requestIpAdd=jsonObject.getString("ip");
@@ -74,61 +102,43 @@ public class UserController {
         JSONObject jsonMail = JSON.parseObject(jsonObject.get("mail").toString());
         if (jsonMail.get("validateCode").toString().equals(codeInput)){
             logger.info("验证成功,跳转页面");
-            modelAndView.setViewName("success");
-            return modelAndView;
+            return "success";
         }
-        modelAndView.setViewName("fail");
-        return modelAndView;
+        return "fail";
     }
 
+    /**
+     * 返回成功页面
+     * @return
+     */
+    @ApiDoc
     @RequestMapping("success")
     public String tes(){
         return "success";
     }
 
+    /**
+     * 返回错误页面
+     * @return
+     */
+    @ApiDoc
     @RequestMapping("fail")
     public String tesF(){
         return "fail";
     }
 
 
-    @RequestMapping("verify")
-    public String getHtml(HttpServletRequest request) throws MessagingException {
-        //MailUtil.sendMail(javaMailSender,"1219904057@qq.com","主题测试Https res",text,null);
-        Mail mail=new Mail("niu啊帅哥","1219904057@qq.com","One-Club通知",null,null);
-        mail.setOutdate(System.currentTimeMillis()+900000);
-        mail.setValidateCode("2452");
-        Jedis jedis = redisUtil.getJedis();
-        if(jedis.get(mail.getToAdd())!=null){
-            logger.info("邮件已发，等待完成验证");
-            return "mail/msg";
-        };
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("mail",mail);
-        String ip=request.getRemoteAddr();
-        jsonObject.put("ip",ip);
-        jedis.set(mail.getToAdd(),jsonObject.toJSONString());
-        jedis.expire(mail.getToAdd(),60*15);
-        redisUtil.release();
-        mailService.sendMailHtml(templateEngine,mail);
-        return "verify";
-    }
 
-    @RequestMapping("login/getVerify")
-    public void getVerify(HttpServletResponse response, HttpSession session){
-        try{
-            response.setContentType("img/jpeg");
-            response.setHeader("Pragma","No-cache");
-            response.setHeader("Cache-Control","no-cache");
-            response.setDateHeader("Expire",0);
-            RandomValidateCodeUtil randomValidateCode = new RandomValidateCodeUtil();
-            randomValidateCode.getRandcode(session, response);//输出验证码图片方法
-        } catch (Exception e) {
-            logger.error("获取失败》》"+e);
-        }
-    }
 
-    @RequestMapping(value = "login/checkVerify", method = RequestMethod.POST,headers = "Accept=application/json")
+    /**
+     * 验证验证码是否正确
+     * @param verifyInput 输入的验证码
+     * @param other       额外参数
+     * @param session     当前session
+     * @return 布尔类型
+     */
+    @ApiDoc
+    @RequestMapping(value = "login/checkvalidate", method = RequestMethod.POST,headers = "Accept=application/json")
     @ResponseBody
     public boolean checkVerify(@RequestParam String verifyInput,@RequestParam String other, HttpSession session) {
         try{

@@ -62,7 +62,7 @@ public class MailServiceImpl implements MailService {
         Context ctx = new Context();
         ctx.setVariable("name",mail.getToName());
         ctx.setVariable("validCode", mail.getValidateCode());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         Date date = new Date();
         ctx.setVariable("date", sdf.format(date));
         String htmlContent = templateEngine.process("mail/msg.html", ctx);

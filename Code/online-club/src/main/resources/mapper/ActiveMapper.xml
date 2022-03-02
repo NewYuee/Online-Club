@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljy.oneclub.dao.ActiveMapper" >
+  <resultMap id="BaseResultMap" type="com.ljy.oneclub.entity.Active" >
+    <id column="active_id" property="activeId" jdbcType="INTEGER" />
+    <result column="u_id" property="uId" jdbcType="INTEGER" />
+    <result column="active_type" property="activeType" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="viewed_count" property="viewedCount" jdbcType="INTEGER" />
+    <result column="active_title" property="activeTitle" jdbcType="VARCHAR" />
+    <result column="liked" property="liked" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ljy.oneclub.entity.Active" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    active_id, u_id, active_type, update_time, viewed_count, active_title, liked
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ljy.oneclub.entity.ActiveExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from active
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljy.oneclub.entity.ActiveExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from active
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from active
+    where active_id = #{activeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from active
+    where active_id = #{activeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljy.oneclub.entity.ActiveExample" >
+    delete from active
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljy.oneclub.entity.Active" >
+    insert into active (active_id, u_id, active_type, 
+      update_time, viewed_count, active_title, 
+      liked, content)
+    values (#{activeId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, #{activeType,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{viewedCount,jdbcType=INTEGER}, #{activeTitle,jdbcType=VARCHAR}, 
+      #{liked,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljy.oneclub.entity.Active" >
+    insert into active
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="activeId != null" >
+        active_id,
+      </if>
+      <if test="uId != null" >
+        u_id,
+      </if>
+      <if test="activeType != null" >
+        active_type,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="viewedCount != null" >
+        viewed_count,
+      </if>
+      <if test="activeTitle != null" >
+        active_title,
+      </if>
+      <if test="liked != null" >
+        liked,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="activeId != null" >
+        #{activeId,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null" >
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="activeType != null" >
+        #{activeType,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="viewedCount != null" >
+        #{viewedCount,jdbcType=INTEGER},
+      </if>
+      <if test="activeTitle != null" >
+        #{activeTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="liked != null" >
+        #{liked,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljy.oneclub.entity.ActiveExample" resultType="java.lang.Integer" >
+    select count(*) from active
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update active
+    <set >
+      <if test="record.activeId != null" >
+        active_id = #{record.activeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.uId != null" >
+        u_id = #{record.uId,jdbcType=INTEGER},
+      </if>
+      <if test="record.activeType != null" >
+        active_type = #{record.activeType,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.viewedCount != null" >
+        viewed_count = #{record.viewedCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.activeTitle != null" >
+        active_title = #{record.activeTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.liked != null" >
+        liked = #{record.liked,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update active
+    set active_id = #{record.activeId,jdbcType=INTEGER},
+      u_id = #{record.uId,jdbcType=INTEGER},
+      active_type = #{record.activeType,jdbcType=INTEGER},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      viewed_count = #{record.viewedCount,jdbcType=INTEGER},
+      active_title = #{record.activeTitle,jdbcType=VARCHAR},
+      liked = #{record.liked,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update active
+    set active_id = #{record.activeId,jdbcType=INTEGER},
+      u_id = #{record.uId,jdbcType=INTEGER},
+      active_type = #{record.activeType,jdbcType=INTEGER},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      viewed_count = #{record.viewedCount,jdbcType=INTEGER},
+      active_title = #{record.activeTitle,jdbcType=VARCHAR},
+      liked = #{record.liked,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljy.oneclub.entity.Active" >
+    update active
+    <set >
+      <if test="uId != null" >
+        u_id = #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="activeType != null" >
+        active_type = #{activeType,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="viewedCount != null" >
+        viewed_count = #{viewedCount,jdbcType=INTEGER},
+      </if>
+      <if test="activeTitle != null" >
+        active_title = #{activeTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="liked != null" >
+        liked = #{liked,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where active_id = #{activeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ljy.oneclub.entity.Active" >
+    update active
+    set u_id = #{uId,jdbcType=INTEGER},
+      active_type = #{activeType,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      viewed_count = #{viewedCount,jdbcType=INTEGER},
+      active_title = #{activeTitle,jdbcType=VARCHAR},
+      liked = #{liked,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where active_id = #{activeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljy.oneclub.entity.Active" >
+    update active
+    set u_id = #{uId,jdbcType=INTEGER},
+      active_type = #{activeType,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      viewed_count = #{viewedCount,jdbcType=INTEGER},
+      active_title = #{activeTitle,jdbcType=VARCHAR},
+      liked = #{liked,jdbcType=INTEGER}
+    where active_id = #{activeId,jdbcType=INTEGER}
+  </update>
+</mapper>

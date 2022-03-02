@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--引入数据库配置文件以解耦-->
+    <properties resource="jdbc.properties"/>
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+            <!-- 是否去除所有自动生成的文件的时间戳，默认为false -->
+            <!-- <property name="suppressDate" value="false"/> -->
+        </commentGenerator>
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.jdbcUrl}"
+                        userId="${jdbc.user}"
+                        password="${jdbc.password}">
+            <!-- connectionURL属性，防止乱码 -->
+            <property name="useUnicode" value="true"/>
+            <!-- connectionURL属性，防止乱码 -->
+            <property name="characterEncoding" value="utf-8"/>
+            <!-- connectionURL属性，防止报时间错误 -->
+            <property name="serverTimezone" value="UTC"/>
+            <!-- connectionURL属性，防止生成不同数据库同名表的代码 -->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+        <javaModelGenerator targetPackage="com.ljy.oneclub.entity"
+                            targetProject=".\src\main\java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false" />
+            <!-- 从数据库返回的值被清理前后的空格  -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!--指定sql映射文件生成的位置 -->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- 指定dao接口生成的位置，mapper接口 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.ljy.oneclub.dao"
+                             targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+
+        <!-- table指定每个表的生成策略 -->
+        <table tableName="application" domainObjectName="Application">
+            <!--如果是true的话属性名就不会驼峰命名了-->
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+
+    </context>
+</generatorConfiguration>

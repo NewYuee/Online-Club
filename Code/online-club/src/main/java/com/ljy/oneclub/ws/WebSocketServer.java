@@ -2,18 +2,22 @@ package com.ljy.oneclub.ws;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 @ServerEndpoint(value="/websocket/{from}")
 @Component
 public class WebSocketServer {
+
+    private static final Logger logger= LoggerFactory.getLogger(WebSocketServer.class);
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int  onlineCount = 0;
 
@@ -41,7 +45,8 @@ public class WebSocketServer {
     @OnClose
     public void onClose(Session session){
         subOnlineCount();
-        System.out.println(this.from);
+        System.out.println("webMap size==>"+webSocketMap.size());
+
         System.out.println("有连接断开！当前在线人数为"+onlineCount);
     }
 
@@ -52,15 +57,23 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message,Session session) {
+        Date date=new Date();
         System.out.println("来自客户端的消息:" + message);
         JSONObject jsonObject = JSON.parseObject(message);
 
         System.out.println("context=>"+jsonObject.get("text").toString());
         String to=jsonObject.get("to").toString();
         String text=jsonObject.get("text").toString();
+        if (text==null||text.replace(" ","").length()==0){
+            logger.error("发送的消息为null或者无内容");
+            return;
+        }
         System.out.println("fageishui=>"+to);
         if (webSocketMap.containsKey(to)){
             try {
+//                msg.setToid(jsonObject.getString("to"));
+//                msg.setFromid(jsonObject.getString("from"));
+//                msg.setContext(text);
                 webSocketMap.get(to).sendMessage(text);
                 //System.out.println("消息发往的sessionId==>"+webSocketMap.get(toName).session.getId());
             } catch (IOException e) {

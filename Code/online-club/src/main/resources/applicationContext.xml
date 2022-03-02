@@ -25,19 +25,19 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
-<!--    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">-->
-<!--        <property name="configLocation" value="classpath:mybatis-config.xml"/>-->
-<!--        <property name="dataSource" ref="comboPooledDataSource"/>-->
-<!--        <property name="mapperLocations" value="classpath:mapper/*.xml"/>-->
-<!--    </bean>-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="dataSource" ref="comboPooledDataSource"/>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+    </bean>
 
-<!--    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
-<!--        <property name="basePackage" value="com.ljy.dao"/>-->
-<!--    </bean>-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.ljy.oneclub.dao"/>
+    </bean>
 
-<!--    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">-->
-<!--        <property name="dataSource" ref="comboPooledDataSource"/>-->
-<!--    </bean>-->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+        <property name="dataSource" ref="comboPooledDataSource"/>
+    </bean>
 
     <!--    开启基于注解的事务，使用xml配置形式的事务（必要主要的都是使用配置式）-->
 <!--    <aop:config>-->

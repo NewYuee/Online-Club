@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>UserController</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="PR.prettyPrint()">
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">
+                online-club
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://github.com/YeDaxia/JApiDocs" target="_blank">GitHub</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">V1.1<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                            <li><a href="../V1.0/index.html">V1.0</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="book with-summary">
+    <div class="book-summary">
+<div class="search-box form-group">
+    <input type="text" class="form-control" id="inputSearch" placeholder="搜索接口">
+    <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+</div>
+<div id="accordion" class="catalog">
+        <div class="panel">
+            <div id="heading0" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse0" aria-controls="collapse0">
+                <i class="glyphicon glyphicon-align-justify"></i> FileController
+            </div>
+            <div id="collapse0" class="collapse in " aria-labelledby="heading0">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_FileController.html#uploadFile">
+                        uploadFile
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading1" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse1" aria-controls="collapse1">
+                <i class="glyphicon glyphicon-align-justify"></i> LoginController
+            </div>
+            <div id="collapse1" class="collapse " aria-labelledby="heading1">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#loginPage">
+                        返回登录注册页面
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#getVerify">
+                        获取验证码图片
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#checkVerify">
+                        登录的验证码校验
+                            <span class="label label-warning">修改</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#checkUserName">
+                        登录检查用户名是否存在
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#checkEmailIsValid">
+                        登录检查使用邮箱是否绑定其他用户
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#verifyMailCode">
+                        注册时对邮箱收到的验证码进行验证
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#getHtml">
+                        发送验证码到邮箱
+                            <span class="label label-success">新增</span>
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading2" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse2" aria-controls="collapse2">
+                <i class="glyphicon glyphicon-align-justify"></i> UserController
+            </div>
+            <div id="collapse2" class="collapse in " aria-labelledby="heading2">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#index">
+                        试试index
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#verifyMailCode">
+                        验证邮箱验证码
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#tes">
+                        返回成功页面
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#tesF">
+                        返回错误页面
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#checkVerify">
+                        验证验证码是否正确
+                            <span class="label label-success">新增</span>
+                    </a>
+            </div>
+        </div>
+</div>    </div>
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header">
+                <div class="d-flex justify-content-between">
+                    <a class="header-menu toggle-catalog" href="javascript:void(0)"><i
+                            class="glyphicon glyphicon-align-justify"></i> 目录</a>
+                </div>
+            </div>
+            <div class="page-wrapper">
+                <div class="page-inner">
+                    <div class="action-list">
+                        <div class="action-item">
+<h2 id="index"><a href="#">试试index </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/index/{code}</code>
+        <span class="label label-default">GET</span>
+        <span class="label label-default">POST</span>
+</p>
+        <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
+        <table class="table table-bordered">
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必须</th>
+                <th>描述</th>
+            </tr>
+                    <tr>
+                        <td>code</td>
+                        <td>int</td>
+                        <td>是</td>
+                        <td>代码</td>
+                    </tr>
+                    <tr>
+                        <td>msg</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>msg的string实体</td>
+                    </tr>
+        </table>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}</pre>
+        <div class="form-group">
+            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_UserController_index_Msg.html"><i
+                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
+            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_UserController_index_Msg.html"><i class="fa fa-apple"
+                                                                                                 aria-hidden="true"></i>
+                iOS Model</a>
+        </div>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="verifyMailCode"><a href="#">验证邮箱验证码 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/login/mailcode</code>
+        <span class="label label-default">POST</span>
+</p>
+        <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
+        <table class="table table-bordered">
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必须</th>
+                <th>描述</th>
+            </tr>
+                    <tr>
+                        <td>codeInput</td>
+                        <td>string</td>
+                        <td>是</td>
+                        <td>输入的验证码</td>
+                    </tr>
+                    <tr>
+                        <td>mail</td>
+                        <td>string</td>
+                        <td>是</td>
+                        <td>当前邮箱账号</td>
+                    </tr>
+        </table>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">string{}</pre>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="tes"><a href="#">返回成功页面 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/success</code>
+        <span class="label label-default">GET</span>
+        <span class="label label-default">POST</span>
+</p>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">string{}</pre>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="tesF"><a href="#">返回错误页面 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/fail</code>
+        <span class="label label-default">GET</span>
+        <span class="label label-default">POST</span>
+</p>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">string{}</pre>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="checkVerify"><a href="#">验证验证码是否正确 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/login/checkvalidate</code>
+        <span class="label label-default">POST</span>
+        <span class="label label-success">新增</span>
+</p>
+        <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
+        <table class="table table-bordered">
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必须</th>
+                <th>描述</th>
+            </tr>
+                    <tr>
+                        <td>verifyInput</td>
+                        <td>string</td>
+                        <td>是</td>
+                        <td>输入的验证码</td>
+                    </tr>
+                    <tr>
+                        <td>other</td>
+                        <td>string</td>
+                        <td>是</td>
+                        <td>额外参数</td>
+                    </tr>
+        </table>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{}</pre>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.js"></script>
+<script>
+
+    var search_source_data = [
+            {name: 'FileController.uploadFile', url: 'com_ljy_oneclub_controller_FileController.html#uploadFile'},
+            {name: 'LoginController.返回登录注册页面', url: 'com_ljy_oneclub_controller_LoginController.html#loginPage'},
+            {name: 'LoginController.获取验证码图片', url: 'com_ljy_oneclub_controller_LoginController.html#getVerify'},
+            {name: 'LoginController.登录的验证码校验', url: 'com_ljy_oneclub_controller_LoginController.html#checkVerify'},
+            {name: 'LoginController.登录检查用户名是否存在', url: 'com_ljy_oneclub_controller_LoginController.html#checkUserName'},
+            {name: 'LoginController.登录检查使用邮箱是否绑定其他用户', url: 'com_ljy_oneclub_controller_LoginController.html#checkEmailIsValid'},
+            {name: 'LoginController.注册时对邮箱收到的验证码进行验证', url: 'com_ljy_oneclub_controller_LoginController.html#verifyMailCode'},
+            {name: 'LoginController.发送验证码到邮箱', url: 'com_ljy_oneclub_controller_LoginController.html#getHtml'},
+            {name: 'UserController.试试index', url: 'com_ljy_oneclub_controller_UserController.html#index'},
+            {name: 'UserController.验证邮箱验证码', url: 'com_ljy_oneclub_controller_UserController.html#verifyMailCode'},
+            {name: 'UserController.返回成功页面', url: 'com_ljy_oneclub_controller_UserController.html#tes'},
+            {name: 'UserController.返回错误页面', url: 'com_ljy_oneclub_controller_UserController.html#tesF'},
+            {name: 'UserController.验证验证码是否正确', url: 'com_ljy_oneclub_controller_UserController.html#checkVerify'},
+    ];
+
+
+
+    $('.toggle-catalog').click(function () {
+        $('.book').toggleClass('with-summary');
+    });
+
+    $('#inputSearch').autocomplete({hint: false}, [
+        {
+            source: function (query, callback) {
+                var result = [];
+                for(var i = 0; i !== search_source_data.length; i++){
+                    if(search_source_data[i].name.indexOf(query) !== -1){
+                        result.push(search_source_data[i]);
+                    }
+                }
+                callback(result);
+            },
+            displayKey: 'name',
+            templates: {
+                suggestion: function (suggestion) {
+                    return suggestion.name;
+                }
+            }
+        }
+    ]).on('autocomplete:selected', function (event, suggestion, dataset, context) {
+        self.location = suggestion.url;
+    });
+</script>
+</body>
+</html>

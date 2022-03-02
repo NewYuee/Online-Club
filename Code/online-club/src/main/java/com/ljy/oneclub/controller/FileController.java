@@ -1,5 +1,6 @@
 package com.ljy.oneclub.controller;
 
+import io.github.yedaxia.apidocs.ApiDoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+@ApiDoc
 @Controller
 public class FileController {
 
@@ -19,11 +21,11 @@ public class FileController {
     @RequestMapping("file/upload")
     public String uploadFile(MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         logger.info("开始文件上传");
-        String path="F:\\A毕业设计/基于SSM的学生社团系统的设计与实现/ab/c";
+        String path="F:\\A毕业设计/基于SSM的学生社团系统的设计与实现/ab/c/";
         File file=new File(path);
         if (!file.exists()){
             logger.info("目录："+path+"不存在，创建目录");
-            file.mkdir();
+            file.mkdirs();
         }
         String fileName=multipartFile.getOriginalFilename();
         String uuid= UUID.randomUUID().toString();

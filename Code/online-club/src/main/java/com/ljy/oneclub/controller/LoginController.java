@@ -2,23 +2,25 @@ package com.ljy.oneclub.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ljy.oneclub.entity.ClubMember;
 import com.ljy.oneclub.entity.Mail;
 import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.msg.BootStrapValidator;
 import com.ljy.oneclub.msg.Msg;
+import com.ljy.oneclub.service.ClubMemberService;
 import com.ljy.oneclub.service.MailService;
 import com.ljy.oneclub.service.UserService;
 import com.ljy.oneclub.utils.RandomValidateCodeUtil;
 import com.ljy.oneclub.utils.RedisUtil;
+import com.ljy.oneclub.vo.MyClub;
+import com.sun.mail.smtp.DigestMD5;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import redis.clients.jedis.Jedis;
 
@@ -26,7 +28,9 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -46,6 +50,9 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ClubMemberService clubMemberService;
+
     /**
      * 返回登录注册页面
      * @return
@@ -53,6 +60,13 @@ public class LoginController {
     @ApiDoc
     @RequestMapping("/login")
     public String loginPage(){
+        return "login";
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpSession session){
+        session.removeAttribute("userInfo");
+        logger.info("用户退出登录....");
         return "login";
     }
 
@@ -65,6 +79,7 @@ public class LoginController {
     @RequestMapping("login/getVerify")
     public void getVerify(HttpServletResponse response, HttpSession session){
         try{
+            logger.info("开始请求验证码");
             response.setContentType("img/jpeg");
             response.setHeader("Pragma","No-cache");
             response.setHeader("Cache-Control","no-cache");
@@ -100,7 +115,7 @@ public class LoginController {
                 bootStrapValidator.setValid(true);
                 return bootStrapValidator;
             } else {
-                logger.error("yanz验证失败："+inputStr);
+                logger.error("验证失败："+inputStr);
                 return bootStrapValidator;
             }
         }catch (Exception e){
@@ -147,48 +162,87 @@ public class LoginController {
         return bootStrapValidator;
     }
 
+
     /**
-     * 注册时对邮箱收到的验证码进行验证
-     * @param codeInput
-     * @param mail
+     * 用户注册
+     * @param emailcode     输入收到的邮箱验证码
+     * @param r_email       注册使用的邮箱
+     * @param r_uName       注册的用户名
+     * @param uPassword     用户密码
      * @return
      */
     @ApiDoc
-    @RequestMapping(value = "login/verifymailcode",method = RequestMethod.POST)
-    public String verifyMailCode(@RequestParam String codeInput,@RequestParam String mail){
+    @RequestMapping(value = "register/insert",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg verifyMailCode(@RequestParam String emailcode,@RequestParam String r_email,@RequestParam String r_uName,@RequestParam String uPassword){
         Jedis jedis = redisUtil.getJedis();
-        String s = jedis.get(mail);
+        String encodePwd=null;
+        User user = new User();
+        if (uPassword==null){
+            return Msg.fail().addData("info","密码不能为空");
+        }
+        if (uPassword!=null&&uPassword.length()>=6&&uPassword.length()<20){
+            encodePwd = DigestUtils.md5DigestAsHex(uPassword.getBytes());
+        }
+        else {
+            return Msg.fail().addData("info","密码长度不规范");
+        }
+        user.setuPassword(encodePwd);
+        user.setuName(r_uName);
+        user.setuMailAdd(r_email);
+        user.setuAuthNo(10);
+        if (user.getuMailAdd()==null){
+            return Msg.fail().addData("info","输入邮箱不存在");
+        }
+        String s = jedis.get(user.getuMailAdd());
         redisUtil.release();
         if (s==null){
             logger.error("验证失败，邮件过期，请等待重新发送验证码");
-            return "fail";
+            return Msg.fail().addData("info","邮件过期，请重新发送验证码");
         }
         JSONObject jsonObject= JSON.parseObject(s);
         String requestIpAdd=jsonObject.getString("ip");
-        //Object mail1 = jsonObject.get("mail");
         logger.info("ip:"+requestIpAdd+"json=>"+s);
         JSONObject jsonMail = JSON.parseObject(jsonObject.get("mail").toString());
-        if (jsonMail.get("validateCode").toString().equals(codeInput)){
-            logger.info("验证成功,跳转页面");
-            return "success";
+        if (emailcode!=null&&jsonMail.getString("validateCode").equals(emailcode)){
+            logger.info("注册验证成功");
+            user.setuProfilePhotoName("user_pic.jpg");
+            user.setuProfileBackgroundimgName("defaultbkimg.jpeg");
+            user.setuProfile("这家伙很懒，什么也没说。");
+            int i = userService.insertUser(user);
+            Long del = jedis.del(user.getuMailAdd());
+            if (del==1){
+                logger.error("redis清楚缓存成功");
+            }
+            redisUtil.release();
+            if (i==0){
+                return Msg.fail().addData("info","注册失败，请稍后再试");
+            }
+            return Msg.success();
         }
-        return "fail";
+        else {
+            logger.info("注册验证失败");
+            Msg.fail().addData("info","验证码错误");
+        }
+        logger.info("注册失败了");
+        return Msg.fail().addData("info","验证失败，请稍后再试");
     }
 
     /**
      * 发送验证码到邮箱
      * @param r_uName         用户名
-     * @param uPassword     密码
      * @param r_email         邮箱地址
      * @param request       当前request请求
      * @return              消息实体
      * @throws MessagingException
      */
     @ApiDoc
-    @RequestMapping("register/sendmail")
+    @RequestMapping(value = "register/sendmail",method = RequestMethod.POST)
     @ResponseBody
-    public Msg getHtml(@RequestParam String r_uName,@RequestParam String uPassword,@RequestParam String r_email, HttpServletRequest request) throws MessagingException {
-        //MailUtil.sendMail(javaMailSender,"1219904057@qq.com","主题测试Https res",text,null);
+    public Msg getHtml(@RequestParam String r_uName , @RequestParam String r_email, HttpServletRequest request) throws MessagingException {
+        if (r_uName==null||r_email==null){
+            return Msg.fail().addData("info","邮箱或账号为空");
+        }
         Mail mail=new Mail(r_uName,r_email,"One-Club通知",null,null);
         mail.setOutdate(System.currentTimeMillis()+900000);
         int r= (int) (Math.random()*10000+1);
@@ -196,7 +250,7 @@ public class LoginController {
         Jedis jedis = redisUtil.getJedis();
         if(jedis.get(mail.getToAdd())!=null){
             logger.info("邮件已发，等待完成验证");
-            return Msg.fail();
+            return Msg.fail().addData("info","邮件已发，等待完成验证");
         };
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("mail",mail);
@@ -208,4 +262,85 @@ public class LoginController {
         mailService.sendMailHtml(templateEngine,mail);
         return Msg.success();
     }
+
+    /**
+     * 用户登录
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping(value = "user/login")
+    @ResponseBody
+    public Msg login(@RequestParam String verificationCode,User user,HttpSession session){
+        String encodePwd = DigestUtils.md5DigestAsHex(user.getuPassword().getBytes());
+        logger.info("encodePwd=>"+encodePwd);
+        user.setuPassword(encodePwd);
+        user.setuAuthNo(10);
+        Object attribute = session.getAttribute(RandomValidateCodeUtil.RANDOMCODEKEY);
+        if (!attribute.equals(verificationCode)){
+            logger.error("验证码错误");
+            return Msg.fail().addData("info","验证码错误");
+        }
+        User selectOne = userService.selectOne(user);
+        if (selectOne!=null){
+            List<ClubMember> clubMemberList =clubMemberService.selectMyClubByUid(selectOne.getuId());
+            List<MyClub> clubList=new ArrayList<>();
+            if (clubMemberList!=null){
+                for (ClubMember clubMember:clubMemberList){
+                    MyClub myClub = new MyClub();
+                    myClub.setClubId(clubMember.getClubId());
+                    String clubName=userService.queryNameById(clubMember.getClubId());
+                    myClub.setClubName(clubName);
+                    clubList.add(myClub);
+                }
+                session.removeAttribute("myclub_list");
+                session.setAttribute("myclub_list",clubList);
+            }
+            session.setAttribute("userInfo",selectOne);
+            return Msg.success();
+        }
+        return Msg.fail().addData("info","账号密码错误");
+    }
+
+    /**
+     * 返回admin登录界面
+     * @return
+     */
+    @RequestMapping("admin/login")
+    public String loadAdminLoginPage(){
+        return "admin/login";
+    }
+
+    /**
+     * 后台登录处理,成功返回对应管理界面
+     * @param user
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "admin")
+    public String adminLogin(User user,HttpSession session){
+        if (user.getuName()==null||user.getuPassword()==null){
+            session.setAttribute("errorInfo","Please Input Your Username and Password");
+            return "error/500";
+        }
+        String encodePwd=DigestUtils.md5DigestAsHex(user.getuPassword().getBytes());
+        user.setuPassword(encodePwd);
+        User one = userService.selectOne(user);
+        if (one!=null){
+            logger.info("管理员:"+one.getuName()+"登录了后台");
+            session.setAttribute("admin",one);
+        }
+        else {
+            session.setAttribute("errorInfo","Error Username or Password");
+            return "error/500";
+        }
+        if (one.getuAuthNo().equals(5)){
+            return "admin/clubindex";
+        }else if (one.getuAuthNo().equals(1)){
+            return "admin/platformindex";
+        }
+        return "error/500";
+    }
+
+
+
 }

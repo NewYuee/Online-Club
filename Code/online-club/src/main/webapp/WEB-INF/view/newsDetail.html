@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文章详情</title>
+    <link rel="icon" type="image/png" href="../../static/img/MMAD.png">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/css/newsdetail/style.css">
+</head>
+<body style="padding-top: 60px;background-color: rgb(237, 244, 246);">
+<nav class="navbar navbar-inverse  navbar-default navbar-fixed-top"
+     style="background-color: rgb(237, 125, 4);border: 2px solid transparent;">
+    <div class="container ">
+        <div class="navbar-header">
+            <a class="navbar-brand" style="padding-top: 5px;" href="#">
+                <img alt="Brand" style="width: 40px;height: 40px;" src="../../static/img/MMAD.png">
+            </a>
+        </div>
+        <form class="navbar-form navbar-left" role="search">
+            <!-- 搜索框 -->
+            <div class="col-lg-12">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                   <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"
+                                                                       aria-hidden="true"></span></button>
+                 </span>
+                </div>
+            </div>
+        </form>
+        <!-- 导航栏 -->
+        <ul class="nav nav-pills" style="border: 0;">
+            <li role="presentation" class=" navbar-right">
+                <a class="navbar-brand" style="padding: 4px 20px;"><img
+                        style="border-radius:50%;width: 40px;height: 40px;" src="../../static/img/user_pic.jpg"></a>
+            </li>
+            <li role="presentation" class="dropdown navbar-right">
+                <a href="#" style="padding: 14px 15px;color: black;" data-toggle="dropdown" role="button"
+                   aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"
+                                                                    aria-hidden="true"></span></a>
+                <ul class="dropdown-menu" style="min-width: 60px;">
+                    <li role="presentation"><a style="padding: 10px 20px;" href="#">个人中心</a></li>
+                    <li role="presentation"><a style="padding: 10px 20px;" href="#">资料设置</a></li>
+                    <li role="presentation"><a style="padding: 10px 20px;" href="logout">退出登录</a></li>
+                </ul>
+            </li>
+            <li role="presentation" class="dropdown navbar-right">
+                <a href="#" style="padding: 14px 15px;color: black;" data-toggle="dropdown" role="button"
+                   aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell"
+                                                                    aria-hidden="true"></span> <span
+                        class="badge">4</span></a>
+                <ul class="dropdown-menu" style="min-width: 60px;">
+                    <li role="presentation"><a style="padding: 10px 20px;" href="#">通知<span class="badge">4</span></a>
+                    </li>
+                    <li role="presentation"><a style="padding: 10px 20px;" href="#">聊天</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <!-- 左边栅格 -->
+        <div class="col-md-3 col-xs-12" style="padding-left: 7px;padding-right: 7px;padding-top: 30px;">
+            <div class="panel panel-warning">
+                <div class="panel-heading">其他热门文章推荐</div>
+                <div class="list-group">
+                    <a href="#" class="list-group-item ">重生之我的兄弟叫顺溜额</a>
+                    <a href="#" class="list-group-item">爱的供养</a>
+                    <a href="#" class="list-group-item">你是我的okbeng</a>
+                    <a href="#" class="list-group-item">黑娘子传奇</a>
+                    <a href="#" class="list-group-item">爱的供养1</a>
+                    <a href="#" class="list-group-item">你是我的ok22beng</a>
+                    <a href="#" class="list-group-item">黑娘子传奇3</a>
+                    <a href="#" class="list-group-item">爱的供养4</a>
+                    <a href="#" class="list-group-item">你是我的21okbeng</a>
+                    <a href="#" class="list-group-item">黑娘子传奇44</a>
+                </div>
+            </div>
+        </div>
+        <!-- 中间的栅格 -->
+        <div class="col-md-9 col-xs-12 clearfix" style="padding-left: 7px;padding-right: 7px;padding-top: 30px;">
+            <div class="list-group">
+                <h2 class="list-group-item-heading" style="text-align: center">this is 标题</h2>
+                <div class="list-group-item-warning" style="padding: 5px 2px 5px 2px;margin-bottom: 8px;"><div style="float: left;padding-right: 15px">作者:<a href="#">xxx</a></div><div style="float: left;padding-right: 15px">来源:<a href="#">jijfiwhfw</a></div><div style="float:right">发布时间:<span>2022-03-27 22:22:22</span></div><div >浏览数:<span>35648</span></div></div>
+                <div class="list-group-item-text" style="background-color: white;padding: 10px 5px 10px 5px"><p><img style="width: 25%;" src="https://mmad.top:82/res/upload/article/2022/3/1ff43c2_clubphoto.jpg" data-filename="img"></p><p>欢迎您！</p></div>
+            </div>
+
+            <div class="panel panel-warning">
+                <div class="panel-heading">留言<div id="collect" style="float: right"><a>收藏</a><span class="badge">4658</span></div></div>
+                <div class="panel-body">
+                    <div id="comment_area">
+                        <div class="comment_item"><a href="#">sb</a>:<span>你好sb</span></div>
+                        <div class="comment_item"><a href="#">发起方</a>回复<a
+                                href="#">sb</a>:<span>n也是完全放弃却无法请问我父亲却无法撒比</span></div>
+                        <div class="comment_item" id="omit"><a class="more">共45415条回复 ></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="../../static/js/bootstrap.js"></script>
+<script src="../../static/layer/layer.js"></script>
+<script>
+    $('#collect').click(function () {
+        if ($(this).find('a').text()=='收藏'){
+            $(this).find('a').text('已收藏');
+            var like_num=$(this).find('span').text();
+            like_num++;
+            $(this).find('span').text(like_num);
+        }else if($(this).find('a').text()=='已收藏'){
+            $(this).find('a').text('收藏');
+            var like_num=$(this).find('span').text();
+            like_num--;
+            $(this).find('span').text(like_num);
+        }
+    });
+
+    $('.more').click(function () {
+        layer.open({
+            area: '500px',
+            title: ['评论列表', 'font-size:18px;'],
+            type: 1,
+            content: ' <div class="col-lg-12">\n' +
+                '    <div class="input-group">\n' +
+                '      <input type="text" class="form-control" placeholder="说点什么">\n' +
+                '      <span class="input-group-btn">\n' +
+                '        <button class="btn btn-primary" type="button">评论</button>\n' +
+                '      </span>\n' +
+                '    </div>\n' +
+                '</div>' +
+                '<div class="layeropen" id="comment_area">\n' +
+                '        <div class="comment_item inblock"><a href="#">sb</a>:<span>你好sb</span></div><div style="display:inline-block;float:right"><span><a>回复</a></span> <span><a>删除</a></span></div>\n' +
+                '        <div class="comment_item inblock">\n' +
+                '            <a href="#">发起方</a>回复<a href="#">sb</a>:<span>n也是完全放弃却无法请问我efqqf付全额付清无法父亲却wqeifijqefjqoejqowejo无法撒比</span>\n' +
+                '            <div style="display:inline-block;float:right"><span><a>回复</a></span> <span><a>删除</a></span></div>\n' +
+                '        </div>\n' +
+                '</div>'
+        })
+    });
+</script>
+</html>

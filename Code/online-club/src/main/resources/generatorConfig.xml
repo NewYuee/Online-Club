@@ -47,7 +47,7 @@
         </javaClientGenerator>
 
         <!-- table指定每个表的生成策略 -->
-        <table tableName="application" domainObjectName="Application">
+        <table tableName="club_member" domainObjectName="ClubMember">
             <!--如果是true的话属性名就不会驼峰命名了-->
             <property name="useActualColumnNames" value="false"/>
         </table>

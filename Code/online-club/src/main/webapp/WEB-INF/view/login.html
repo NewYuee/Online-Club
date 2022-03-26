@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome!</title>
-
+    <link rel="icon" type="image/png" href="/static/img/MMAD.png">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat:400,700'>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
@@ -16,44 +16,17 @@
 </head>
 
 <body>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">找回密码</h4>
-            </div>
-            <div class="modal-body">
-                <form class="validform">
-                  <div class="form-group">
-                    <input type="text" class="form-control" name="email" placeholder="注册邮箱"/>
-                  </div>
-                  <div class="form-group">
-                    <input type="password" class="form-control" name="uPassword" placeholder="新密码"/>
-                  </div>
-                  <div class="form-group">
-                    <input type="text" class="form-control" name="emailvalidate" placeholder="收到的验证码"/>
-                  </div>
-                    <button>验证</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">保存</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <div class="container">
     <div class="info">
         <h1>Welcome！<span><i class="fa fa-heart"></i>  </span></h1>
     </div>
 </div>
+
+<!--表单模块-->
 <div class="form">
     <div class="thumbnail"><img src="/static/img/hat.svg"/></div>
+
+    <!--注册表单-->
     <form class="register-form validform">
       <div class="form-group">
         <input type="text" class="form-control" name="r_uName" placeholder="用户名"/>
@@ -64,13 +37,15 @@
         <div class="form-group">
             <input type="text" name="r_email" class="form-control" placeholder="请输入邮箱"/>
         </div>
-        <div class="form-group form-inline" style="float: left;display: block">
-            <input type="text" name="emailcode" class="form-control" placeholder="验证码"/>
+        <div class="form-group form-inline" style="float:left;display:block">
+            <input type="text" name="emailcode" style="width:58%" class="form-control" placeholder="验证码" />
+            <button id="sendvalidate_btn" style="width:40%;padding-bottom:3px;padding-top:11px">发送</button>
         </div>
-        <button id="sendvalidate_btn" style="border: 10px">发送验证码</button>
-        <button>注册</button>
+        <button id="register_btn">注册</button>
         <p class="message"  id="tochange">已有账号？<a href="#">立即登录</a></p>
     </form>
+
+    <!--登录表单-->
     <form class="login-form validform">
       <div class="form-group">
         <input type="text" name="uName" class="form-control" placeholder="用户名"/>
@@ -85,19 +60,15 @@
           </a>
         </div>
         <button id="login_btn">登录</button>
-        <p class="message" id="tochange">没有账号？ <a href="#">立即注册</a> / <a href="#" data-toggle="modal" data-target="#myModal">忘记密码</a></p>
+        <p class="message" id="tochange">没有账号？ <a href="#">立即注册</a></p>
     </form>
 
 </div>
 <script src='/static/js/jquery.min.js'></script>
 <script src="/static/js/bootstrap.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+<script src="/static/layer/layer.js"></script>
 <script>
-
-    $('#myModal').on('shown.bs.modal', function () {
-        $('#myInput').focus()
-    })
-
     $('#tochange a').click(function () {
         $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
     });
@@ -108,12 +79,39 @@
             url:'register/sendmail',
             data: $('.register-form').serialize(),
             success:function (result) {
-                if (result.code==200)
+                if (result.code==200){
                     disable();
+                    layer.msg("发送成功，请注意查收");
+                }
                 else{
-                    alert("邮件已发，请稍后再试！");
+                    layer.msg(result.data.info);
                 }
         }
+        });
+    });
+
+    function reloadPage() {
+        var index = layer.load(1, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
+        location.reload();
+    }
+    //注册
+    $("#register_btn").click(function () {
+        $.ajax({
+            type: 'post',
+            url:'register/insert',
+            data: $('.register-form').serialize(),
+            success:function (result) {
+                if (result.code==200){
+                    layer.msg('恭喜注册成功，您现在可以进行登录啦');
+                    setTimeout(reloadPage, 2000);
+                }
+                else {
+                    layer.msg(result.data.info);
+                    setTimeout(reloadPage, 2000);
+                }
+            }
         });
     });
 
@@ -125,19 +123,30 @@
         var time=setTimeout('disable()',1000);
         if (num<=0){
             clearTimeout(time);
-            sendvalidate_btn.innerHTML="发送验证码";
+            sendvalidate_btn.innerHTML="发送";
             $("#sendvalidate_btn").removeAttr("disabled");
             num=60;
         }
     }
 
-
+    //登录
     $('#login_btn').click(function () {
+        var index = layer.load(1, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
         $.ajax({
+            async: false,
             type:'post',
             url:'user/login',
             data:$('.login-form').serialize(),
             success:function (result) {
+                if (result.code==200){
+                    window.location.href = "/index";
+                }
+                else {
+                    layer.alert(result.data.info);
+                    setTimeout(reloadPage, 2000);
+                }
                 console.log("前端登录完成");
             }
         })
@@ -148,7 +157,7 @@
       // $("#imgCode").on("click", function() {
       $("#imgVerify").attr("src", 'login/getVerify?' + Math.random());//jquery方式
       // });
-    }
+    };
 
     $(function () {
       $('.validform').bootstrapValidator({
@@ -207,7 +216,14 @@
               }
             }
           },
-
+            reuPassword: {
+                validators: {
+                    identical: {
+                        field: 'uPassword',
+                        message: '两次密码须一致'
+                    }
+                }
+            },
           r_email:{
             validators:{
               notEmpty:{
@@ -234,6 +250,19 @@
                     }
                 }
             },
+
+            emailvalidate: {	//校验规则
+                validators: {	//校验规则：不能为空
+                    notEmpty: {	//如果为空，则提示：...
+                        message: '验证码不能为空！'
+                    },
+                    stringLength:{
+                        min:4,
+                        max:4,
+                        message:'请输入四位验证码'
+                    }
+                }
+            },
           //验证码校验
           verificationCode: {	//指定触发该校验的最小字符数
             threshold: 4,
@@ -254,9 +283,6 @@
       });
     });
 </script>
-<script>
-</script>
-
 </body>
 
 </html>

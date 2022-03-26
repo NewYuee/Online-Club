@@ -1,0 +1,29 @@
+@startuml
+hide footbox
+actor 用户 as user
+control 操作 as control
+entity 表现层 as view
+entity 逻辑层 as service
+database 数据库 as db
+user->control:打开页面
+user++
+control ++
+control->view:请求页面
+view++
+view->service:请求验证码
+service++
+service-->view:返回验证码
+view-->user:得到验证码并显示登录界面
+user->control:输入登录信息点击登录
+control->view:发送请求
+view->service:调用逻辑层查询数据库
+service->db:查询数据库
+db++
+return:返回结果
+service-->view:返回结果
+service--
+view-->control:根据结果对页面进行跳转或者提示
+view--
+control-->user:结果展示给用户
+control--
+@enduml

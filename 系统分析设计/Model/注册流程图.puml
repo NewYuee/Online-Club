@@ -1,0 +1,20 @@
+@startuml
+skinparam ConditionEndStyle hline
+|用户|
+start
+:注册;
+repeat :填写用户名;
+    |后台校验|
+repeat while(校验是否通过) is(校验不通过) not(通过)
+|用户|
+repeat :填写密码;
+repeat while(是否符合要求) is(不符合) not(符合)
+:填写邮箱;
+|后台邮箱服务|
+repeat :发送验证码;
+    :填写获得的验证码;
+repeat while(验证码是否正确) is(不正确) not(正确)
+|用户|
+:完成注册;
+stop
+@enduml

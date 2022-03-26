@@ -5,7 +5,9 @@ import java.util.Date;
 public class ClubMember {
     private Integer id;
 
-    private Integer memUserId;
+    private Integer clubId;
+
+    private Integer userId;
 
     private String memName;
 
@@ -25,12 +27,20 @@ public class ClubMember {
         this.id = id;
     }
 
-    public Integer getMemUserId() {
-        return memUserId;
+    public Integer getClubId() {
+        return clubId;
     }
 
-    public void setMemUserId(Integer memUserId) {
-        this.memUserId = memUserId;
+    public void setClubId(Integer clubId) {
+        this.clubId = clubId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getMemName() {

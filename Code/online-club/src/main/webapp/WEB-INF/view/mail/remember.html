@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+</head>
+<body>
+你好，[[${name}]],请输入新密码点击提交完成你的密码重置
+<form class="rememberform" method="post">
+    <div class="form-group">
+        <label>新密码</label>
+        <input type="password" class="form-control" name="uPassword" placeholder="新密码"/>
+    </div>
+    <div class="form-group">
+        <label>再次确认</label>
+        <input type="password" class="form-control" name="reuPassword" placeholder="再次确认"/>
+    </div>
+    <button id="commit" class="btn btn-primary">提交</button>
+</form>
+</body>
+<script type="text/javascript" src="https://mmad.top:82/res/static/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="https://mmad.top:82/res/static/js/layer/layer.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+<script th:inline="javascript">
+    var userMail=[[${mail}]]
+    $("#commit").click(function () {
+        $.ajax({
+            type: 'post',
+            url:'https://mmad.top/user/updatePassword?userMail'+userMail,
+            data: $('.rememberform').serialize(),
+            success:function (result) {
+                if (result.code==200){
+                    layer.alert("更改成功")
+                }
+                else {
+                    layer.alert("更改失败")
+                }
+            }
+        });
+    });
+    $(function () {
+        $('.rememberform').bootstrapValidator({
+            //指定反馈图标
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            //校验域
+            fields: {//登录名校验
+                //密码校验
+                uPassword: {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空！'
+                        },
+                        stringLength: {
+                            min:6,
+                            max:20,
+                            message:'密码长度在6-20位之间'
+                        },
+                        regexp:{
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message:'密码只能包含大写、小写、数字和下划线'
+                        }
+                    }
+                },
+                reuPassword: {
+                    validators: {
+                        identical: {
+                            field: 'uPassword',
+                            message: '两次密码须一致'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+</html>

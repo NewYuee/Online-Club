@@ -165,63 +165,123 @@ public class ClubMemberExample {
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdIsNull() {
-            addCriterion("mem_user_id is null");
+        public Criteria andClubIdIsNull() {
+            addCriterion("club_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdIsNotNull() {
-            addCriterion("mem_user_id is not null");
+        public Criteria andClubIdIsNotNull() {
+            addCriterion("club_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdEqualTo(Integer value) {
-            addCriterion("mem_user_id =", value, "memUserId");
+        public Criteria andClubIdEqualTo(Integer value) {
+            addCriterion("club_id =", value, "clubId");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdNotEqualTo(Integer value) {
-            addCriterion("mem_user_id <>", value, "memUserId");
+        public Criteria andClubIdNotEqualTo(Integer value) {
+            addCriterion("club_id <>", value, "clubId");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdGreaterThan(Integer value) {
-            addCriterion("mem_user_id >", value, "memUserId");
+        public Criteria andClubIdGreaterThan(Integer value) {
+            addCriterion("club_id >", value, "clubId");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("mem_user_id >=", value, "memUserId");
+        public Criteria andClubIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("club_id >=", value, "clubId");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdLessThan(Integer value) {
-            addCriterion("mem_user_id <", value, "memUserId");
+        public Criteria andClubIdLessThan(Integer value) {
+            addCriterion("club_id <", value, "clubId");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdLessThanOrEqualTo(Integer value) {
-            addCriterion("mem_user_id <=", value, "memUserId");
+        public Criteria andClubIdLessThanOrEqualTo(Integer value) {
+            addCriterion("club_id <=", value, "clubId");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdIn(List<Integer> values) {
-            addCriterion("mem_user_id in", values, "memUserId");
+        public Criteria andClubIdIn(List<Integer> values) {
+            addCriterion("club_id in", values, "clubId");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdNotIn(List<Integer> values) {
-            addCriterion("mem_user_id not in", values, "memUserId");
+        public Criteria andClubIdNotIn(List<Integer> values) {
+            addCriterion("club_id not in", values, "clubId");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdBetween(Integer value1, Integer value2) {
-            addCriterion("mem_user_id between", value1, value2, "memUserId");
+        public Criteria andClubIdBetween(Integer value1, Integer value2) {
+            addCriterion("club_id between", value1, value2, "clubId");
             return (Criteria) this;
         }
 
-        public Criteria andMemUserIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("mem_user_id not between", value1, value2, "memUserId");
+        public Criteria andClubIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("club_id not between", value1, value2, "clubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNull() {
+            addCriterion("user_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNotNull() {
+            addCriterion("user_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdEqualTo(Integer value) {
+            addCriterion("user_id =", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotEqualTo(Integer value) {
+            addCriterion("user_id <>", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThan(Integer value) {
+            addCriterion("user_id >", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("user_id >=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThan(Integer value) {
+            addCriterion("user_id <", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThanOrEqualTo(Integer value) {
+            addCriterion("user_id <=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIn(List<Integer> values) {
+            addCriterion("user_id in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotIn(List<Integer> values) {
+            addCriterion("user_id not in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdBetween(Integer value1, Integer value2) {
+            addCriterion("user_id between", value1, value2, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
 

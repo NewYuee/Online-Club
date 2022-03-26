@@ -8,4 +8,10 @@ public interface UserService {
     User quryUserByName(String name);
 
     User quryUserByEmail(String email);
+
+    int insertUser(User user);
+
+    int updatePasswordByEmail(String usermail, String encodePassword);
+
+    String queryNameById(Integer clubId);
 }

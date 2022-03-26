@@ -2,9 +2,7 @@ package com.ljy.oneclub.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
@@ -55,14 +53,17 @@ public class RandomValidateCodeUtil {
         //HttpSession session = request.getSession();
         // BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
-        Graphics g = image.getGraphics();// 产生Image对象的Graphics对象,改对象可以在图像上进行各种绘制操作
+        logger.info("开始绘制image对象");
+        Graphics g = image.getGraphics();// 产生Image对象的Graphics对象,该对象可以在图像上进行各种绘制操作
         g.fillRect(0, 0, width, height);//图片大小
         g.setFont(new Font("Times New Roman", Font.ROMAN_BASELINE, 18));//字体大小
         g.setColor(getRandColor(110, 133));//字体颜色
+        logger.info("完成绘制image对象");
         // 绘制干扰线
         for (int i = 0; i <= lineSize; i++) {
             drowLine(g);
         }
+        logger.info("绘制随机字符");
         // 绘制随机字符
         String randomString = "";
         for (int i = 1; i <= stringNum; i++) {
@@ -77,7 +78,9 @@ public class RandomValidateCodeUtil {
         g.dispose();
         try {
             // 将内存中的图片通过流动形式输出到客户端
+            logger.info("将内存中的图片通过流动形式输出到客户端");
             ImageIO.write(image, "JPEG", response.getOutputStream());
+            logger.info("将内存中的图片通过流动形式输出到客户端-finished");
         } catch (Exception e) {
             logger.error("将内存中的图片通过流动形式输出到客户端失败>>>>   ", e);
         }

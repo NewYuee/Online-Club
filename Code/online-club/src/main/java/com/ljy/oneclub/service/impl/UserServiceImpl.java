@@ -43,4 +43,30 @@ public class UserServiceImpl implements UserService {
         }
         return users.get(0);
     }
+
+    @Override
+    public int insertUser(User user) {
+         return userMapper.insert(user);
+    }
+
+    @Override
+    public int updatePasswordByEmail(String usermail, String encodePassword) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUMailAddEqualTo(usermail);
+        List<User> users = userMapper.selectByExample(userExample);
+        User user=null;
+        if (users.size()==1){
+            user = users.get(0);
+        }
+        user.setuPassword(encodePassword);
+        return userMapper.updateByExample(user, userExample);
+    }
+
+    @Override
+    public String queryNameById(Integer id) {
+        User user = userMapper.selectByPrimaryKey(id);
+
+        return user.getuName();
+    }
 }

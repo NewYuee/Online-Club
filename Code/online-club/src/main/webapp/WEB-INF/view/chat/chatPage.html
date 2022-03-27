@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>私信</title>
+    <link rel="icon" type="image/png" href="../../../static/img/MMAD.png">
+    <link rel="stylesheet" href="../../../static/css/chat/chat.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="item item-center" style="border-bottom: 1px solid #dadada;padding-bottom: 10px;font-size: 20px">勇敢的心</div>
+    <div class="content" id="content">
+        <div class="item item-center"><span><a href="#" style="text-decoration: none">查看更多</a></span></div>
+        <div class="item item-center"><span>昨天 12:35</span></div>
+        <div class="item item-left"><div class="avatar"><img src="../../../static/img/user_pic.jpg" /></div><div class="bubble bubble-left">您好,我在武汉，你可以直接送过来吗，我有时间的话，可以自己过去拿<br/>！！！<br/>123</div></div>
+
+        <div class="item item-right"><div class="bubble bubble-right">hello<br/>你好呀</div><div class="avatar"><img src="../../../static/img/user_pic.jpg" /></div></div>
+        <div class="item item-center"><span>3月9日 13:15</span></div>
+        <div class="item item-right"><div class="bubble bubble-right">刚刚不在，不好意思</div><div class="avatar"><img src="../../../static/img/user_pic.jpg" /></div></div>
+        <div class="item item-left"><div class="avatar"><img src="../../../static/img/user_pic.jpg" /></div><div class="bubble bubble-left">没事<br/>你继续！</div></div>
+        <div class="item item-left"><div class="avatar"><img src="../../../static/img/user_pic.jpg" /></div><div class="bubble bubble-left">看到了<br/>在下面</div></div>
+        <div class="item item-left"><div class="avatar"><img src="../../../static/img/user_pic.jpg" /></div><div class="bubble bubble-left">你发一个<br/>刚刚网卡了</div></div>
+        <div class="item item-right"><div class="bubble bubble-right">可以<br/>一会儿再发给你</div><div class="avatar"><img src="../../../static/img/user_pic.jpg" /></div></div>
+    </div>
+    <div class="input-area">
+        <textarea name="text" id="textarea"></textarea>
+        <div class="button-area">
+            <button id="send-btn" onclick="send()">发 送</button>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="../../static/layer/layer.js"></script>
+<script src="../../../static/js/chat.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    var websocket = null;
+
+    var from=[[${session.name}]];
+    var to=[[${session.toname}]]
+    var url = 'ws://localhost:8080/websocket/'+from+'/'+to;
+    console.log(url);
+    //判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {
+        websocket = new WebSocket(url);
+        console.log("websocket===>" + websocket);
+    } else {
+        alert('当前浏览器 Not support websocket')
+    }
+
+    //连接发生错误的回调方法
+    websocket.onerror = function () {
+        console.log('websocket连接出错！')
+    };
+
+    //连接成功建立的回调方法
+    websocket.onopen = function () {
+        console.log('用户'+from+'与用户'+to+'==>websocket建立连接成功！')
+    }
+
+    //接收到消息的回调方法
+    websocket.onmessage = function (event) {
+        receive(event.data);
+    }
+
+    //连接关闭的回调方法
+    websocket.onclose = function () {
+        console.log('用户'+from+'与用户'+to+'==>websocket建立连接断开~')
+    }
+
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        closeWebSocket();
+        alert("关闭socket");
+    }
+
+    //关闭WebSocket连接
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+    //发送消息
+    function send() {
+        let text = document.querySelector('#textarea').value;
+        if (!text){
+            layer.alert("消息不能为空");
+            return;
+        }
+        var msgContent='{"from":"'+from+'","to":"'+to+'","text":"'+text+'"}';
+        if (!websocket){
+            console.log('websocket连接断开，对方已离线');
+            return;
+        }
+        websocket.send(msgContent);
+        setMsginHtml(text);
+    }
+</script>
+</html>

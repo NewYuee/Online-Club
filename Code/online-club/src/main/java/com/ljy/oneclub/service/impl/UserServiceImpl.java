@@ -69,4 +69,9 @@ public class UserServiceImpl implements UserService {
 
         return user.getuName();
     }
+
+    @Override
+    public int updateInfo(User user) {
+        return userMapper.updateByPrimaryKey(user);
+    }
 }

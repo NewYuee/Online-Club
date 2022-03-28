@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>UserController</title>
+    <title>ChatController</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.css">
@@ -55,7 +55,7 @@
                  aria-expanded="true" data-target="#collapse1" aria-controls="collapse1">
                 <i class="glyphicon glyphicon-align-justify"></i> ChatController
             </div>
-            <div id="collapse1" class="collapse " aria-labelledby="heading1">
+            <div id="collapse1" class="collapse in " aria-labelledby="heading1">
                     <a class="catalog-item" href="com_ljy_oneclub_controller_ChatController.html#getChat">
                         聊天接口
                     </a>
@@ -98,7 +98,7 @@
                  aria-expanded="true" data-target="#collapse3" aria-controls="collapse3">
                 <i class="glyphicon glyphicon-align-justify"></i> UserController
             </div>
-            <div id="collapse3" class="collapse in " aria-labelledby="heading3">
+            <div id="collapse3" class="collapse " aria-labelledby="heading3">
                     <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#updatePasswordInEmail">
                         更改密码
                     </a>
@@ -117,10 +117,11 @@
                 <div class="page-inner">
                     <div class="action-list">
                         <div class="action-item">
-<h2 id="updatePasswordInEmail"><a href="#">更改密码 </a></h2>
+<h2 id="getChat"><a href="#">聊天接口 </a></h2>
 <p><strong>请求URL</strong></p>
 <p>
-    <code>/user/updatePassword</code>
+    <code>/chat/{userId}/{toUserId}</code>
+        <span class="label label-default">GET</span>
         <span class="label label-default">POST</span>
 </p>
         <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
@@ -132,37 +133,20 @@
                 <th>描述</th>
             </tr>
                     <tr>
-                        <td>usermail</td>
+                        <td>userId</td>
                         <td>string</td>
                         <td>是</td>
-                        <td>用户邮箱</td>
+                        <td>当前用户id</td>
                     </tr>
                     <tr>
-                        <td>uPassword</td>
+                        <td>toUserId</td>
                         <td>string</td>
                         <td>是</td>
-                        <td>用户新密码</td>
-                    </tr>
-                    <tr>
-                        <td>reuPassword</td>
-                        <td>string</td>
-                        <td>是</td>
-                        <td>确认密码</td>
+                        <td>聊天对象id</td>
                     </tr>
         </table>
     <p><strong>返回结果</strong></p>
-    <pre class="prettyprint lang-json">{
-	"code":"int",
-	"msg":"string",
-	"data":{}
-}</pre>
-        <div class="form-group">
-            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_UserController_updatePasswordInEmail_Msg.html"><i
-                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
-            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_UserController_updatePasswordInEmail_Msg.html"><i class="fa fa-apple"
-                                                                                                 aria-hidden="true"></i>
-                iOS Model</a>
-        </div>
+    <pre class="prettyprint lang-json">string{}</pre>
                         </div>
                         <hr>
                     </div>

@@ -14,4 +14,6 @@ public interface UserService {
     int updatePasswordByEmail(String usermail, String encodePassword);
 
     String queryNameById(Integer clubId);
+
+    int updateInfo(User user);
 }

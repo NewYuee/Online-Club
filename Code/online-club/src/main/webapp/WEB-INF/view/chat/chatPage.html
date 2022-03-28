@@ -40,7 +40,7 @@
 
     var from=[[${session.name}]];
     var to=[[${session.toname}]]
-    var url = 'ws://localhost:8080/websocket/'+from+'/'+to;
+    var url = 'wss://mmad.top/websocket/'+from+'/'+to;
     console.log(url);
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
@@ -90,10 +90,6 @@
             return;
         }
         var msgContent='{"from":"'+from+'","to":"'+to+'","text":"'+text+'"}';
-        if (!websocket){
-            console.log('websocket连接断开，对方已离线');
-            return;
-        }
         websocket.send(msgContent);
         setMsginHtml(text);
     }

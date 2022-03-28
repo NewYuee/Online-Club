@@ -1,9 +1,12 @@
 package com.ljy.oneclub.controller;
 
+import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.msg.Msg;
+import com.ljy.oneclub.service.UserService;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
@@ -15,18 +18,25 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-@ApiDoc
+
 @Controller
 public class FileController {
 
     private static final Logger logger= LoggerFactory.getLogger(FileController.class);
 
+    /**
+     * 针对富文本框处理图片上传和回调
+     * @param multiRequest 文件流
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "active/file/upload",method = RequestMethod.POST)
     @ResponseBody
     public Msg uploadImgInArticle(MultipartHttpServletRequest multiRequest) throws IOException {
@@ -36,7 +46,6 @@ public class FileController {
         System.out.println(multipartFile.getOriginalFilename());
         if (multipartFile != null) {
             String rootPath = "/root/resource/upload/article";
-            //String rootPath = "E:\\Temp";
             Calendar date = Calendar.getInstance();
             File dateDirs = new File(date.get(Calendar.YEAR)
                     + File.separator + (date.get(Calendar.MONTH) + 1));
@@ -55,5 +64,83 @@ public class FileController {
             return Msg.success().addData("imgPath", path);
         }
         return Msg.fail();
+    }
+
+    @Autowired
+    UserService userService;
+
+    /**
+     * 上传头像
+     * @param session
+     * @param multiRequest
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "upload/avatar",method =RequestMethod.POST )
+    @ResponseBody
+    public Msg uploadAvatar(HttpSession session,MultipartHttpServletRequest multiRequest) throws IOException {
+        MultipartFile upload = multiRequest.getFile("file");
+        String p="/root/resource/avatar/";
+        if (upload.isEmpty()){
+            return Msg.fail();
+        }
+        //判断，该路径是否存在
+        File file=new File(p);
+        if (!file.exists()) {
+            //创建文件夹
+            file.mkdirs();
+        }
+        //因为配好了解释器所以不用再进行解析
+        //说明上传文件项
+        //获取上传文件的名称
+        String filename = upload.getOriginalFilename();
+        //把文件名称设置唯一值，uuid
+        String uuid = UUID.randomUUID().toString().substring(0,8).replace("-", "");
+        filename = uuid+filename;
+        String avatarPath="https://mmad.top:82/res/avatar/"+filename;
+        User user = (User)session.getAttribute("userInfo");
+        user.setuProfilePhotoName(avatarPath);
+        userService.updateInfo(user);
+        session.removeAttribute("userInfo");
+        session.setAttribute("userInfo",user);
+        //完成文件上传
+        upload.transferTo(new File(p,filename));
+        logger.info("用户:"+user.getuName()+"更新了头像"+filename);
+        return Msg.success();
+    }
+
+    /**
+     * 更新背景图
+     * @param session
+     * @param multiRequest
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "upload/bkimg",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg uploadBkImg(HttpSession session,MultipartHttpServletRequest multiRequest) throws IOException {
+        MultipartFile upload = multiRequest.getFile("file");
+        String p="/root/resource/bkImg/";
+        if (upload.isEmpty()){
+            return Msg.fail();
+        }
+        //判断，该路径是否存在
+        File file=new File(p);
+        //获取上传文件的名称
+        String filename = upload.getOriginalFilename();
+        //把文件名称设置唯一值，uuid
+        String uuid = UUID.randomUUID().toString().substring(0,8).replace("-", "");
+        filename = uuid+filename;
+        String bkImgPath="https://mmad.top:82/res/bkImg/"+filename;
+        User user = (User)session.getAttribute("userInfo");
+        user.setuProfileBackgroundimgName(bkImgPath);
+        userService.updateInfo(user);
+        session.removeAttribute("userInfo");
+        session.setAttribute("userInfo",user);
+        System.out.println(filename);
+        //完成文件上传
+        upload.transferTo(new File(p,filename));
+        logger.info("用户:"+user.getuName()+"更新了背景图"+filename);
+        return Msg.success();
     }
 }

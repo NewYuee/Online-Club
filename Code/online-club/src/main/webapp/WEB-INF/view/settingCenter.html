@@ -8,52 +8,7 @@
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
 </head>
 <body style="padding-top: 60px;background-color: rgb(237, 244, 246);">
-<nav class="navbar navbar-inverse  navbar-default navbar-fixed-top"
-     style="background-color: rgb(237, 125, 4);border: 2px solid transparent;">
-    <div class="container ">
-        <div class="navbar-header">
-            <a class="navbar-brand" style="padding-top: 5px;" href="#">
-                <img alt="Brand" style="width: 40px;height: 40px;" src="../../static/img/MMAD.png">
-            </a>
-        </div>
-        <form class="navbar-form navbar-left" role="search">
-            <!-- 搜索框 -->
-            <div class="col-lg-12">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                   <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"
-                                                                       aria-hidden="true"></span></button>
-                 </span>
-                </div>
-            </div>
-        </form>
-        <!-- 导航栏 -->
-        <ul class="nav nav-pills" style="border: 0;">
-            <li role="presentation" class="dropdown navbar-right">
-                <a href="#" data-toggle="dropdown" role="button"
-                   aria-haspopup="true" aria-expanded="false" style="padding: 0 0 8px 0"><img
-                        style="border-radius:50%;width: 40px;height: 40px;" th:src="${session.userInfo.getuProfilePhotoName()}"></a>
-                <ul class="dropdown-menu" style="min-width: 60px;">
-                    <li role="presentation"><a style="padding: 10px 20px;" href="homepage">个人中心</a></li>
-                    <li role="presentation"><a style="padding: 10px 20px;" href="#">资料设置</a></li>
-                    <li role="presentation"><a style="padding: 10px 20px;" href="logout">退出登录</a></li>
-                </ul>
-            </li>
-            <li role="presentation" class="dropdown navbar-right">
-                <a href="#" style="padding: 14px 15px;color: black;" data-toggle="dropdown" role="button"
-                   aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell"
-                                                                    aria-hidden="true"></span> <span
-                        class="badge">4</span></a>
-                <ul class="dropdown-menu" style="min-width: 60px;">
-                    <li role="presentation"><a style="padding: 10px 20px;" href="#">通知<span class="badge">4</span></a>
-                    </li>
-                    <li role="presentation"><a style="padding: 10px 20px;" href="#">聊天</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-</nav>
+<th:block th:include="common/common.html :: nav"></th:block>
 
 <div class="container">
     <div class="row">
@@ -65,16 +20,14 @@
                         <div class="am-cf am-padding am-padding-bottom-0">
                             <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">个人资料</strong> / <small>Personal information</small></div>
                         </div>
-
                         <hr/>
-
                         <div class="am-g">
                             <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8">
                                 <div class="am-panel am-panel-default">
                                     <div class="am-panel-bd">
                                         <div class="am-g">
                                             <div class="am-u-md-4">
-                                                <img id="avatarArea" class="am-img-circle am-img-thumbnail" src="https://mmad.top:82/res/avatar/user_pic.jpg" alt=""/>
+                                                <img id="avatarArea" class="am-img-circle am-img-thumbnail" th:src="${session.userInfo.uProfilePhotoName}" alt=""/>
                                             </div>
                                             <div class="am-u-md-8">
                                                 <p>你可以使用本地上传头像,建议上传图片长宽等距 </p>
@@ -89,12 +42,11 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="am-panel am-panel-default">
                                     <div class="am-panel-bd">
                                         <div class="am-g">
                                             <div class="am-u-md-4">
-                                                <img id="bkArea" class="am-img-circle am-img-thumbnail" src="https://mmad.top:82/res/bkImg/defaultbkimg.jpeg" alt=""/>
+                                                <img id="bkArea" class="am-img-circle am-img-thumbnail" th:src="${session.userInfo.uProfileBackgroundimgName}" alt=""/>
                                             </div>
                                             <div class="am-u-md-8">
                                                 <p>你可以使用本地上传图片作为个人背景图片,建议上传图片为横向 </p>
@@ -109,21 +61,19 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
                             <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
                                 <form class="am-form am-form-horizontal">
                                     <div class="am-form-group">
-                                        <label for="user-intro" class="am-u-sm-3 am-form-label">简介 / Intro</label>
+                                        <label for="profile" class="am-u-sm-3 am-form-label">简介 / Intro</label>
                                         <div class="am-u-sm-9">
-                                            <textarea class="" rows="5" id="user-intro" placeholder="输入个人简介"></textarea>
+                                            <textarea class="" id="profile" rows="5" placeholder="输入个人简介"></textarea>
                                             <small>50字以内写出你的一生...</small>
                                         </div>
                                     </div>
                                     <div class="am-form-group">
                                         <div class="am-u-sm-9 am-u-sm-push-3">
-                                            <button type="button" class="am-btn am-btn-primary">保存修改</button>
+                                            <button id="upIntro" type="button" class="am-btn am-btn-primary">保存修改</button>
                                         </div>
                                     </div>
                                 </form>
@@ -142,51 +92,4 @@
 <script src="../../static/js/bootstrap.js"></script>
 <script src="../../static/layer/layer.js"></script>
 <script src="../../static/js/setting.js"></script>
-<script>
-    $('#upbk').click(function () {
-        var formData=new FormData();
-        if (!$('#bkimg')[0].files[0]){
-            layer.alert("上传文件不能为空！");
-            return;
-        }
-        formData.append('file',$('#bkimg')[0].files[0]);
-        $.ajax({
-            url:'/upload/bkimg',
-            type:'post',
-            data:formData,
-            processData:false,
-            contentType:false,
-            success:function (result) {
-                if (result.code==200){
-                    layer.alert("背景图更新成功！");
-                }else {
-                    layer.alert("更新失败!");
-                }
-            }
-        });
-    });
-
-    $('#upavatar').click(function () {
-        var formData=new FormData();
-        if (!$('#avatar')[0].files[0]){
-            layer.alert("上传文件不能为空！");
-            return;
-        }
-        formData.append('file',$('#avatar')[0].files[0]);
-        $.ajax({
-            url:'/upload/avatar',
-            type:'post',
-            data:formData,
-            processData:false,
-            contentType:false,
-            success:function (result) {
-                if (result.code==200){
-                    layer.alert("头像更新成功！");
-                }else {
-                    layer.alert("头像更新失败!");
-                }
-            }
-        });
-    });
-</script>
 </html>

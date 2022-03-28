@@ -2,6 +2,8 @@ package com.ljy.oneclub.service;
 
 import com.ljy.oneclub.entity.User;
 
+import java.util.List;
+
 public interface UserService {
     User selectOne(User user);
 
@@ -16,4 +18,6 @@ public interface UserService {
     String queryNameById(Integer clubId);
 
     int updateInfo(User user);
+
+    List<User> selectUserByKeyWords(String content);
 }

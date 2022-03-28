@@ -74,4 +74,13 @@ public class UserServiceImpl implements UserService {
     public int updateInfo(User user) {
         return userMapper.updateByPrimaryKey(user);
     }
+
+    @Override
+    public List<User> selectUserByKeyWords(String content) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUNameLike("%"+content+"%");
+        List<User> userList = userMapper.selectByExample(userExample);
+        return userList;
+    }
 }

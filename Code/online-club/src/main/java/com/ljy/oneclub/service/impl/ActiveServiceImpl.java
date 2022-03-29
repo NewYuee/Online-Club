@@ -2,9 +2,12 @@ package com.ljy.oneclub.service.impl;
 
 import com.ljy.oneclub.dao.ActiveMapper;
 import com.ljy.oneclub.entity.Active;
+import com.ljy.oneclub.entity.ActiveExample;
 import com.ljy.oneclub.service.ActiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ActiveServiceImpl implements ActiveService {
@@ -15,5 +18,27 @@ public class ActiveServiceImpl implements ActiveService {
     @Override
     public int insertOne(Active article) {
         return activeMapper.insert(article);
+    }
+
+    @Override
+    public List<Active> selectArticleByKeyWords(String content) {
+        ActiveExample activeExample = new ActiveExample();
+        ActiveExample.Criteria criteria = activeExample.createCriteria();
+        criteria.andActiveTitleLike("%"+content+"%");
+        criteria.andActiveTypeEqualTo(50);
+        return activeMapper.selectByExample(activeExample);
+    }
+
+    @Override
+    public Active selectById(int aId) {
+        return activeMapper.selectByPrimaryKey(aId);
+    }
+
+    @Override
+    public void updateViewCount(Active active) {
+        ActiveExample activeExample = new ActiveExample();
+        ActiveExample.Criteria criteria = activeExample.createCriteria();
+        criteria.andActiveIdEqualTo(active.getActiveId());
+        activeMapper.updateByExampleSelective(active,activeExample);
     }
 }

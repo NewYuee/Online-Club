@@ -20,4 +20,8 @@ public interface UserService {
     int updateInfo(User user);
 
     List<User> selectUserByKeyWords(String content);
+
+    List<User> selectClubByKeyWords(String content);
+
+    User selectUserById(Integer getuId);
 }

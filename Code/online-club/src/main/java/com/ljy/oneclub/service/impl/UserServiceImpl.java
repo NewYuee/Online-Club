@@ -79,8 +79,24 @@ public class UserServiceImpl implements UserService {
     public List<User> selectUserByKeyWords(String content) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUAuthNoEqualTo(10);
         criteria.andUNameLike("%"+content+"%");
         List<User> userList = userMapper.selectByExample(userExample);
         return userList;
+    }
+
+    @Override
+    public List<User> selectClubByKeyWords(String content) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUAuthNoEqualTo(5);
+        criteria.andUNameLike("%"+content+"%");
+        List<User> userList = userMapper.selectByExample(userExample);
+        return userList;
+    }
+
+    @Override
+    public User selectUserById(Integer getuId) {
+        return userMapper.selectByPrimaryKey(getuId);
     }
 }

@@ -66,20 +66,20 @@
     text-decoration: none;
 }
 
-#profile{
+.u_profile{
     float: left;padding-right: 10px;
 }
 
-#name {
+.u_name {
     
     text-decoration: none;font-size: 20px;
     color: #3399CC;
 }
 
-#profile img{
+.u_profile img{
     width: 50px;height: 50px;border-radius: 50%;
 }
-#head{
+.u_head{
     padding-bottom: 10px;border-bottom: 1px solid #eaebec;
 }
 

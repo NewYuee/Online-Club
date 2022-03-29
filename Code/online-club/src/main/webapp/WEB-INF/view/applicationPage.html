@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>入会申请</title>
+    <link rel="icon" type="image/png" href="../../static/img/MMAD.png" th:href="@{/static/favicon.ico}">
+    <link rel="stylesheet" href="../../static/css/amazeui.css">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+</head>
+<body style="padding-top: 60px;background-color: rgb(237, 244, 246);">
+<nav class="navbar navbar-inverse  navbar-default navbar-fixed-top"
+     style="background-color: rgb(237, 125, 4);border: 2px solid transparent;">
+    <div class="container ">
+        <div class="navbar-header">
+            <a class="navbar-brand" style="padding-top: 5px;" href="/index">
+                <img alt="Brand" style="width: 40px;height: 40px;" src="../../static/img/MMAD.png">
+            </a>
+        </div>
+        <form action="/searchResult" method="post" class="navbar-form navbar-left" role="search">
+            <!-- 搜索框 -->
+            <div class="col-lg-12">
+                <div class="input-group">
+                    <input type="text" name="content" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                   <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"
+                                                                       aria-hidden="true"></span></button>
+                 </span>
+                </div>
+            </div>
+        </form>
+        <!-- 导航栏 -->
+        <ul class="nav nav-pills" style="border: 0;">
+            <li role="presentation" class="dropdown navbar-right">
+                <a href="#" data-toggle="dropdown" role="button"
+                   aria-haspopup="true" aria-expanded="false" style="padding: 0 0 8px 0"><img
+                        style="border-radius:50%;width: 40px;height: 40px;" th:src="${session.userInfo.uProfilePhotoName}"></a>
+                <ul class="dropdown-menu" style="min-width: 60px;">
+                    <li role="presentation"><a style="padding: 10px 20px;" href="/homepage">个人中心</a></li>
+                    <li role="presentation"><a style="padding: 10px 20px;" href="/settingCenter">资料设置</a></li>
+                    <li role="presentation"><a style="padding: 10px 20px;" href="/logout">退出登录</a></li>
+                </ul>
+            </li>
+            <li role="presentation" class="dropdown navbar-right">
+                <a href="#" style="padding: 14px 15px;color: black;" data-toggle="dropdown" role="button"
+                   aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell"
+                                                                    aria-hidden="true"></span></a>
+                <ul class="dropdown-menu" style="min-width: 60px;">
+                    <li role="presentation"><a style="padding: 10px 20px;" href="/noticeCenter">通知</a></li>
+                    <li role="presentation"><a style="padding: 10px 20px;" href="/noticeCenter">聊天</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <!-- 中间的栅格 -->
+        <div class="col-md-12 col-xs-12 clearfix" style="padding-left: 7px;padding-right: 7px;padding-top: 30px;">
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-12 am-u-md-pull-12">
+                    <form id="appForm" class="am-form am-form-horizontal">
+                        <div class="am-form-group">
+                            <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" id="user-name" name="name" placeholder="姓名 / Name">
+                                <small>输入你的名字，让我们记住你。</small>
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="gender" class="am-u-sm-3 am-form-label">性别 / Gender</label>
+                            <div class="am-u-sm-9">
+                            <select id="gender" name="gender">
+                                <option>男</option>
+                                <option>女</option>
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="user-phone" class="am-u-sm-3 am-form-label">电话 / Telephone</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" id="user-phone" name="tel" placeholder="输入你的电话号码 / Telephone">
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="user-Info" class="am-u-sm-3 am-form-label">个人详细信息</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" id="user-Info" name="detailInfo" placeholder="输入详细信息">
+                                <small>输入你详细信息，如:学院/专业/班级</small>
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="user-intro" class="am-u-sm-3 am-form-label">申请理由 / Reason</label>
+                            <div class="am-u-sm-9">
+                                <textarea class="" rows="3" id="user-intro" name="reason" placeholder="申请理由"></textarea>
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="addFile" class="am-u-sm-3 am-form-label">
+                                请选择附件进行上传...
+                            </label>
+                                <div class="am-u-sm-9">
+                                    <input style="text-align: right" type="file" accept="image/*" onchange="updateAddFile()" id="up-btn">
+                                    <img id="addFile" class="am-img-circle am-img-thumbnail" src="" alt=""/>
+                                </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button type="button" onclick="commitApplication()" class="am-btn am-btn-primary">提交申请</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="../../static/js/bootstrap.js"></script>
+<script src="../../static/layer/layer.js"></script>
+<script src="../../static/js/amazeui.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    function updateAddFile(){
+        var fileInput = document.getElementById("up-btn");
+        var file = fileInput.files[0];
+        //创建读取文件的对象
+        var reader = new FileReader();
+        //创建文件读取相关的变量
+        var imgFile;
+        //为文件读取成功设置事件
+        reader.onload=function(e) {
+            // alert('文件读取完成');
+            imgFile = e.target.result;
+            console.log(imgFile);
+            $("#addFile").attr('src',imgFile);
+        };
+        //正式读取文件
+        reader.readAsDataURL(file);
+    }
+
+    function commitApplication() {
+        var form=document.getElementById('appForm');
+        var formData=new FormData(form);
+        formData.append("file",$('#up-btn')[0].files[0]);
+        formData.append("appToUserId",[[${appToUserId}]])
+        $.ajax({
+            url:'/commit/join',
+            type:'post',
+            data:formData,
+            processData:false,
+            contentType:false,
+            success:function (res) {
+                if(res.code==200){
+                    layer.alert('申请成功,耐心等待管理员审核');
+                    setTimeout("javascript:location.href='/index'", 3000);
+                }
+                else {
+                    layer.alert('申请失败');
+                }
+            }
+        });
+    }
+
+    $('.am-modal-btn').click(function () {
+        window.location.href='/index';
+    });
+</script>
+</html>

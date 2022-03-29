@@ -1,5 +1,7 @@
 package com.ljy.oneclub.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Active {
@@ -9,6 +11,7 @@ public class Active {
 
     private Integer activeType;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="UTC")
     private Date updateTime;
 
     private Integer viewedCount;

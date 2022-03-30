@@ -129,7 +129,7 @@
                   <div class="btn-group" style=" display: inline-block;float: right;" role="group">
                      <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>
                      <ul class="dropdown-menu " style="min-width: 100px;">
-                        <li><a class="like"><img style="width: 20px;height: 20px;" src="../../static/img/like.svg"><span>赞</span></a></li>
+                        <li><a class="like"><img style="width: 20px;height: 20px;" src="/static/img/like.svg"><span>赞</span></a></li>
                         <li><a class="more"><img style="width: 20px;height: 20px;" src="../../static/img/comment.svg">评论</a></li>
                      </ul>
                   </div>
@@ -341,13 +341,13 @@
    });
 
    $('#like_img').click(function (){
-      if ($(this).attr('src')=='../../static/img/liked.svg'){
+      if ($(this).attr('src')=='/static/img/liked.svg'){
          var like_num=$('#like_num').text();
-         $(this).attr('src','../../static/img/like.svg');
+         $(this).attr('src','/static/img/like.svg');
          like_num--;
          $("#like_num").text(like_num);
-      }else if ($(this).attr('src')=='../../static/img/like.svg'){
-         $(this).attr('src','../../static/img/liked.svg');
+      }else if ($(this).attr('src')=='/static/img/like.svg'){
+         $(this).attr('src','/static/img/liked.svg');
          var like_num=$('#like_num').text();
          like_num++;
          $("#like_num").text(like_num);

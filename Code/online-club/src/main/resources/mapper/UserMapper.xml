@@ -90,6 +90,9 @@
   <select id="selectOne" resultMap="BaseResultMap" parameterType="com.ljy.oneclub.entity.UserExample" >
     select * from user where u_name=#{uName} and u_password=#{uPassword}
   </select>
+  <select id="getNameById" resultType="java.lang.String" parameterType="java.lang.Integer">
+    select u_name from user where u_id=#{uid}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

@@ -24,4 +24,6 @@ public interface UserService {
     List<User> selectClubByKeyWords(String content);
 
     User selectUserById(Integer getuId);
+
+    String getNameById(Integer getuId);
 }

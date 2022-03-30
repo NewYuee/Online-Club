@@ -29,4 +29,7 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     User selectOne(User user);
+
+    //根据用户id,获取姓名
+    String getNameById(Integer getuId);
 }

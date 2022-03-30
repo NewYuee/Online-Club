@@ -29,7 +29,7 @@
                        aria-haspopup="true" aria-expanded="false" style="padding: 0 0 8px 0"><img
                             style="border-radius:50%;width: 40px;height: 40px;" th:src="${session.userInfo.uProfilePhotoName}"></a>
                     <ul class="dropdown-menu" style="min-width: 60px;">
-                        <li role="presentation"><a style="padding: 10px 20px;" href="/homepage">个人中心</a></li>
+                        <li role="presentation" id="userIdArea"><a th:id="${session.userInfo.uId}" style="padding: 10px 20px;" th:href="'/u/'+${session.userInfo.uId}">个人中心</a></li>
                         <li role="presentation"><a style="padding: 10px 20px;" href="/settingCenter">资料设置</a></li>
                         <li role="presentation"><a style="padding: 10px 20px;" href="/logout">退出登录</a></li>
                     </ul>

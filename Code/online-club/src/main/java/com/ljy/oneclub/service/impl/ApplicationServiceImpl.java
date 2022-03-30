@@ -15,4 +15,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     public int insertOne(Application application) {
         return applicationMapper.insert(application);
     }
+
+    @Override
+    public Application selectById(int appid) {
+        return applicationMapper.selectByPrimaryKey(appid);
+    }
 }

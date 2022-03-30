@@ -69,6 +69,30 @@ toUserId|string|是|聊天对象id
 ```json
 string{}
 ```
+# CommentController
+## 根据活动Id获取评论
+
+**
+
+**请求URL**
+
+/get/comments `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+activeId|string|否|活动Id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
 # LoginController
 ## 返回登录注册页面
 
@@ -245,6 +269,29 @@ r_email|string|是|邮箱地址
 usermail|string|是|用户邮箱
 uPassword|string|是|用户新密码
 reuPassword|string|是|确认密码
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 更新个人简介
+
+**
+
+**请求URL**
+
+/updateInfo/intro `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+content|string|否|
 
 **返回结果**
 

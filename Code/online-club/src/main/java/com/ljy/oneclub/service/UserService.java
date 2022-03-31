@@ -1,5 +1,6 @@
 package com.ljy.oneclub.service;
 
+import com.ljy.oneclub.entity.LikedRecord;
 import com.ljy.oneclub.entity.User;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface UserService {
     User selectUserById(Integer getuId);
 
     String getNameById(Integer getuId);
+
+    int collectActive(LikedRecord likedRecord);
 }

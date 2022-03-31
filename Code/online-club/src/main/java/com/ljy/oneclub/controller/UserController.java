@@ -1,15 +1,11 @@
 package com.ljy.oneclub.controller;
 
 import com.ljy.oneclub.entity.Active;
-import com.ljy.oneclub.entity.Application;
+import com.ljy.oneclub.entity.LikedRecord;
 import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.msg.Msg;
-import com.ljy.oneclub.service.ActiveService;
-import com.ljy.oneclub.service.ApplicationService;
-import com.ljy.oneclub.service.MailService;
-import com.ljy.oneclub.service.UserService;
+import com.ljy.oneclub.service.*;
 import com.ljy.oneclub.utils.RedisUtil;
-import com.ljy.oneclub.utils.UploadEnclosure;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -23,6 +19,9 @@ import org.thymeleaf.TemplateEngine;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -33,9 +32,6 @@ public class UserController {
     @Autowired
     RedisUtil redisUtil;
 
-//    @Autowired
-//    JavaMailSenderImpl javaMailSender;
-//
     @Autowired
     TemplateEngine templateEngine;
 
@@ -47,6 +43,9 @@ public class UserController {
 
     @Autowired
     ActiveService activeService;
+
+    @Autowired
+    LikeRecordService likeRecordService;
 
 
     /**
@@ -140,20 +139,24 @@ public class UserController {
             return modelAndView;
         }
         User thisUser=(User)session.getAttribute("userInfo");
+        //如果和当前用户id相同，跳转到用户自己主页
         if (user.getuId()==thisUser.getuId()){
-            modelAndView.setViewName("uPage");
+            modelAndView.setViewName("homepage");
             return modelAndView;
         }
+        //如果是社团用户，跳转到社团主页
         if (user.getuAuthNo()==5){
             modelAndView.setViewName("clubPage");
             modelAndView.addObject("club",user);
             return modelAndView;
         }
+        //如果是普通用户跳转到用户个人主页
         if (user.getuAuthNo()==10){
             modelAndView.setViewName("uPage");
             modelAndView.addObject("user",user);
             return modelAndView;
         }
+        //啥也不是，跳转到错误页面
         modelAndView.setViewName("error/500");
         return modelAndView;
     }
@@ -175,7 +178,6 @@ public class UserController {
         modelAndView.setViewName("applicationPage");
         return modelAndView;
     }
-
 
 
 }

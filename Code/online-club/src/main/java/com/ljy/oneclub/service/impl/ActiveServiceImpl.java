@@ -41,4 +41,9 @@ public class ActiveServiceImpl implements ActiveService {
         criteria.andActiveIdEqualTo(active.getActiveId());
         activeMapper.updateByExampleSelective(active,activeExample);
     }
+
+    @Override
+    public Active selectNewActiveByUid(int uid,int type) {
+        return activeMapper.selectNewActiveByUid(uid,type);
+    }
 }

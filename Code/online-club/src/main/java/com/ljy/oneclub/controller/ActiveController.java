@@ -2,10 +2,12 @@ package com.ljy.oneclub.controller;
 
 import com.ljy.oneclub.entity.Active;
 import com.ljy.oneclub.entity.ActiveAndClub;
+import com.ljy.oneclub.entity.LikedRecord;
 import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.ActiveAndClubService;
 import com.ljy.oneclub.service.ActiveService;
+import com.ljy.oneclub.service.LikeRecordService;
 import com.ljy.oneclub.service.UserService;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class ActiveController {
     @Autowired
     ActiveAndClubService activeAndClubService;
 
+    @Autowired
+    LikeRecordService likeRecordService;
+
     /**
      * 动态发布-一般说说
      * @param inputStr 内容
@@ -42,7 +47,9 @@ public class ActiveController {
     @ApiDoc
     @RequestMapping(value = "short/insertOne",method = RequestMethod.POST)
     @ResponseBody
-    public Msg insertActive(@RequestParam(value = "inputStr") String inputStr, HttpSession session) throws ParseException {
+    public Msg insertActive(@RequestParam(value = "inputStr") String inputStr,
+                            HttpSession session,
+                            @RequestParam(value = "clubname")String clubname) throws ParseException {
         Active article = new Active();
         User userInfo = (User) session.getAttribute("userInfo");
         if (inputStr.length()==0)
@@ -62,6 +69,16 @@ public class ActiveController {
         if (r==0){
             return Msg.fail().addData("dataInfo","发表失败");
         }
+        System.out.println("绑定的社团为"+clubname);
+        //对动态进行话题绑定操作
+        if (!clubname.equals("空")){
+            User club = userService.quryUserByName(clubname);
+            Active active=activeService.selectNewActiveByUid(userInfo.getuId(),40);
+            ActiveAndClub activeAndClub = new ActiveAndClub();
+            activeAndClub.setActiveId(active.getActiveId());
+            activeAndClub.setFromClubId(club.getuId());
+            int res=activeAndClubService.insertOne(activeAndClub);
+        }
         return Msg.success();
     }
 
@@ -76,7 +93,10 @@ public class ActiveController {
     @ApiDoc
     @RequestMapping(value = "article/insertOne",method = RequestMethod.POST)
     @ResponseBody
-    public Msg insertArticle(@RequestParam("inputStr") String inputStr,@RequestParam String title, HttpSession session) throws ParseException {
+    public Msg insertArticle(@RequestParam("inputStr") String inputStr,
+                             @RequestParam String title,
+                             @RequestParam("clubname")String clubname,
+                             HttpSession session) throws ParseException {
         Active article = new Active();
         User userInfo = (User) session.getAttribute("userInfo");
         if (title==null||inputStr==null)
@@ -95,6 +115,15 @@ public class ActiveController {
         int res=activeService.insertOne(article);
         if (res==0){
             return Msg.fail().addData("dataInfo","发表失败");
+        }
+        //对动态进行话题绑定操作
+        if (!clubname.equals("空")){
+            User club = userService.quryUserByName(clubname);
+            Active active=activeService.selectNewActiveByUid(userInfo.getuId(),50);
+            ActiveAndClub activeAndClub = new ActiveAndClub();
+            activeAndClub.setActiveId(active.getActiveId());
+            activeAndClub.setFromClubId(club.getuId());
+            activeAndClubService.insertOne(activeAndClub);
         }
         return Msg.success();
     }
@@ -119,6 +148,7 @@ public class ActiveController {
             activeService.updateViewCount(active);
             modelAndView.addObject("active",active);
             User user=userService.selectUserById(active.getuId());
+            //根据活动id查询关联的社团
             List<ActiveAndClub> activeAndClub=activeAndClubService.selectOneByActiveId(active.getActiveId());
             if (activeAndClub.size()!=0){
                 User fromClub = userService.selectUserById(activeAndClub.get(0).getFromClubId());
@@ -131,5 +161,83 @@ public class ActiveController {
             modelAndView.setViewName("error/500");
         }
         return modelAndView;
+    }
+
+    /**
+     * 根据资源id对活动进行点赞
+     * @param sourceId 活动id
+     * @param session 当前session
+     * @return
+     * @throws ParseException
+     */
+    @ApiDoc
+    @RequestMapping(value = "like/{sourceId}",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg collectActive(@PathVariable("sourceId")Integer sourceId,HttpSession session) throws ParseException {
+        LikedRecord likedRecord = new LikedRecord();
+        likedRecord.setLikeActiveId(sourceId);
+        Active active = activeService.selectById(sourceId);
+        likedRecord.setLikeType(active.getActiveType());
+        User user=(User)session.getAttribute("userInfo");
+        likedRecord.setuId(user.getuId());
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = simpleDateFormat.format(date);
+        Date time=simpleDateFormat.parse(format);
+        likedRecord.setLikeTime(time);
+        int res=userService.collectActive(likedRecord);
+        if (res!=0){
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+    /**
+     * 根据资源id对活动取消点赞
+     * @param sourceId 活动id
+     * @param session 当前session
+     * @return
+     * @throws ParseException
+     */
+    @ApiDoc
+    @RequestMapping(value = "unlike/{sourceId}",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg uncollectActive(@PathVariable("sourceId")Integer sourceId,HttpSession session){
+        User user=(User)session.getAttribute("userInfo");
+        List<LikedRecord> likedRecords=likeRecordService.selectByActiveIdAndUid(sourceId,user.getuId());
+        if (likedRecords.size()==0){
+            return Msg.fail();
+        };
+        int res=likeRecordService.uncollectActiveByActiveIdAndUid(sourceId,user.getuId());
+        if (res!=0){
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+
+    /**
+     * 根据活动id获取点赞数，以及是否点赞
+     * @param sourceId 活动id
+     * @param session 当前session
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("getLikeNum/{sourceId}")
+    @ResponseBody
+    public Msg getLikeNum(@PathVariable("sourceId")String sourceId,HttpSession session){
+        int aid=0;
+        try {
+            aid=Integer.parseInt(sourceId);
+        } catch (NumberFormatException e) {
+            return Msg.fail();
+        }
+        User user=(User)session.getAttribute("userInfo");
+        int count=likeRecordService.getCountByActiveId(aid);
+        List<LikedRecord> likedRecords = likeRecordService.selectByActiveIdAndUid(aid, user.getuId());
+        if (likedRecords.size()==0){
+            return Msg.success().addData("num",count).addData("islike",0);
+        }
+        return Msg.success().addData("num",count).addData("islike",1);
     }
 }

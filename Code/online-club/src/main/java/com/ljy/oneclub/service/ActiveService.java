@@ -13,4 +13,6 @@ public interface ActiveService {
     Active selectById(int aId);
 
     void updateViewCount(Active active);
+
+    Active selectNewActiveByUid(int uid,int type);
 }

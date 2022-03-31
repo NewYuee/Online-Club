@@ -44,7 +44,7 @@
             </div>
 
             <div class="panel panel-warning">
-                <div class="panel-heading">留言<div id="collect" style="float: right"><a>收藏</a><span class="badge">4658</span></div></div>
+                <div class="panel-heading">留言<div id="collect" style="float: right"><a id="collect-btn">收藏</a><span class="badge" id="likeNum">4658</span></div></div>
                 <div class="panel-body">
                     <div id="comment_area">
                         <div class="comment_item" id="omit"><a data-toggle="modal" data-target="#content_area">共<span id="commentCount"></span>条回复 ></a></div>
@@ -130,6 +130,23 @@
         }
     })
 
+    //根据活动id获取点赞数
+    $.ajax({
+        url:'/active/getLikeNum/'+sourceId,
+        type:'GET',
+        async:false,
+        success:function (result) {
+            if (result.code==200){
+                $('#likeNum').text(result.data.num);
+                if (result.data.islike==0){
+                    $('#collect-btn').text('收藏');
+                }else if (result.data.islike==1){
+                    $('#collect-btn').text('已收藏');
+                }
+            }
+        }
+    });
+
     $(function () {
         var content=[[${active.content}]]
         $('#content').append($.parseHTML(content));
@@ -137,15 +154,41 @@
 
     $('#collect').click(function () {
         if ($(this).find('a').text()=='收藏'){
-            $(this).find('a').text('已收藏');
             var like_num=$(this).find('span').text();
+            $(this).find('a').text('已收藏');
             like_num++;
             $(this).find('span').text(like_num);
+            $.ajax({
+                url:'/active/like/'+sourceId,
+                type:'post',
+                async:false,
+                success:function (result) {
+                    if (result.code==200){
+                        layer.msg("收藏成功!");
+                    }
+                    else {
+                        layer.msg("收藏失败");
+                    }
+                }
+            });
         }else if($(this).find('a').text()=='已收藏'){
-            $(this).find('a').text('收藏');
             var like_num=$(this).find('span').text();
+            $(this).find('a').text('收藏');
             like_num--;
             $(this).find('span').text(like_num);
+            $.ajax({
+                url:'/active/unlike/'+sourceId,
+                type:'post',
+                async: false,
+                success:function (result) {
+                    if (result.code==200){
+                        layer.msg("已取消收藏");
+                    }
+                    else {
+                        layer.msg("操作失败!");
+                    }
+                }
+            });
         }
     });
 

@@ -10,6 +10,16 @@
     <result column="active_title" property="activeTitle" jdbcType="VARCHAR" />
     <result column="liked" property="liked" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="Active" type="com.ljy.oneclub.entity.Active">
+    <id column="active_id" property="activeId" jdbcType="INTEGER" />
+    <result column="u_id" property="uId" jdbcType="INTEGER" />
+    <result column="active_type" property="activeType" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="viewed_count" property="viewedCount" jdbcType="INTEGER" />
+    <result column="active_title" property="activeTitle" jdbcType="VARCHAR" />
+    <result column="liked" property="liked" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.ljy.oneclub.entity.Active" extends="BaseResultMap" >
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -301,4 +311,11 @@
       liked = #{liked,jdbcType=INTEGER}
     where active_id = #{activeId,jdbcType=INTEGER}
   </update>
+  <select id="selectNewActiveByUid" resultMap="Active">
+    select *
+    from active
+    where u_id=#{uid} and active_type=#{type}
+    ORDER BY active_id desc
+    LIMIT 0,1;
+  </select>
 </mapper>

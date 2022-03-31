@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ActiveAndClubService {
     List<ActiveAndClub> selectOneByActiveId(Integer activeId);
+
+    int insertOne(ActiveAndClub activeAndClub);
 }

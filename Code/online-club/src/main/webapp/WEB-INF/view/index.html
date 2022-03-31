@@ -68,8 +68,8 @@
                         <div class="form-group">
                            <label for="sel_role">请选择一个钟意的社团发布动态</label>
                            <select id="sel_role" name="clubname" class="form-control" title="请选择" data-width="150px">
-                              <option>您可以选择一个社团绑定话题~</option>
-                           <div th:each="myclub:${session.myclub_list}">
+                              <option>空</option>
+                           <div th:if="${session.myclub_list!=null}" th:each="myclub:${session.myclub_list}">
                               <option th:text="${myclub.clubName}"></option>
                            </div>
                            </select>
@@ -87,8 +87,8 @@
                         <div class="form-group">
                            <label >您可以选择一个社团绑定话题</label>
                            <select name="clubname" class="form-control" title="请选择" data-width="150px">
-                              <option>您可以选择一个社团绑定话题~</option>
-                              <div th:each="myclub:${session.myclub_list}">
+                              <option>空</option>
+                              <div th:if="${session.myclub_list!=null}" th:each="myclub:${session.myclub_list}">
                                  <option th:text="${myclub.clubName}"></option>
                               </div>
                            </select>
@@ -258,6 +258,8 @@
 <script src="../../static/summernote/summernote.min.js"></script>
 <script src="../../static/js/index.js"></script>
 <script>
+
+   //发送一般动态
    function sendshortActive(){
       var formData=new FormData(document.getElementById('active_form'));
       var input=$('#inputTextarea').val();
@@ -266,10 +268,9 @@
          layer.alert("内容不能为空！");
          return;
       }
-      console.log(input);
       formData.append("inputStr",input);
       $.ajax({
-         type:'post',
+         type:'POST',
          url:'active/short/insertOne',
          data:formData,
          processData:false,
@@ -286,6 +287,7 @@
       });
    }
 
+   //发送文章动态
    function sendArticle(inputStr){
       var formData=new FormData(document.getElementById('article-form'));
       formData.append("inputStr",inputStr);
@@ -327,6 +329,7 @@
       }
    }
 
+   //动态点赞的静态效果实现
    $('.like').on('click',function (e) {
       var val=$(this).find('span').text();
       if (val=='赞'){
@@ -340,6 +343,7 @@
       e.stopPropagation();
    });
 
+   //收藏文章的爱心动态变化实现
    $('#like_img').click(function (){
       if ($(this).attr('src')=='/static/img/liked.svg'){
          var like_num=$('#like_num').text();

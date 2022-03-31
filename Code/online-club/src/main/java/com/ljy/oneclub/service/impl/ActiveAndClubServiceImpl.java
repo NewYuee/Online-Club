@@ -22,4 +22,9 @@ public class ActiveAndClubServiceImpl implements ActiveAndClubService {
         criteria.andActiveIdEqualTo(activeId);
         return activeAndClubMapper.selectByExample(activeAndClubExample);
     }
+
+    @Override
+    public int insertOne(ActiveAndClub activeAndClub) {
+        return activeAndClubMapper.insert(activeAndClub);
+    }
 }

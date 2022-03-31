@@ -33,4 +33,6 @@ public interface ActiveMapper {
     int updateByPrimaryKeyWithBLOBs(Active record);
 
     int updateByPrimaryKey(Active record);
+
+    Active selectNewActiveByUid(@Param("uid") Integer uid,@Param("type") Integer type);
 }

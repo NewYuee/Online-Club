@@ -1,6 +1,9 @@
 package com.ljy.oneclub.service.impl;
 
+import com.ljy.oneclub.dao.LikedRecordMapper;
 import com.ljy.oneclub.dao.UserMapper;
+import com.ljy.oneclub.entity.LikedRecord;
+import com.ljy.oneclub.entity.LikedRecordExample;
 import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.entity.UserExample;
 import com.ljy.oneclub.service.UserService;
@@ -14,6 +17,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    LikedRecordMapper likedRecordMapper;
 
     @Override
     public User selectOne(User user) {
@@ -103,5 +109,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getNameById(Integer getuId) {
         return userMapper.getNameById(getuId);
+    }
+
+    @Override
+    public int collectActive(LikedRecord likedRecord) {
+        LikedRecordExample likedRecordExample = new LikedRecordExample();
+        LikedRecordExample.Criteria criteria = likedRecordExample.createCriteria();
+        criteria.andLikeActiveIdEqualTo(likedRecord.getLikeActiveId());
+        criteria.andUIdEqualTo(likedRecord.getuId());
+        List<LikedRecord> likedRecords = likedRecordMapper.selectByExample(likedRecordExample);
+        if (likedRecords.size()==0){
+            return likedRecordMapper.insert(likedRecord);
+        }
+        else
+            return 0;
     }
 }

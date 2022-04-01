@@ -223,4 +223,12 @@
       reply_comment_id = #{replyCommentId,jdbcType=INTEGER}
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
+  <select id="getTop2CommentBySourceId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from comment
+    where source_id = #{aid}
+    order by update_time desc
+    limit 0,2
+  </select>
 </mapper>

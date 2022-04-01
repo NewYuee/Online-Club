@@ -31,4 +31,17 @@ public class CommentServiceImpl implements CommentService {
     public Comment selectCommentById(Integer replyCommentId) {
         return commentMapper.selectByPrimaryKey(replyCommentId);
     }
+
+    @Override
+    public List<Comment> getTop2CommentBySourceId(Integer activeId) {
+        return commentMapper.getTop2CommentBySourceId(activeId);
+    }
+
+    @Override
+    public int getCommentCountByAid(Integer activeId) {
+        CommentExample commentExample = new CommentExample();
+        CommentExample.Criteria criteria = commentExample.createCriteria();
+        criteria.andSourceIdEqualTo(activeId);
+        return commentMapper.countByExample(commentExample);
+    }
 }

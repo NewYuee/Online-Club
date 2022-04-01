@@ -3,6 +3,8 @@ package com.ljy.oneclub.dao;
 import com.ljy.oneclub.entity.ActiveAndClub;
 import com.ljy.oneclub.entity.ActiveAndClubExample;
 import java.util.List;
+
+import com.ljy.oneclub.vo.ActiveAndClubVO;
 import org.apache.ibatis.annotations.Param;
 
 public interface ActiveAndClubMapper {
@@ -27,4 +29,6 @@ public interface ActiveAndClubMapper {
     int updateByPrimaryKeySelective(ActiveAndClub record);
 
     int updateByPrimaryKey(ActiveAndClub record);
+
+    ActiveAndClubVO getActiveAndClubVO(@Param("aid") int a_id);
 }

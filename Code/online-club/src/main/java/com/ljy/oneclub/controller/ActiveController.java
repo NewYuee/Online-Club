@@ -1,15 +1,14 @@
 package com.ljy.oneclub.controller;
 
-import com.ljy.oneclub.entity.Active;
-import com.ljy.oneclub.entity.ActiveAndClub;
-import com.ljy.oneclub.entity.LikedRecord;
-import com.ljy.oneclub.entity.User;
+import com.ljy.oneclub.entity.*;
 import com.ljy.oneclub.msg.Msg;
-import com.ljy.oneclub.service.ActiveAndClubService;
-import com.ljy.oneclub.service.ActiveService;
-import com.ljy.oneclub.service.LikeRecordService;
-import com.ljy.oneclub.service.UserService;
+import com.ljy.oneclub.service.*;
+import com.ljy.oneclub.vo.ActiveVO;
+import com.ljy.oneclub.vo.CommentVO;
+import com.ljy.oneclub.vo.MyClub;
 import io.github.yedaxia.apidocs.ApiDoc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +18,16 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping("active")
 public class ActiveController {
+
+    Logger logger= LoggerFactory.getLogger(ActiveController.class);
+
     @Autowired
     ActiveService activeService;
 
@@ -36,6 +39,9 @@ public class ActiveController {
 
     @Autowired
     LikeRecordService likeRecordService;
+
+    @Autowired
+    CommentService commentService;
 
     /**
      * 动态发布-一般说说
@@ -239,5 +245,56 @@ public class ActiveController {
             return Msg.success().addData("num",count).addData("islike",0);
         }
         return Msg.success().addData("num",count).addData("islike",1);
+    }
+
+    @RequestMapping("getIndex")
+    @ResponseBody
+    public Msg getAllActiveIndex(HttpSession session){
+        User user=(User) session.getAttribute("userInfo");
+        List<ActiveVO> activeVOList=new ArrayList<>();
+        //得到与自己相关的动态，包括:自己发布的和加入社团的活动
+        List<Active> activeList=activeService.selectActiveAboutByUid(user.getuId());
+        logger.info("用户"+user.getuName()+"登录首页，获取相关动态共"+activeList.size()+"条");
+        for (Active active:activeList){
+            User userInfo = userService.selectUserById(active.getuId());
+            List<ActiveAndClub> activeAndClubs = activeAndClubService.selectOneByActiveId(active.getActiveId());
+            ActiveVO activeVO = new ActiveVO();
+            if (activeAndClubs.size()!=0){
+                activeVO.setFrom_uid(activeAndClubs.get(0).getFromClubId());
+                activeVO.setFrom_uname(userService.getNameById(activeAndClubs.get(0).getFromClubId()));
+            }
+            activeVO.setProfile_name(userInfo.getuProfilePhotoName());
+            activeVO.setBkpicName(userInfo.getuProfileBackgroundimgName());
+            if (active.getActiveType()==50){
+                activeVO.setTitle(active.getActiveTitle());
+            }else {
+                activeVO.setContent(active.getContent());
+            }
+            activeVO.setComment_count(commentService.getCommentCountByAid(active.getActiveId()));
+            List<Comment> comments =commentService.getTop2CommentBySourceId(active.getActiveId());
+            List<CommentVO> commentVOList=new ArrayList<>();
+            if (comments.size()!=0) {
+                for (Comment comment:comments){
+                    CommentVO commentVO = new CommentVO();
+                    //设置评论的用户名和用户id
+                    String u_name=userService.getNameById(comment.getuId());
+                    commentVO.setU_id(comment.getuId());
+                    commentVO.setU_name(u_name);
+                    //如果回复的评论id不为空
+                    if (comment.getReplyCommentId()!=null){
+                        Comment comment1=commentService.selectCommentById(comment.getReplyCommentId());
+                        //根据回复的评论id找到原评论的用户名和用户id
+                        commentVO.setReply_u_id(comment1.getuId());
+                        commentVO.setReply_u_name(userService.getNameById(comment1.getuId()));
+                    }
+                    commentVO.setContent(comment.getCommentContent());
+                    commentVO.setC_id(comment.getCommentId());
+                    commentVOList.add(commentVO);
+                }
+                activeVO.setCommentVOList(commentVOList);
+            }
+            activeVOList.add(activeVO);
+        }
+        return Msg.success().addData("actives",activeVOList);
     }
 }

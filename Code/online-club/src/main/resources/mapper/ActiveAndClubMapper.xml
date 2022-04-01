@@ -6,6 +6,12 @@
     <result column="from_club_id" property="fromClubId" jdbcType="INTEGER" />
     <result column="active_id" property="activeId" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="ActiveAndClubVO" type="com.ljy.oneclub.vo.ActiveAndClubVO" >
+    <result column="active_id" property="aid" jdbcType="INTEGER" />
+    <result column="u_id" property="uid" jdbcType="INTEGER" />
+    <result column="u_name" property="uname" jdbcType="VARCHAR" />
+    <result column="count" property="comment_count" jdbcType="INTEGER" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -178,4 +184,26 @@
       active_id = #{activeId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getActiveAndClubVO" resultMap="ActiveAndClubVO">
+    SELECT
+	a.active_id,
+	a.u_id,
+	a.u_name
+    FROM
+	(
+	SELECT
+		a.active_id,
+		c.u_id,
+		c.u_name
+	FROM
+		active a,
+		active_and_club b,
+		user c
+	WHERE
+		b.active_id = a.active_id
+		AND b.from_club_id = c.u_id
+	) a
+	LEFT JOIN ( SELECT source_id, count( comment_id ) AS count FROM comment GROUP BY source_id ) b ON a.active_id = b.source_id
+	WHERE active_id=#{aid}
+  </select>
 </mapper>

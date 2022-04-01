@@ -4,6 +4,7 @@ import com.ljy.oneclub.dao.ActiveMapper;
 import com.ljy.oneclub.entity.Active;
 import com.ljy.oneclub.entity.ActiveExample;
 import com.ljy.oneclub.service.ActiveService;
+import com.ljy.oneclub.vo.ActiveVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,15 @@ public class ActiveServiceImpl implements ActiveService {
     @Override
     public Active selectNewActiveByUid(int uid,int type) {
         return activeMapper.selectNewActiveByUid(uid,type);
+    }
+
+    @Override
+    public List<Active> selectActiveAboutByUid(Integer getuId) {
+        return activeMapper.selectActiveAboutByUid(getuId);
+    }
+
+    @Override
+    public List<ActiveVO> selectActiveVOAboutByUid(Integer getuId) {
+        return activeMapper.selectActiveVOAboutByUid(getuId);
     }
 }

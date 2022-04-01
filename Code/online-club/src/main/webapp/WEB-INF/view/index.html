@@ -16,17 +16,16 @@
          <!-- 左边栅格 -->
          <div class="col-md-3 col-xs-12 clearfix" style="padding-left: 7px;padding-right: 7px;padding-top: 30px;">
             <div class="card profile" style="text-align: center;">
-               <img src="../../static/img/user_pic.jpg" style="width: 130px;height: 130px;border-radius: 50%;" alt="勇敢的心">
+               <img th:src="${session.userInfo.getuProfilePhotoName()}" style="width: 130px;height: 130px;border-radius: 50%;">
                <div style="border-bottom: 1px solid #eaebec;">
-                 <h4 >勇敢的心</h4> 
-                 <p>这家伙很懒什么都没留下...这家伙很懒什么都没留下...这家伙很懒什么都没留下...</p> 
+                 <h4 th:text="${session.userInfo.getuName()}">勇敢的心</h4>
+                 <p th:text="${session.userInfo.getuProfile()}"></p>
                </div>
                <div class="col-md-6 col-sm-6 col-xs-6" style="border-right: 1px solid #eaebec;">
-                  <a href="#" class="text-info">我的关注</a>
-                  
+                  <a class="text-info">我的社团:<span th:if="${session.myclub_list!=null}" th:text="${session.myclub_list.size()}"></span><span th:if="${session.myclub_list==null}">0</span></a>
                </div>
                <div class="col-md-6 col-sm-6 col-xs-6" >
-                  <a href="#" class="text-info">个人主页</a>
+                  <a th:href="'/u/'+${session.userInfo.getuId()}" class="text-info">个人主页</a>
                </div>
             </div>
             
@@ -106,84 +105,93 @@
                   </div>
                </div>
             </div>
-
-            <div class="card active">
-               <div class="u_head">
-                  <div class="u_profile">
-                     <img src="../../static/img/user_pic.jpg">
-                  </div>
-                  <div class="u_name">
-                     <a href="#">勇敢的心11</a>
-                  </div>
-                  <div  >
-                     <div style="display: inline-block;">2020-12-24 22:44:56</div>
-                     <div style="display: inline-block;float: right;"><a style="color: rgb(204, 204, 216);">jjykcxh</a></div>
-                  </div>
-               </div>
-               <div id="content">
-                  <pre id="text">asdaw安抚我</pre>
-               </div>
-               <div class="active-foot">
-                  <div style="display: inline-block;color: rgb(204, 204, 216);"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> <span>1234</span></div>
-                  <div style="display: inline-block;">456人点赞</div>
-                  <div class="btn-group" style=" display: inline-block;float: right;" role="group">
-                     <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>
-                     <ul class="dropdown-menu " style="min-width: 100px;">
-                        <li><a class="like"><img style="width: 20px;height: 20px;" src="/static/img/like.svg"><span>赞</span></a></li>
-                        <li><a class="more"><img style="width: 20px;height: 20px;" src="../../static/img/comment.svg">评论</a></li>
-                     </ul>
-                  </div>
-                  <div id="comment_area">
-                        <div class="comment_item"><a href="#">sb</a>:<span>你好sb</span></div>
-                        <div class="comment_item"><a href="#">发起方</a>回复<a href="#">sb</a>:<span>n也是完全放弃却无法请问我父亲却无法撒比</span></div>
-                        <div class="comment_item" id="omit"><a class="more">共45415条回复 ></a></div>
-                  </div>
-               </div>
-            </div>
+            <!--推荐社团滑动块区域-->
             <div class="card" style="text-align: center;">
                <div class="panel panel-warning">
                   <div class="panel-heading">
                      <h4><span><img style="height: 23px;" src="../../static/img/tj.svg"></span>活跃社团推荐</h4>
                   </div>
-
+                  <!--推荐内容区域-->
                   <ul id="bxSlider">
-                     <li >
+                     <li>
                         <div class="thumbnail">
-                           <img src="../../static/img/user_pic.jpg" alt="...">
-                           <div class="caption" style="font-family:Arial, Helvetica, sans-serif;">
-                             <h4>教王啊我发的完全</h4>
-                             <p>yie一个吻啊福娃缺乏却无法去污粉全微分</p>
-                             <p><img style="height: 20px;width: 20px;display: inline-block;" src="../../static/img/hot.svg"><span style="color: rgb(204, 204, 216);">活跃度:45824</span> <a href="#" class="btn btn-warning" role="button">立即加入</a></p>
+                           <img src="../../static/img/user_pic.jpg">
+                           <div class="caption club_in_bxSlider_body">
+                              <div class="club_name_inbxSlider"><a href="#" title="名字">名字</a></div>
+                              <div class="club_in_bxSlider_intro">简介</div>
+                              <p><img style="display: inline-block;" src="../../static/img/hot.svg">活跃度:<span>45824</span> <a href="#" class="btn btn-warning" role="button">立即加入</a></p>
                            </div>
-                         </div>
+                        </div>
                      </li>
-                 </ul>
+                  </ul>
                </div>
             </div>
-            <div class="card active">
-               <div class="u_head">
-                  <div class="u_profile">
-                     <img src="../../static/img/user_pic.jpg">
+            <div th:if="${session.actives!=null}" th:each="active:${session.actives}">
+               <div class="card active" th:if="${active.getA_type()==40}">
+                  <div class="u_head">
+                     <div class="u_profile">
+                        <img th:src="${active.profile_name}">
+                     </div>
+                     <div class="u_name">
+                        <a th:href="'/u/'+${active.getU_id()}" th:text="${active.u_name}">勇敢的心</a>
+                     </div>
+                     <div>
+                        <div style="display: inline-block;" th:text="${#dates.format(active.getUpdateTime(),'yyyy-MM-dd HH:mm:ss')}"></div>
+                        <div style="display: inline-block;float: right;"><a th:href="'/u/'+${active.getFrom_uid()}" style="color: rgb(204, 204, 216);" th:text="${active.getFrom_uname()}">xx</a></div>
+                     </div>
                   </div>
-                  <div class="u_name">
-                     <a href="#">勇敢的心11</a>
+                  <div class="content_active">
+                     <pre th:text="${active.getContent()}"></pre>
                   </div>
-                  <div  >
-                     <div style="display: inline-block;">2020-12-24 22:44:56</div>
-                     <div style="display: inline-block;float: right;"><a style="color: rgb(204, 204, 216);">jjykcxh</a></div>
+                  <div class="active-foot">
+                     <div style="display: inline-block;color: rgb(204, 204, 216);"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> <span th:text="${active.getView_count()}">0</span></div>
+                     <div style="display: inline-block;"><span th:text="${active.getLiked_count()}"></span>人点赞</div>
+                     <div class="btn-group" style=" display: inline-block;float: right;" role="group">
+                        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>
+                        <ul class="dropdown-menu dropdown_style">
+                           <li><a class="like"><img src="/static/img/like.svg"><span>赞</span></a></li>
+                           <li><a class="more"><img src="../../static/img/comment.svg">评论</a></li>
+                        </ul>
+                     </div>
+                     <div class="comment_area">
+                        <div th:if="${active.getCommentVOList()!=null}" th:each="comment:${active.getCommentVOList()}">
+                           <div class="comment_item" th:if="${comment.getReply_u_id()==0}">
+                              <a th:href="'/u/'+${comment.getU_id()}" th:text="${comment.getU_name()}"></a>:<span th:text="${comment.getContent()}"></span>
+                           </div>
+                           <div class="comment_item" th:if="${comment.getReply_u_id()!=0}">
+                              <a th:href="'/u/'+${comment.getU_id()}" th:text="${comment.getU_name()}"></a>回复<a th:href="'/u/'+${comment.getReply_u_id()}" th:text="${comment.getReply_u_name()}"></a>:<span th:text="${comment.getContent()}"></span>
+                           </div>
+                        </div>
+                        <div class="comment_item" th:id="${active.getA_id()}"><a class="more" data-toggle="modal" data-target="#content_area">共<span th:text="${active.getComment_count()}"></span>条评论 ></a></div>
+                     </div>
                   </div>
                </div>
-             <div class="media">
-               <div class="media-left">
-                   <img style="width: 50px;height: 50px;" class="media-object" src="../../static/img/defaultbkimg.jpeg" alt="...">
+               <!--文章动态区域-->
+               <div class="card active" th:if="${active.getA_type()==50}">
+                  <div class="u_head">
+                     <div class="u_profile">
+                        <img th:src="${active.profile_name}">
+                     </div>
+                     <div class="u_name">
+                        <a th:href="'/u/'+${active.getU_id()}" th:text="${active.u_name}">勇敢的心</a>
+                     </div>
+                     <div>
+                        <div style="display: inline-block;" th:text="${#dates.format(active.getUpdateTime(),'yyyy-MM-dd HH:mm:ss')}"></div>
+                        <div style="display: inline-block;float: right;"><a th:href="'/u/'+${active.getFrom_uid()}" style="color: rgb(204, 204, 216);" th:text="${active.getFrom_uname()}">xx</a></div>
+                     </div>
+                  </div>
+                  <div class="media article_area">
+                     <div class="media-left">
+                        <img class="media-object" th:src="${active.getBkpicName()}">
+                     </div>
+                     <div class="media-body">
+                        <h4 class="media-heading" th:text="${active.getTitle()}">标题</h4>
+                        <div class="article_detail">
+                           <img src="../../static/img/view.svg"><span th:text="${active.getView_count()}">0</span>阅读&nbsp;<img src="../../static/img/like.svg"><span id="like_num" th:text="${active.getLiked_count()}">0</span>喜欢&nbsp;&nbsp;<a th:href="'/active/article/'+${active.getA_id()}">立即查看</a>
+                        </div>
+                     </div>
+                  </div>
                </div>
-               <div class="media-body " style="padding-left: 10px;padding-top:5px;background-color: #ebebeb;border-radius: 3%">
-                 <h4 class="media-heading">今天是个好日子啊发我</h4>
-                 <div class="article_detail"><img style="width: 20px;height: 20px;" src="../../static/img/view.svg"><span>1234</span>阅读 <img    style="width: 20px;height: 20px;" src="../../static/img/like.svg"><span id="like_num">186</span>喜欢
-                  <a src="#">立即查看</a>
-               </div>
-               </div>
-             </div>
             </div>
          </div>
          <!-- 右边栅格 -->
@@ -250,6 +258,35 @@
          </div>
       </div>
    </div>
+<!-- Modal -->
+<div class="modal fade" id="content_area" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">评论列表</h4>
+         </div>
+         <div class="modal-body">
+            <!--输入框-->
+            <div class="col-lg-12">
+               <div class="input-group">
+                  <input id="comment_input" type="text" class="form-control" placeholder="说点什么">
+                  <span class="input-group-btn">
+                            <button id="send_comment" class="btn btn-primary" type="button">评论</button>
+                        </span>
+               </div>
+            </div>
+            <!--评论列表-->
+            <div class="layeropen" id="comment">
+
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
@@ -257,128 +294,117 @@
 <script src="../../static/layer/layer.js"></script>
 <script src="../../static/summernote/summernote.min.js"></script>
 <script src="../../static/js/index.js"></script>
-<script>
-
-   //发送一般动态
-   function sendshortActive(){
-      var formData=new FormData(document.getElementById('active_form'));
-      var input=$('#inputTextarea').val();
-      console.log("input=="+input);
-      if(input.length==0){
-         layer.alert("内容不能为空！");
-         return;
-      }
-      formData.append("inputStr",input);
-      $.ajax({
-         type:'POST',
-         url:'active/short/insertOne',
-         data:formData,
-         processData:false,
-         contentType:false,
-         success:function(res){
-            if(res.code==200){
-               layer.msg("发送成功");
-               setTimeout(reloadPage,1000);
-            }
-            else{
-               layer.alert(res.data.dataInfo)
-            }
-         }
-      });
-   }
-
-   //发送文章动态
-   function sendArticle(inputStr){
-      var formData=new FormData(document.getElementById('article-form'));
-      formData.append("inputStr",inputStr);
-      $.ajax({
-         url:'active/article/insertOne',
-         type:'post',
-         data:formData,
-         processData:false,
-         contentType:false,
-         success:function(res){
-            if(res.code==200){
-               layer.msg("发送成功");
-               setTimeout(reloadPage,1000);
-            }
-            else{
-               layer.alert(res.data.dataInfo);
-            }
-         }
-      });
-   }
-
-   function sendActive(){
-      var markupStr = $('#summernote').summernote('code');
-      //console.log(markupStr);
-      if($('#home-tab').parent('li').hasClass('active')){
-         console.log("home-tab");
-         sendshortActive();
-      }
-      else if($('#article-tab').parent('li').hasClass('active')){
-         console.log("article-tab");
-         if($('#summernote').summernote('isEmpty')){
-            layer.alert("请输入内容");
-            return;
-         }
-         sendArticle(markupStr);
-      }
-      else{
-         layer.msg("请选择你要发送的动态类型");
-      }
-   }
+<script type="text/javascript" th:inline="javascript">
 
    //动态点赞的静态效果实现
    $('.like').on('click',function (e) {
       var val=$(this).find('span').text();
       if (val=='赞'){
          $(this).find('span').text('已赞');
-         $(this).find('img').attr('src','../../static/img/liked.SVG')
+         $(this).find('img').attr('src','../../static/img/liked.svg')
       }
       if (val=='已赞'){
          $(this).find('span').text('赞');
-         $(this).find('img').attr('src','../../static/img/like.SVG')
+         $(this).find('img').attr('src','../../static/img/like.svg')
       }
       e.stopPropagation();
    });
 
-   //收藏文章的爱心动态变化实现
-   $('#like_img').click(function (){
-      if ($(this).attr('src')=='/static/img/liked.svg'){
-         var like_num=$('#like_num').text();
-         $(this).attr('src','/static/img/like.svg');
-         like_num--;
-         $("#like_num").text(like_num);
-      }else if ($(this).attr('src')=='/static/img/like.svg'){
-         $(this).attr('src','/static/img/liked.svg');
-         var like_num=$('#like_num').text();
-         like_num++;
-         $("#like_num").text(like_num);
-      }
+   var activeId=0;
+   //查看更多弹出评论的模态框
+   $('.more').click(function () {
+      $('#comment').empty();
+      activeId=$(this).parent('.comment_item').attr('id');
+      $.ajax({
+         url:'/get/comments',
+         data:'activeId='+activeId,
+         async:false,
+         type: 'GET',
+         success:function (res) {
+            if (res.code==200&&res.data.comments.length!=0){
+               var comments=res.data.comments;
+               var htmlStr='';
+               var htmlStr_r='';
+               $.each(comments,function (i,item) {
+                  if (item.reply_u_id==0){
+                     htmlStr='<div class="comment_item" id="'+item.c_id+'"><a class="c_user" id="'+item.u_id+'" href="/u/'+item.u_id+'">'+item.u_name+'</a>:<span class="c_content">'+item.content+'</span><div class="reply-btn" style="float: right"><a>回复</a></div></div>';
+                     $('#comment').append($.parseHTML(htmlStr));
+                  }
+                  if (item.reply_u_id!=0){
+                     htmlStr_r='<div class="comment_item" id="'+item.c_id+'"><a class="c_user" id="'+item.u_id+'" href="/u/'+item.u_id+'">'+item.u_name+'</a>回复<a href="/u/'+item.reply_u_id+'">'+item.reply_u_name+'</a>:<span class="c_content">'+item.content+'</span><div class="reply-btn" style="float: right"><a>回复</a></div></div>';
+                     $('#comment').append($.parseHTML(htmlStr_r));
+                  }
+               });
+            }
+         }
+      })
    });
 
-   $('.more').click(function(){
-      layer.open({
-         area:'500px',
-         title: ['评论列表', 'font-size:18px;'],
-         type:1,
-         content:' <div class="col-lg-12">\n' +
-                 '    <div class="input-group">\n' +
-                 '      <input type="text" class="form-control" placeholder="说点什么">\n' +
-                 '      <span class="input-group-btn">\n' +
-                 '        <button class="btn btn-primary" type="button">评论</button>\n' +
-                 '      </span>\n' +
-                 '    </div>\n' +
-                 '</div>' +
-                 '<div class="layeropen" id="comment_area">\n' +
-                 '        <div class="comment_item inblock"><a href="#">sb</a>:<span>你好sb</span></div><div style="display:inline-block;float:right"><span><a>回复</a></span> <span><a>删除</a></span></div>\n' +
-                 '        <div class="comment_item inblock">\n' +
-                 '            <a href="#">发起方</a>回复<a href="#">sb</a>:<span>n也是完全放弃却无法请问我efqqf付全额付清无法父亲却wqeifijqefjqoejqowejo无法撒比</span>\n' +
-                 '            <div style="display:inline-block;float:right"><span><a>回复</a></span> <span><a>删除</a></span></div>\n' +
-                 '        </div>\n' +
-                 '</div>'
-      })
+
+   var comment_id=0;
+   var r_name='';
+   var r_uid=0;
+   $("#comment").on("click",".reply-btn",function () {
+      console.log("开始回复操作");
+      comment_id=$(this).parent('.comment_item').attr('id');
+      r_name=$(this).parent('.comment_item').find('.c_user').text();
+      r_uid=$(this).parent('.comment_item').find('.c_user').attr('id');
+      $('#comment_input').attr('placeholder','回复 '+r_name+':');
+   });
+   //sendComment
+   $('#send_comment').click(function () {
+      var content=$('#comment_input').val();
+      if(content.replace(/\s*/g,'').length==0) {
+         layer.msg("评论不能为空~");
+         return;
+      }
+      var u_id=[[${session.userInfo.uId}]];
+      var username=[[${session.userInfo.uName}]];
+      var formData=new FormData();
+      formData.append('content',content);
+      formData.append('sourceid',activeId);
+      formData.append('replyId',comment_id);
+      if (comment_id==0){
+         $.ajax({
+            url:'/comment/commit',
+            type:'post',
+            data:formData,
+            processData:false,
+            contentType:false,
+            success:function (result) {
+               if (result.code==200){
+                  layer.msg("评论成功!");
+                  $('#comment_input').val("");
+                  var htmlStr='<div class="comment_item"><a class="c_user" href="/u/'+u_id+'">'+username+'</a>:<span class="c_content">'+content+'</span><div class="reply-btn" style="float: right"><a>回复</a></div></div>';
+                  $('#comment').prepend($.parseHTML(htmlStr));
+                  comment_id=0;
+                  r_name='';
+                  r_uid=0;
+               }
+            }
+         })
+      }
+      else {
+         $.ajax({
+            url:'/comment/commit',
+            type:'post',
+            data:formData,
+            processData:false,
+            contentType:false,
+            success:function (result) {
+               if (result.code==200){
+                  layer.msg("回复成功!");
+                  $('#comment_input').val("");
+                  var htmlStr_r='<div class="comment_item"><a class="c_user" href="/u/'+u_id+'">'+username+'</a>回复<a href="/u/'+r_uid+'">'+r_name+'</a>:<span class="c_content">'+content+'</span><div class="reply-btn" style="float: right"><a>回复</a></div></div>';
+                  $('#comment').prepend($.parseHTML(htmlStr_r));
+                  comment_id=0;
+                  r_name='';
+                  r_uid=0;
+                  $('#comment_input').attr('placeholder',' ');
+               }
+            }
+         })
+      }
    });
 </script>
 </html>

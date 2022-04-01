@@ -46,7 +46,7 @@
             <div class="panel panel-warning">
                 <div class="panel-heading">留言<div id="collect" style="float: right"><a id="collect-btn">收藏</a><span class="badge" id="likeNum">4658</span></div></div>
                 <div class="panel-body">
-                    <div id="comment_area">
+                    <div class="comment_area">
                         <div class="comment_item" id="omit"><a data-toggle="modal" data-target="#content_area">共<span id="commentCount"></span>条回复 ></a></div>
                     </div>
                 </div>
@@ -106,20 +106,20 @@
                 for (var i=0;i<2;i++){
                     if (comments[i].reply_u_id==0){
                         var str='<div class="comment_item"><a href="/u/'+comments[i].u_id+'">'+comments[i].u_name+'</a>:<span>'+comments[i].content+'</span></div>'
-                        $('#comment_area').prepend($.parseHTML(str));
+                        $('.comment_area').prepend($.parseHTML(str));
                     }
                     if (comments[i].reply_u_id!=0){
                         var str='<div class="comment_item"><a href="/u/'+comments[i].u_id+'">'+comments[i].u_name+'</a>回复<a href="/u/'+comments[i].reply_u_id+'">'+comments[i].reply_u_name+'</a>:<span>'+comments[i].content+'</span></div>'
-                        $('#comment_area').prepend($.parseHTML(str));
+                        $('.comment_area').prepend($.parseHTML(str));
                     }
                 }
                 $.each(comments,function (i,item) {
                     if (item.reply_u_id==0){
-                        htmlStr='<div class="comment_item" id="'+item.c_id+'"><a class="c_user" href="/u/'+item.u_id+'">'+item.u_name+'</a>:<span class="c_content">'+item.content+'</span><div class="reply-btn" style="float: right"><a>回复</a></div></div>';
+                        htmlStr='<div class="comment_item" id="'+item.c_id+'"><a class="c_user" id="'+item.u_id+'" href="/u/'+item.u_id+'">'+item.u_name+'</a>:<span class="c_content">'+item.content+'</span><div class="reply-btn" style="float: right"><a>回复</a></div></div>';
                         $('#comment').append($.parseHTML(htmlStr));
                     }
                     if (item.reply_u_id!=0){
-                        htmlStr_r='<div class="comment_item" id="'+item.c_id+'"><a class="c_user" href="/u/'+item.u_id+'">'+item.u_name+'</a>回复<a href="/u/'+item.reply_u_id+'">'+item.reply_u_name+'</a>:<span class="c_content">'+item.content+'</span><div class="reply-btn" style="float: right"><a>回复</a></div></div>';
+                        htmlStr_r='<div class="comment_item" id="'+item.c_id+'"><a class="c_user" id="'+item.u_id+'" href="/u/'+item.u_id+'">'+item.u_name+'</a>回复<a href="/u/'+item.reply_u_id+'">'+item.reply_u_name+'</a>:<span class="c_content">'+item.content+'</span><div class="reply-btn" style="float: right"><a>回复</a></div></div>';
                         $('#comment').append($.parseHTML(htmlStr_r));
                     }
                 });
@@ -194,11 +194,13 @@
 
     var comment_id=0;
     var r_name='';
+    var r_uid=0;
 
     $('.reply-btn').click(function () {
         console.log("开始回复操作");
         comment_id=$(this).parent('.comment_item').attr('id');
         r_name=$(this).parent('.comment_item').find('.c_user').text();
+        r_uid=$(this).parent('.comment_item').find('.c_user').attr('id');
         $('#comment_input').attr('placeholder','回复 '+r_name+':');
     });
 
@@ -228,6 +230,31 @@
                         $('#comment_input').val("");
                         var htmlStr='<div class="comment_item"><a class="c_user" href="/u/'+u_id+'">'+username+'</a>:<span class="c_content">'+content+'</span><div class="reply-btn" style="float: right"><a>回复</a></div></div>';
                         $('#comment').prepend($.parseHTML(htmlStr));
+                        comment_id=0;
+                        r_name='';
+                        r_uid=0;
+                    }
+                }
+            })
+        }
+        else {
+            $.ajax({
+                url:'/comment/commit',
+                type:'post',
+                data:formData,
+                processData:false,
+                contentType:false,
+                success:function (result) {
+                    if (result.code==200){
+                        layer.msg("回复成功!");
+                        $('#comment_input').val("");
+                        var htmlStr_r='<div class="comment_item">' +
+                            '<a class="c_user" href="/u/'+u_id+'">'+username+'</a>回复<a href="/u/'+r_uid+'">'+r_name+'</a>:<span class="c_content">'+content+'</span>' +
+                            '<div class="reply-btn" style="float: right"><a>回复</a></div></div>';
+                        $('#comment').prepend($.parseHTML(htmlStr_r));
+                        comment_id=0;
+                        r_name='';
+                        r_uid=0;
                     }
                 }
             })

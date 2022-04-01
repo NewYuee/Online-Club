@@ -27,4 +27,6 @@ public interface CommentMapper {
     int updateByPrimaryKeySelective(Comment record);
 
     int updateByPrimaryKey(Comment record);
+
+    List<Comment> getTop2CommentBySourceId(@Param("aid") Integer activeId);
 }

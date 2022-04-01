@@ -140,7 +140,7 @@ public class UserController {
         }
         User thisUser=(User)session.getAttribute("userInfo");
         //如果和当前用户id相同，跳转到用户自己主页
-        if (user.getuId()==thisUser.getuId()){
+        if (user.getuId().equals(thisUser.getuId())){
             modelAndView.setViewName("homepage");
             return modelAndView;
         }

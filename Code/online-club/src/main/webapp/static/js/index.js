@@ -71,5 +71,74 @@ function uploadImg(editor,files){
         }
     });
 }
-
 //富文本编辑器==========end
+
+//发送一般动态
+function sendshortActive(){
+    var formData=new FormData(document.getElementById('active_form'));
+    var input=$('#inputTextarea').val();
+    console.log("input=="+input);
+    if(input.length==0){
+        layer.alert("内容不能为空！");
+        return;
+    }
+    formData.append("inputStr",input);
+    $.ajax({
+        type:'POST',
+        url:'active/short/insertOne',
+        data:formData,
+        processData:false,
+        contentType:false,
+        success:function(res){
+            if(res.code==200){
+                layer.msg("发送成功");
+                setTimeout(reloadPage,1000);
+            }
+            else{
+                layer.alert(res.data.dataInfo)
+            }
+        }
+    });
+}
+
+//发送文章动态
+function sendArticle(inputStr){
+    var formData=new FormData(document.getElementById('article-form'));
+    formData.append("inputStr",inputStr);
+    $.ajax({
+        url:'active/article/insertOne',
+        type:'post',
+        data:formData,
+        processData:false,
+        contentType:false,
+        success:function(res){
+            if(res.code==200){
+                layer.msg("发送成功");
+                setTimeout(reloadPage,1000);
+            }
+            else{
+                layer.alert(res.data.dataInfo);
+            }
+        }
+    });
+}
+
+function sendActive(){
+    var markupStr = $('#summernote').summernote('code');
+    //console.log(markupStr);
+    if($('#home-tab').parent('li').hasClass('active')){
+        console.log("home-tab");
+        sendshortActive();
+    }
+    else if($('#article-tab').parent('li').hasClass('active')){
+        console.log("article-tab");
+        if($('#summernote').summernote('isEmpty')){
+            layer.alert("请输入内容");
+            return;
+        }
+        sendArticle(markupStr);
+    }
+    else{
+        layer.msg("请选择你要发送的动态类型");
+    }
+}

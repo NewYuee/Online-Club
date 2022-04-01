@@ -2,16 +2,15 @@ package com.ljy.oneclub.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.ljy.oneclub.entity.ClubMember;
-import com.ljy.oneclub.entity.Mail;
-import com.ljy.oneclub.entity.User;
+import com.ljy.oneclub.entity.*;
 import com.ljy.oneclub.msg.BootStrapValidator;
 import com.ljy.oneclub.msg.Msg;
-import com.ljy.oneclub.service.ClubMemberService;
-import com.ljy.oneclub.service.MailService;
-import com.ljy.oneclub.service.UserService;
+import com.ljy.oneclub.service.*;
 import com.ljy.oneclub.utils.RandomValidateCodeUtil;
 import com.ljy.oneclub.utils.RedisUtil;
+import com.ljy.oneclub.vo.ActiveAndClubVO;
+import com.ljy.oneclub.vo.ActiveVO;
+import com.ljy.oneclub.vo.CommentVO;
 import com.ljy.oneclub.vo.MyClub;
 import com.sun.mail.smtp.DigestMD5;
 import io.github.yedaxia.apidocs.ApiDoc;
@@ -28,10 +27,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class LoginController {
@@ -40,6 +36,9 @@ public class LoginController {
 
     @Autowired
     RedisUtil redisUtil;
+
+    @Autowired
+    ActiveAndClubService activeAndClubService;
 
     @Autowired
     MailService mailService;
@@ -52,6 +51,12 @@ public class LoginController {
 
     @Autowired
     ClubMemberService clubMemberService;
+
+    @Autowired
+    ActiveService activeService;
+
+    @Autowired
+    CommentService commentService;
 
     /**
      * 返回登录注册页面
@@ -281,7 +286,9 @@ public class LoginController {
             return Msg.fail().addData("info","验证码错误");
         }
         User selectOne = userService.selectOne(user);
+        //登录成功，加载首页资源
         if (selectOne!=null){
+            //查找用户当前加入的社团
             List<ClubMember> clubMemberList =clubMemberService.selectMyClubByUid(selectOne.getuId());
             List<MyClub> clubList=new ArrayList<>();
             if (clubMemberList!=null){
@@ -295,6 +302,48 @@ public class LoginController {
                 session.removeAttribute("myclub_list");
                 session.setAttribute("myclub_list",clubList);
             }
+            //首页动态获取---start
+            //得到与自己相关的动态，包括:自己发布的和加入社团的活动
+            List<ActiveVO> activeVOList=activeService.selectActiveVOAboutByUid(selectOne.getuId());
+            logger.info("用户"+selectOne.getuName()+"登录首页，获取相关动态共"+activeVOList.size()+"条");
+            if (activeVOList.size()!=0){
+                for (ActiveVO activeVO:activeVOList){
+                    //完善评论预览、关联社团ID和名字、评论数
+                    activeVO.setComment_count(commentService.getCommentCountByAid(activeVO.getA_id()));
+                    ActiveAndClubVO activeAndClubVO = activeAndClubService.getActiveAndClubVO(activeVO.getA_id());
+                    if (activeAndClubVO!=null){
+                        activeVO.setFrom_uname(activeAndClubVO.getUname());
+                        activeVO.setFrom_uid(activeAndClubVO.getUid());
+                    }
+                    activeVO.setComment_count(commentService.getCommentCountByAid(activeVO.getA_id()));
+                    List<Comment> comments =commentService.getTop2CommentBySourceId(activeVO.getA_id());
+                    List<CommentVO> commentVOList=new ArrayList<>();
+                    if (comments.size()!=0) {
+                        for (Comment comment:comments){
+                            CommentVO commentVO = new CommentVO();
+                            //设置评论的用户名和用户id
+                            String u_name=userService.getNameById(comment.getuId());
+                            commentVO.setU_id(comment.getuId());
+                            commentVO.setU_name(u_name);
+                            //如果回复的评论id不为空
+                            if (comment.getReplyCommentId()!=null){
+                                Comment comment1=commentService.selectCommentById(comment.getReplyCommentId());
+                                //根据回复的评论id找到原评论的用户名和用户id
+                                commentVO.setReply_u_id(comment1.getuId());
+                                commentVO.setReply_u_name(userService.getNameById(comment1.getuId()));
+                            }
+                            commentVO.setContent(comment.getCommentContent());
+                            commentVO.setC_id(comment.getCommentId());
+                            commentVOList.add(commentVO);
+                        }
+                        activeVO.setCommentVOList(commentVOList);
+                    }
+                }
+                session.removeAttribute("actives");
+                session.setAttribute("actives",activeVOList);
+            }
+            //首页动态获取---end
+            session.removeAttribute("userInfo");
             session.setAttribute("userInfo",selectOne);
             return Msg.success();
         }

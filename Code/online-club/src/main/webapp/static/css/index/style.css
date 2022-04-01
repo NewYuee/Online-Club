@@ -1,5 +1,4 @@
 .card {
-
     padding: 10px;
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -85,7 +84,7 @@
     padding-bottom: 10px;border-bottom: 1px solid #eaebec;
 }
 
-#content{
+.content_active{
     font-family:Arial, Helvetica, sans-serif;
     padding-top: 10px;
     border-bottom: 1px solid #eaebec;
@@ -95,6 +94,63 @@
     margin-bottom: 10px;
     padding-right: 20px;
     border:2px solid rgb(217, 237, 247);
+}
+
+.club_in_bxSlider_body{
+    text-decoration: none;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.club_in_bxSlider_body span{
+    color: rgb(204,204,216);
+}
+
+.club_in_bxSlider_body img{
+    height: 20px;
+    width: 20px;
+}
+.club_name_inbxSlider{
+    font-size: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-bottom: 10px;
+}
+
+.club_in_bxSlider_intro{
+    color: rgb(204,204,216);
+    height: 60px;
+    text-align: left;
+    display:-webkit-box;
+    -webkit-line-clamp:3;/*设置超过为省略号的行数*/
+    overflow:hidden;
+    /*autoprefixer:off*/
+    -webkit-box-orient:vertical;
+    text-overflow:ellipsis;
+}
+
+.dropdown_style{
+    min-width: 100px;
+}
+
+.dropdown_style img{
+    width: 20px;height: 20px;
+}
+
+.article_area .media-left img{
+    width: 50px;height: 50px;
+}
+
+.article_area .media-body{
+    padding-left: 10px;
+    padding-top:5px;
+    background-color: #ebebeb;
+    border-radius: 3%;
+}
+
+.article_detail img{
+    width: 20px;
+    height: 20px;
 }
 
 

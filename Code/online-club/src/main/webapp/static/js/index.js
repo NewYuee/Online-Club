@@ -125,13 +125,10 @@ function sendArticle(inputStr){
 
 function sendActive(){
     var markupStr = $('#summernote').summernote('code');
-    //console.log(markupStr);
     if($('#home-tab').parent('li').hasClass('active')){
-        console.log("home-tab");
         sendshortActive();
     }
     else if($('#article-tab').parent('li').hasClass('active')){
-        console.log("article-tab");
         if($('#summernote').summernote('isEmpty')){
             layer.alert("请输入内容");
             return;

@@ -412,7 +412,39 @@
 	a.liked,
 	a.viewed_count
     FROM
-	( SELECT active_id, active_type, active_title, content, update_time, liked, viewed_count, u_id FROM active WHERE u_id = 49382336 ) a
+	( SELECT active_id, active_type, active_title, content, update_time, liked, viewed_count, u_id FROM active WHERE u_id = #{uid} ) a
+	LEFT JOIN user b ON a.u_id = b.u_id
+    ORDER BY
+	update_time DESC
+  </select>
+  <select id="selectLikeArticleByUid" resultMap="ActiveVO">
+    SELECT
+	active_id,
+	active_type,
+	active_title,
+	content,
+	b.u_id,
+	b.u_name,
+	b.u_profile_photo_name,
+	b.u_profile_backgroundimg_name,
+	like_time as update_time,
+	a.liked,
+	a.viewed_count
+    FROM
+	(
+	SELECT
+		active_id,
+		active_type,
+		active_title,
+		content,
+		like_time,
+		liked,
+		viewed_count,
+		a.u_id
+	FROM active a
+	LEFT JOIN (SELECT like_active_id,like_time,u_id FROM liked_record) b on active_id=like_active_id
+	WHERE b.u_id = #{uid} AND active_type = 50 AND like_time !=''
+	) a
 	LEFT JOIN user b ON a.u_id = b.u_id
     ORDER BY
 	update_time DESC

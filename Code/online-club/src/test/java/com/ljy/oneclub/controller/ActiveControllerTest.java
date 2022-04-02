@@ -38,13 +38,14 @@ public class ActiveControllerTest {
 
     @Test
     public void insertActive() {
-        List<ActiveVO> activeVOList = activeService.selectHomePageActiveByUid(49382336);
-        System.out.println(activeVOList.get(0).getU_name()+":"+activeVOList.size());
+        //List<ActiveVO> activeVOList = activeService.selectHomePageActiveByUid(49382336);
+        //System.out.println(activeVOList.get(0).getU_name()+":"+activeVOList.size());
     }
 
     @Test
     public void insertArticle() {
-
+        //List<ActiveVO> activeVOList=activeService.selectLikeArticleByUid(49382336);
+        //System.out.println(activeVOList.size());
     }
 
     @Test

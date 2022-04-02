@@ -7,6 +7,7 @@ import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.ActiveService;
 import com.ljy.oneclub.service.CommentService;
+import com.ljy.oneclub.service.NoticeService;
 import com.ljy.oneclub.service.UserService;
 import com.ljy.oneclub.vo.CommentVO;
 import io.github.yedaxia.apidocs.ApiDoc;
@@ -14,10 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
@@ -35,6 +33,8 @@ public class CommentController {
     UserService userService;
     @Autowired
     ActiveService activeService;
+    @Autowired
+    NoticeService noticeService;
 
     @RequestMapping(value = "comment/commit",method = RequestMethod.POST)
     @ResponseBody
@@ -57,6 +57,7 @@ public class CommentController {
             notice.setNoticeSourceId(replyC_id);
             notice.setNoticeStatus("0");
             notice.setNoticeType("11");
+            noticeService.insertOne(notice);
         }
         Date date=new Date();
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -75,6 +76,7 @@ public class CommentController {
         notice.setNoticeSourceId(sourceId);
         notice.setNoticeStatus("0");
         notice.setNoticeType("13");
+        noticeService.insertOne(notice);
         return Msg.success();
     }
 
@@ -118,4 +120,54 @@ public class CommentController {
         return Msg.success().addData("comments",commentVOList);
     }
 
+    /**
+     * 根据用户id获取用自己的评论信息
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("get/comments/{uid}")
+    @ResponseBody
+    public Msg getCommentsByUid(@PathVariable("uid")String uid,HttpSession session){
+        int user_id=0;
+        try {
+            user_id=Integer.parseInt(uid);
+        } catch (NumberFormatException e) {
+            return Msg.fail();
+        }
+        User user=(User)session.getAttribute("userInfo");
+
+        if (user.getuId().equals(user_id)){
+            List<Comment> comments=commentService.getCommentsByUid(user_id);
+            return Msg.success().addData("comments",comments);
+        }
+        return Msg.fail();
+    }
+
+    /**
+     * 根据id删除评论
+     * @param commentId 评论id
+     * @param session 当前session
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("comment/delete/{commentId}")
+    @ResponseBody
+    public Msg deleteCommentByCid(@PathVariable("commentId")String commentId,HttpSession session){
+        int cid=0;
+        try {
+            cid=Integer.parseInt(commentId);
+        } catch (NumberFormatException e) {
+            return Msg.fail();
+        }
+        User user=(User)session.getAttribute("userInfo");
+        Comment comment = commentService.getCommentByCid(cid);
+        int i=0;
+        if (comment.getuId().equals(user.getuId())){
+            i=commentService.deleteCommentByCid(cid);
+        }
+        if (i==0){
+            return Msg.fail();
+        }
+        return Msg.success();
+    }
 }

@@ -193,6 +193,19 @@ public class UserController {
                 }
                 modelAndView.addObject("Myactives",activeVOList);
             }
+            //添加收藏文章模块
+            List<ActiveVO> likeArticles = activeService.selectLikeArticleByUid(thisUser.getuId());
+            if (likeArticles.size()!=0){
+                for (ActiveVO activeVO:likeArticles){
+                    ActiveAndClubVO activeAndClubVO = activeAndClubService.getActiveAndClubVO(activeVO.getA_id());
+                    if (activeAndClubVO!=null){
+                        activeVO.setFrom_uname(activeAndClubVO.getUname());
+                        activeVO.setFrom_uid(activeAndClubVO.getUid());
+                    }
+                    activeVO.setLiked_count(likeRecordService.getCountByActiveId(activeVO.getA_id()));
+                }
+                modelAndView.addObject("likedArticles",likeArticles);
+            }
             return modelAndView;
         }
         //如果是社团用户，跳转到社团主页

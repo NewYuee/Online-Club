@@ -16,4 +16,8 @@ public interface CommentService {
     int getCommentCountByAid(Integer activeId);
 
     Comment getCommentByCid(Integer replyC_id);
+
+    List<Comment> getCommentsByUid(int user_id);
+
+    int deleteCommentByCid(int cid);
 }

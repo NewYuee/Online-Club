@@ -67,4 +67,9 @@ public class ActiveServiceImpl implements ActiveService {
     public int deleteActiveByAid(int aid) {
         return activeMapper.deleteByPrimaryKey(aid);
     }
+
+    @Override
+    public List<ActiveVO> selectLikeArticleByUid(int uid) {
+        return activeMapper.selectLikeArticleByUid(uid);
+    }
 }

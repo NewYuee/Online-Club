@@ -38,45 +38,21 @@ public class ActiveControllerTest {
 
     @Test
     public void insertActive() {
-        Active active = activeService.selectNewActiveByUid(49382336, 50);
-        System.out.println("title====>"+active.getActiveTitle()+"uid===>"+active.getuId());
+        List<ActiveVO> activeVOList = activeService.selectHomePageActiveByUid(49382336);
+        System.out.println(activeVOList.get(0).getU_name()+":"+activeVOList.size());
     }
 
     @Test
     public void insertArticle() {
-        long time=System.currentTimeMillis();
-        List<Active> activeList = activeService.selectActiveAboutByUid(49382336);
-        System.out.println("active count==>"+activeList.size());
-        System.out.println("active id   ==>"+activeList.get(0).getActiveId());
-        System.out.println("no.1 content==>"+activeList.get(0).getContent());
-        System.out.println("no.1 time==>"+activeList.get(0).getUpdateTime());
-        System.out.println("耗时:"+(System.currentTimeMillis()-time));
+
     }
 
     @Test
     public void testActiveVO(){
-        List<ActiveVO> activeVOList = activeService.selectActiveVOAboutByUid(49382336);
-        System.out.println(activeVOList.size());
-        int num=1;
-        for (ActiveVO activeVO:activeVOList){
-
-            System.out.print(num+":tile="+activeVO.getTitle());
-            System.out.print(":content="+activeVO.getContent());
-            System.out.println(":a_type="+activeVO.getA_type());
-            num++;
-        }
     }
 
     @Test
     public void testActiveandClub(){
-        List<ActiveVO> activeVOList = activeService.selectActiveVOAboutByUid(49382336);
-        for (ActiveVO activeVO:activeVOList){
-            ActiveAndClubVO activeAndClubVO = activeAndClubService.getActiveAndClubVO(activeVO.getA_id());
-            if (activeAndClubVO!=null){
-                activeVO.setFrom_uid(activeAndClubVO.getUid());
-                activeVO.setFrom_uname(activeAndClubVO.getUname());
-            }
-            System.out.println("active id=>"+activeVO.getA_id()+"active comment_count=>"+commentService.getCommentCountByAid(activeVO.getA_id()));
-        }
+
     }
 }

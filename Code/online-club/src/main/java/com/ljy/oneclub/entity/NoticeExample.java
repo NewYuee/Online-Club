@@ -164,6 +164,66 @@ public class NoticeExample {
             return (Criteria) this;
         }
 
+        public Criteria andNoticeUserIdIsNull() {
+            addCriterion("notice_user_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdIsNotNull() {
+            addCriterion("notice_user_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdEqualTo(Integer value) {
+            addCriterion("notice_user_id =", value, "noticeUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdNotEqualTo(Integer value) {
+            addCriterion("notice_user_id <>", value, "noticeUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdGreaterThan(Integer value) {
+            addCriterion("notice_user_id >", value, "noticeUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("notice_user_id >=", value, "noticeUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdLessThan(Integer value) {
+            addCriterion("notice_user_id <", value, "noticeUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdLessThanOrEqualTo(Integer value) {
+            addCriterion("notice_user_id <=", value, "noticeUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdIn(List<Integer> values) {
+            addCriterion("notice_user_id in", values, "noticeUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdNotIn(List<Integer> values) {
+            addCriterion("notice_user_id not in", values, "noticeUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdBetween(Integer value1, Integer value2) {
+            addCriterion("notice_user_id between", value1, value2, "noticeUserId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoticeUserIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("notice_user_id not between", value1, value2, "noticeUserId");
+            return (Criteria) this;
+        }
+
         public Criteria andNoticeToUserIdIsNull() {
             addCriterion("notice_to_user_id is null");
             return (Criteria) this;
@@ -374,62 +434,52 @@ public class NoticeExample {
             return (Criteria) this;
         }
 
-        public Criteria andNoticeSourceIdEqualTo(String value) {
+        public Criteria andNoticeSourceIdEqualTo(Integer value) {
             addCriterion("notice_source_id =", value, "noticeSourceId");
             return (Criteria) this;
         }
 
-        public Criteria andNoticeSourceIdNotEqualTo(String value) {
+        public Criteria andNoticeSourceIdNotEqualTo(Integer value) {
             addCriterion("notice_source_id <>", value, "noticeSourceId");
             return (Criteria) this;
         }
 
-        public Criteria andNoticeSourceIdGreaterThan(String value) {
+        public Criteria andNoticeSourceIdGreaterThan(Integer value) {
             addCriterion("notice_source_id >", value, "noticeSourceId");
             return (Criteria) this;
         }
 
-        public Criteria andNoticeSourceIdGreaterThanOrEqualTo(String value) {
+        public Criteria andNoticeSourceIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("notice_source_id >=", value, "noticeSourceId");
             return (Criteria) this;
         }
 
-        public Criteria andNoticeSourceIdLessThan(String value) {
+        public Criteria andNoticeSourceIdLessThan(Integer value) {
             addCriterion("notice_source_id <", value, "noticeSourceId");
             return (Criteria) this;
         }
 
-        public Criteria andNoticeSourceIdLessThanOrEqualTo(String value) {
+        public Criteria andNoticeSourceIdLessThanOrEqualTo(Integer value) {
             addCriterion("notice_source_id <=", value, "noticeSourceId");
             return (Criteria) this;
         }
 
-        public Criteria andNoticeSourceIdLike(String value) {
-            addCriterion("notice_source_id like", value, "noticeSourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andNoticeSourceIdNotLike(String value) {
-            addCriterion("notice_source_id not like", value, "noticeSourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andNoticeSourceIdIn(List<String> values) {
+        public Criteria andNoticeSourceIdIn(List<Integer> values) {
             addCriterion("notice_source_id in", values, "noticeSourceId");
             return (Criteria) this;
         }
 
-        public Criteria andNoticeSourceIdNotIn(List<String> values) {
+        public Criteria andNoticeSourceIdNotIn(List<Integer> values) {
             addCriterion("notice_source_id not in", values, "noticeSourceId");
             return (Criteria) this;
         }
 
-        public Criteria andNoticeSourceIdBetween(String value1, String value2) {
+        public Criteria andNoticeSourceIdBetween(Integer value1, Integer value2) {
             addCriterion("notice_source_id between", value1, value2, "noticeSourceId");
             return (Criteria) this;
         }
 
-        public Criteria andNoticeSourceIdNotBetween(String value1, String value2) {
+        public Criteria andNoticeSourceIdNotBetween(Integer value1, Integer value2) {
             addCriterion("notice_source_id not between", value1, value2, "noticeSourceId");
             return (Criteria) this;
         }

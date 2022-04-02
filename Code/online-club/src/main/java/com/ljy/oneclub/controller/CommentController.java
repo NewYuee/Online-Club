@@ -1,8 +1,11 @@
 package com.ljy.oneclub.controller;
 
+import com.ljy.oneclub.entity.Active;
 import com.ljy.oneclub.entity.Comment;
+import com.ljy.oneclub.entity.Notice;
 import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.msg.Msg;
+import com.ljy.oneclub.service.ActiveService;
 import com.ljy.oneclub.service.CommentService;
 import com.ljy.oneclub.service.UserService;
 import com.ljy.oneclub.vo.CommentVO;
@@ -30,6 +33,8 @@ public class CommentController {
     CommentService commentService;
     @Autowired
     UserService userService;
+    @Autowired
+    ActiveService activeService;
 
     @RequestMapping(value = "comment/commit",method = RequestMethod.POST)
     @ResponseBody
@@ -44,6 +49,14 @@ public class CommentController {
         comment.setuId(user.getuId());
         if (replyC_id!=0){
             comment.setReplyCommentId(replyC_id);
+            //回复评论，保存原评论id到notice
+            Notice notice = new Notice();
+            notice.setNoticeUserId(user.getuId());
+            Comment comment1=commentService.getCommentByCid(replyC_id);
+            notice.setNoticeToUserId(comment1.getuId());
+            notice.setNoticeSourceId(replyC_id);
+            notice.setNoticeStatus("0");
+            notice.setNoticeType("11");
         }
         Date date=new Date();
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -54,6 +67,14 @@ public class CommentController {
         if (res==0){
             return Msg.fail();
         }
+        //评论活动，保存活动id到notice
+        Notice notice = new Notice();
+        notice.setNoticeUserId(user.getuId());
+        Active active = activeService.selectById(sourceId);
+        notice.setNoticeToUserId(active.getuId());
+        notice.setNoticeSourceId(sourceId);
+        notice.setNoticeStatus("0");
+        notice.setNoticeType("13");
         return Msg.success();
     }
 

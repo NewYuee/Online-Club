@@ -20,4 +20,8 @@ public interface ActiveService {
     List<Active> selectActiveAboutByUid(Integer getuId);
 
     List<ActiveVO> selectActiveVOAboutByUid(Integer getuId);
+
+    List<ActiveVO> selectHomePageActiveByUid(Integer getuId);
+
+    int deleteActiveByAid(int aid);
 }

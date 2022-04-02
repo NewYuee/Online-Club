@@ -144,13 +144,15 @@
                      <pre th:text="${active.getContent()}"></pre>
                   </div>
                   <div class="active-foot">
-                     <div style="display: inline-block;color: rgb(204, 204, 216);"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> <span th:text="${active.getView_count()}">0</span></div>
-                     <div style="display: inline-block;"><span th:text="${active.getLiked_count()}"></span>人点赞</div>
+                     <div style="display: inline-block;"><span th:text="${active.getLiked_count()}"></span>人觉得很赞</div>
                      <div class="btn-group" style=" display: inline-block;float: right;" role="group">
                         <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>
                         <ul class="dropdown-menu dropdown_style">
-                           <li><a class="like"><img src="/static/img/like.svg"><span>赞</span></a></li>
-                           <li><a class="more"><img src="../../static/img/comment.svg">评论</a></li>
+                           <li>
+                              <a class="like" th:id="${active.getA_id()}" th:if="${active.getIsliked()==0}"><img src="/static/img/like.svg"><span>赞</span></a>
+                              <a class="like" th:id="${active.getA_id()}" th:if="${active.getIsliked()!=0}"><img src="/static/img/liked.svg"><span>已赞</span></a>
+                           </li>
+                           <li class="moreParent" th:id="${active.getA_id()}"><a class="more" data-toggle="modal" data-target="#content_area"><img src="../../static/img/comment.svg">评论</a></li>
                         </ul>
                      </div>
                      <div class="comment_area">
@@ -162,7 +164,7 @@
                               <a th:href="'/u/'+${comment.getU_id()}" th:text="${comment.getU_name()}"></a>回复<a th:href="'/u/'+${comment.getReply_u_id()}" th:text="${comment.getReply_u_name()}"></a>:<span th:text="${comment.getContent()}"></span>
                            </div>
                         </div>
-                        <div class="comment_item" th:id="${active.getA_id()}"><a class="more" data-toggle="modal" data-target="#content_area">共<span th:text="${active.getComment_count()}"></span>条评论 ></a></div>
+                        <div class="comment_item moreParent" th:id="${active.getA_id()}"><a class="more" data-toggle="modal" data-target="#content_area">共<span th:text="${active.getComment_count()}"></span>条评论 ></a></div>
                      </div>
                   </div>
                </div>
@@ -244,15 +246,14 @@
                <div class="panel-body">
                   <div class="col-md-3 col-sm-3 col-xs-3"><a target="blank" rel="external nofollow"
                      href="http://wpa.qq.com/msgrd?V=3&uin=1037211029&Site=QQ&Menu=yes"
-                     title="QQ在线"><img  style="width: 30px;height: auto;" src="../../static/img/QQ.svg"></a></div>
+                     title="QQ在线"><img id="QQ" data-toggle="popover" data-placement="top"  style="width: 30px;height: auto;" src="../../static/img/QQ.svg"></a></div>
                   <div class="col-md-3 col-sm-3 col-xs-3"><a title="新浪微博" target="blank" href="https://weibo.com/u/3196386703"><img style="width: 30px;height: auto;" src="../../static/img/sina.svg"></a></div>
-                  <div class="col-md-3 col-sm-3 col-xs-3"><a title="微信公众号"><img style="width: 30px;height: auto;" src="../../static/img/wechat.svg"></a></div>
+                  <div class="col-md-3 col-sm-3 col-xs-3"><a title="微信公众号"><img style="width: 30px;height: auto;" src="../../static/img/wechat.svg" id="wechat" data-toggle="popover" data-placement="top"></a></div>
                   <div class="col-md-3 col-sm-3 col-xs-3"><a  title="Email: new.y@foxmail.com"><img style="width: 30px;height: auto;" src="../../static/img/email.svg"></a></div>
                </div>
                <div class="panel-footer">
-                  <p><a style="text-decoration: none;" href="https://beian.miit.gov.cn/">蜀ICP备2021013474号</a></p>
+                  <p><a style="text-decoration: none;" href="https://beian.miit.gov.cn/">蜀ICP备2021013474号-1</a></p>
                   <p>Copyright © 2021-2022MMAD</p>
-   
                </div>
            </div>
          </div>
@@ -296,16 +297,53 @@
 <script src="../../static/js/index.js"></script>
 <script type="text/javascript" th:inline="javascript">
 
-   //动态点赞的静态效果实现
+   $('#wechat').popover({
+      trigger : 'hover',//鼠标以上时触发弹出提示框
+      html:true,//开启html 为true的话，data-content里就能放html代码了
+      content:"<img style='width: 140px;width: 140px' src='../../static/img/wechat.jpg'>"
+   });
+
+   $('#QQ').popover({
+      trigger : 'hover',//鼠标以上时触发弹出提示框
+      html:true,//开启html 为true的话，data-content里就能放html代码了
+      content:"<img style='width: 140px;width: 140px' src='../../static/img/QRCode_QQ.png'>"
+   });
+
+   //点赞效果实现
    $('.like').on('click',function (e) {
+      var activeId=$(this).attr('id');
       var val=$(this).find('span').text();
+      $(this).find('span').text('已赞');
+      $(this).find('img').attr('src','../../static/img/liked.svg');
       if (val=='赞'){
-         $(this).find('span').text('已赞');
-         $(this).find('img').attr('src','../../static/img/liked.svg')
+         $.ajax({
+            url:'/active/like/'+activeId,
+            type:'post',
+            async:false,
+            success:function (result) {
+               if (result.code==200){
+                  console.log("已赞");
+               }else {
+                  layer.msg("赞操作失败!");
+               }
+            }
+         });
       }
       if (val=='已赞'){
          $(this).find('span').text('赞');
-         $(this).find('img').attr('src','../../static/img/like.svg')
+         $(this).find('img').attr('src','../../static/img/like.svg');
+         $.ajax({
+            url:'/active/unlike/'+activeId,
+            type:'post',
+            async: false,
+            success:function (result) {
+               if (result.code==200){
+                  console.log("取消赞");
+               }else {
+                  layer.msg("取消赞操作失败!");
+               }
+            }
+         });
       }
       e.stopPropagation();
    });
@@ -314,7 +352,7 @@
    //查看更多弹出评论的模态框
    $('.more').click(function () {
       $('#comment').empty();
-      activeId=$(this).parent('.comment_item').attr('id');
+      activeId=$(this).parent('.moreParent').attr('id');
       $.ajax({
          url:'/get/comments',
          data:'activeId='+activeId,
@@ -339,7 +377,6 @@
          }
       })
    });
-
 
    var comment_id=0;
    var r_name='';

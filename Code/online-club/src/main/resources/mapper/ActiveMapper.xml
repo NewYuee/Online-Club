@@ -398,4 +398,23 @@
 	    b.u_id = a.u_id
     ORDER BY a.update_time desc
   </select>
+  <select id="selectHomePageActiveByUid" resultMap="ActiveVO">
+    SELECT
+	active_id,
+	active_type,
+	active_title,
+	content,
+	b.u_id,
+	b.u_name,
+	b.u_profile_photo_name,
+	b.u_profile_backgroundimg_name,
+	update_time,
+	a.liked,
+	a.viewed_count
+    FROM
+	( SELECT active_id, active_type, active_title, content, update_time, liked, viewed_count, u_id FROM active WHERE u_id = 49382336 ) a
+	LEFT JOIN user b ON a.u_id = b.u_id
+    ORDER BY
+	update_time DESC
+  </select>
 </mapper>

@@ -3,13 +3,15 @@ package com.ljy.oneclub.entity;
 public class Notice {
     private Integer noticeId;
 
+    private Integer noticeUserId;
+
     private Integer noticeToUserId;
 
     private String noticeType;
 
     private String noticeStatus;
 
-    private String noticeSourceId;
+    private Integer noticeSourceId;
 
     public Integer getNoticeId() {
         return noticeId;
@@ -17,6 +19,14 @@ public class Notice {
 
     public void setNoticeId(Integer noticeId) {
         this.noticeId = noticeId;
+    }
+
+    public Integer getNoticeUserId() {
+        return noticeUserId;
+    }
+
+    public void setNoticeUserId(Integer noticeUserId) {
+        this.noticeUserId = noticeUserId;
     }
 
     public Integer getNoticeToUserId() {
@@ -43,11 +53,11 @@ public class Notice {
         this.noticeStatus = noticeStatus == null ? null : noticeStatus.trim();
     }
 
-    public String getNoticeSourceId() {
+    public Integer getNoticeSourceId() {
         return noticeSourceId;
     }
 
-    public void setNoticeSourceId(String noticeSourceId) {
-        this.noticeSourceId = noticeSourceId == null ? null : noticeSourceId.trim();
+    public void setNoticeSourceId(Integer noticeSourceId) {
+        this.noticeSourceId = noticeSourceId;
     }
 }

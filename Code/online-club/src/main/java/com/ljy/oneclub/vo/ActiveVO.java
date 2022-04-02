@@ -9,6 +9,7 @@ public class ActiveVO {
     private int a_id;
     private int a_type;
     private int u_id;
+    private int isliked;
     private String profile_name;
     private String bkpicName;
     private String u_name;
@@ -59,7 +60,13 @@ public class ActiveVO {
         this.commentVOList = commentVOList;
     }
 
+    public int getIsliked() {
+        return isliked;
+    }
 
+    public void setIsliked(int isliked) {
+        this.isliked = isliked;
+    }
 
     public String getTitle() {
         return title;

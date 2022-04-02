@@ -43,6 +43,9 @@ public class ActiveController {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    NoticeService noticeService;
+
     /**
      * 动态发布-一般说说
      * @param inputStr 内容
@@ -191,8 +194,19 @@ public class ActiveController {
         String format = simpleDateFormat.format(date);
         Date time=simpleDateFormat.parse(format);
         likedRecord.setLikeTime(time);
+
         int res=userService.collectActive(likedRecord);
         if (res!=0){
+            //为点赞添加通知内容
+            Notice notice = new Notice();
+            notice.setNoticeUserId(user.getuId());
+            notice.setNoticeToUserId(active.getuId());
+            notice.setNoticeSourceId(active.getActiveId());
+            notice.setNoticeStatus("0");
+            notice.setNoticeType("15");
+            if (notice.getNoticeToUserId().equals(notice.getNoticeUserId())){
+                noticeService.insertOne(notice);
+            }
             return Msg.success();
         }
         return Msg.fail();
@@ -216,6 +230,7 @@ public class ActiveController {
         };
         int res=likeRecordService.uncollectActiveByActiveIdAndUid(sourceId,user.getuId());
         if (res!=0){
+            noticeService.deleteRecordByUidAndAid(user.getuId(),sourceId);
             return Msg.success();
         }
         return Msg.fail();
@@ -247,54 +262,32 @@ public class ActiveController {
         return Msg.success().addData("num",count).addData("islike",1);
     }
 
-    @RequestMapping("getIndex")
+    /**
+     * 根据id删除动态
+     * @param session
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("delete/{id}")
     @ResponseBody
-    public Msg getAllActiveIndex(HttpSession session){
-        User user=(User) session.getAttribute("userInfo");
-        List<ActiveVO> activeVOList=new ArrayList<>();
-        //得到与自己相关的动态，包括:自己发布的和加入社团的活动
-        List<Active> activeList=activeService.selectActiveAboutByUid(user.getuId());
-        logger.info("用户"+user.getuName()+"登录首页，获取相关动态共"+activeList.size()+"条");
-        for (Active active:activeList){
-            User userInfo = userService.selectUserById(active.getuId());
-            List<ActiveAndClub> activeAndClubs = activeAndClubService.selectOneByActiveId(active.getActiveId());
-            ActiveVO activeVO = new ActiveVO();
-            if (activeAndClubs.size()!=0){
-                activeVO.setFrom_uid(activeAndClubs.get(0).getFromClubId());
-                activeVO.setFrom_uname(userService.getNameById(activeAndClubs.get(0).getFromClubId()));
-            }
-            activeVO.setProfile_name(userInfo.getuProfilePhotoName());
-            activeVO.setBkpicName(userInfo.getuProfileBackgroundimgName());
-            if (active.getActiveType()==50){
-                activeVO.setTitle(active.getActiveTitle());
-            }else {
-                activeVO.setContent(active.getContent());
-            }
-            activeVO.setComment_count(commentService.getCommentCountByAid(active.getActiveId()));
-            List<Comment> comments =commentService.getTop2CommentBySourceId(active.getActiveId());
-            List<CommentVO> commentVOList=new ArrayList<>();
-            if (comments.size()!=0) {
-                for (Comment comment:comments){
-                    CommentVO commentVO = new CommentVO();
-                    //设置评论的用户名和用户id
-                    String u_name=userService.getNameById(comment.getuId());
-                    commentVO.setU_id(comment.getuId());
-                    commentVO.setU_name(u_name);
-                    //如果回复的评论id不为空
-                    if (comment.getReplyCommentId()!=null){
-                        Comment comment1=commentService.selectCommentById(comment.getReplyCommentId());
-                        //根据回复的评论id找到原评论的用户名和用户id
-                        commentVO.setReply_u_id(comment1.getuId());
-                        commentVO.setReply_u_name(userService.getNameById(comment1.getuId()));
-                    }
-                    commentVO.setContent(comment.getCommentContent());
-                    commentVO.setC_id(comment.getCommentId());
-                    commentVOList.add(commentVO);
-                }
-                activeVO.setCommentVOList(commentVOList);
-            }
-            activeVOList.add(activeVO);
+    public Msg getAllActiveIndex(@PathVariable("id")String activeId, HttpSession session){
+        int aid=0;
+        try {
+            aid=Integer.parseInt(activeId);
+        } catch (NumberFormatException e) {
+            return Msg.fail();
         }
-        return Msg.success().addData("actives",activeVOList);
+        User user=(User) session.getAttribute("userInfo");
+        Active active = activeService.selectById(aid);
+        if (active==null){
+            return Msg.fail();
+        }
+        if (active.getuId().equals(user.getuId())){
+            int i=activeService.deleteActiveByAid(aid);
+            if (i==0){
+                return Msg.fail();
+            }
+        }
+        return Msg.success();
     }
 }

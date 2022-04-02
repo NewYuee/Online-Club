@@ -23,7 +23,5 @@ public class CommentControllerTest {
 
     @Test
     public void getCommentsByActiveId() {
-        String nameById = userService.getNameById(49382336);
-        System.out.println("name===>"+nameById);
     }
 }

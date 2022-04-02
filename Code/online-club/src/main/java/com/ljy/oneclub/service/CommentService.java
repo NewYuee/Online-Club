@@ -14,4 +14,6 @@ public interface CommentService {
     List<Comment> getTop2CommentBySourceId(Integer activeId);
 
     int getCommentCountByAid(Integer activeId);
+
+    Comment getCommentByCid(Integer replyC_id);
 }

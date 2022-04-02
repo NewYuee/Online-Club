@@ -3,10 +3,11 @@
 <mapper namespace="com.ljy.oneclub.dao.NoticeMapper" >
   <resultMap id="BaseResultMap" type="com.ljy.oneclub.entity.Notice" >
     <id column="notice_id" property="noticeId" jdbcType="INTEGER" />
+    <result column="notice_user_id" property="noticeUserId" jdbcType="INTEGER" />
     <result column="notice_to_user_id" property="noticeToUserId" jdbcType="INTEGER" />
     <result column="notice_type" property="noticeType" jdbcType="VARCHAR" />
     <result column="notice_status" property="noticeStatus" jdbcType="VARCHAR" />
-    <result column="notice_source_id" property="noticeSourceId" jdbcType="VARCHAR" />
+    <result column="notice_source_id" property="noticeSourceId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    notice_id, notice_to_user_id, notice_type, notice_status, notice_source_id
+    notice_id, notice_user_id, notice_to_user_id, notice_type, notice_status, notice_source_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljy.oneclub.entity.NoticeExample" >
     select
@@ -100,16 +101,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ljy.oneclub.entity.Notice" >
-    insert into notice (notice_id, notice_to_user_id, notice_type, 
-      notice_status, notice_source_id)
-    values (#{noticeId,jdbcType=INTEGER}, #{noticeToUserId,jdbcType=INTEGER}, #{noticeType,jdbcType=VARCHAR}, 
-      #{noticeStatus,jdbcType=VARCHAR}, #{noticeSourceId,jdbcType=VARCHAR})
+    insert into notice (notice_id, notice_user_id, notice_to_user_id, 
+      notice_type, notice_status, notice_source_id
+      )
+    values (#{noticeId,jdbcType=INTEGER}, #{noticeUserId,jdbcType=INTEGER}, #{noticeToUserId,jdbcType=INTEGER}, 
+      #{noticeType,jdbcType=VARCHAR}, #{noticeStatus,jdbcType=VARCHAR}, #{noticeSourceId,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ljy.oneclub.entity.Notice" >
     insert into notice
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="noticeId != null" >
         notice_id,
+      </if>
+      <if test="noticeUserId != null" >
+        notice_user_id,
       </if>
       <if test="noticeToUserId != null" >
         notice_to_user_id,
@@ -128,6 +134,9 @@
       <if test="noticeId != null" >
         #{noticeId,jdbcType=INTEGER},
       </if>
+      <if test="noticeUserId != null" >
+        #{noticeUserId,jdbcType=INTEGER},
+      </if>
       <if test="noticeToUserId != null" >
         #{noticeToUserId,jdbcType=INTEGER},
       </if>
@@ -138,7 +147,7 @@
         #{noticeStatus,jdbcType=VARCHAR},
       </if>
       <if test="noticeSourceId != null" >
-        #{noticeSourceId,jdbcType=VARCHAR},
+        #{noticeSourceId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -154,6 +163,9 @@
       <if test="record.noticeId != null" >
         notice_id = #{record.noticeId,jdbcType=INTEGER},
       </if>
+      <if test="record.noticeUserId != null" >
+        notice_user_id = #{record.noticeUserId,jdbcType=INTEGER},
+      </if>
       <if test="record.noticeToUserId != null" >
         notice_to_user_id = #{record.noticeToUserId,jdbcType=INTEGER},
       </if>
@@ -164,7 +176,7 @@
         notice_status = #{record.noticeStatus,jdbcType=VARCHAR},
       </if>
       <if test="record.noticeSourceId != null" >
-        notice_source_id = #{record.noticeSourceId,jdbcType=VARCHAR},
+        notice_source_id = #{record.noticeSourceId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -174,10 +186,11 @@
   <update id="updateByExample" parameterType="map" >
     update notice
     set notice_id = #{record.noticeId,jdbcType=INTEGER},
+      notice_user_id = #{record.noticeUserId,jdbcType=INTEGER},
       notice_to_user_id = #{record.noticeToUserId,jdbcType=INTEGER},
       notice_type = #{record.noticeType,jdbcType=VARCHAR},
       notice_status = #{record.noticeStatus,jdbcType=VARCHAR},
-      notice_source_id = #{record.noticeSourceId,jdbcType=VARCHAR}
+      notice_source_id = #{record.noticeSourceId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -185,6 +198,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ljy.oneclub.entity.Notice" >
     update notice
     <set >
+      <if test="noticeUserId != null" >
+        notice_user_id = #{noticeUserId,jdbcType=INTEGER},
+      </if>
       <if test="noticeToUserId != null" >
         notice_to_user_id = #{noticeToUserId,jdbcType=INTEGER},
       </if>
@@ -195,17 +211,18 @@
         notice_status = #{noticeStatus,jdbcType=VARCHAR},
       </if>
       <if test="noticeSourceId != null" >
-        notice_source_id = #{noticeSourceId,jdbcType=VARCHAR},
+        notice_source_id = #{noticeSourceId,jdbcType=INTEGER},
       </if>
     </set>
     where notice_id = #{noticeId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ljy.oneclub.entity.Notice" >
     update notice
-    set notice_to_user_id = #{noticeToUserId,jdbcType=INTEGER},
+    set notice_user_id = #{noticeUserId,jdbcType=INTEGER},
+      notice_to_user_id = #{noticeToUserId,jdbcType=INTEGER},
       notice_type = #{noticeType,jdbcType=VARCHAR},
       notice_status = #{noticeStatus,jdbcType=VARCHAR},
-      notice_source_id = #{noticeSourceId,jdbcType=VARCHAR}
+      notice_source_id = #{noticeSourceId,jdbcType=INTEGER}
     where notice_id = #{noticeId,jdbcType=INTEGER}
   </update>
 </mapper>

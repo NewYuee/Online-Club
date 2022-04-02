@@ -41,4 +41,6 @@ public interface ActiveMapper {
     List<Active> selectActiveAboutByUid(@Param("uid") Integer getuId);
 
     List<ActiveVO> selectActiveVOAboutByUid(@Param("uid") Integer getuId);
+
+    List<ActiveVO> selectHomePageActiveByUid(@Param("uid") Integer getuId);
 }

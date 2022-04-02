@@ -58,6 +58,9 @@ public class LoginController {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    LikeRecordService likeRecordService;
+
     /**
      * 返回登录注册页面
      * @return
@@ -315,7 +318,11 @@ public class LoginController {
                         activeVO.setFrom_uname(activeAndClubVO.getUname());
                         activeVO.setFrom_uid(activeAndClubVO.getUid());
                     }
-                    activeVO.setComment_count(commentService.getCommentCountByAid(activeVO.getA_id()));
+                    int comment_count=commentService.getCommentCountByAid(activeVO.getA_id());
+                    //添加评论数和是否点赞和点赞数
+                    activeVO.setComment_count(comment_count);
+                    activeVO.setIsliked(likeRecordService.selectByActiveIdAndUid(activeVO.getA_id(), selectOne.getuId()).size());
+                    activeVO.setLiked_count(likeRecordService.getCountByActiveId(activeVO.getA_id()));
                     List<Comment> comments =commentService.getTop2CommentBySourceId(activeVO.getA_id());
                     List<CommentVO> commentVOList=new ArrayList<>();
                     if (comments.size()!=0) {

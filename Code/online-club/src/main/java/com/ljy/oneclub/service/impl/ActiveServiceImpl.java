@@ -57,4 +57,14 @@ public class ActiveServiceImpl implements ActiveService {
     public List<ActiveVO> selectActiveVOAboutByUid(Integer getuId) {
         return activeMapper.selectActiveVOAboutByUid(getuId);
     }
+
+    @Override
+    public List<ActiveVO> selectHomePageActiveByUid(Integer getuId) {
+        return activeMapper.selectHomePageActiveByUid(getuId);
+    }
+
+    @Override
+    public int deleteActiveByAid(int aid) {
+        return activeMapper.deleteByPrimaryKey(aid);
+    }
 }

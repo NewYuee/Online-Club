@@ -44,4 +44,9 @@ public class CommentServiceImpl implements CommentService {
         criteria.andSourceIdEqualTo(activeId);
         return commentMapper.countByExample(commentExample);
     }
+
+    @Override
+    public Comment getCommentByCid(Integer replyC_id) {
+        return commentMapper.selectByPrimaryKey(replyC_id);
+    }
 }

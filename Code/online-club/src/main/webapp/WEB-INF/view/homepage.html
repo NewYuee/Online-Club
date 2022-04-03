@@ -231,7 +231,7 @@
             <div id="myCommentList">
                 <div class="panel panel-warning">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">我的评论</div>
+                    <div class="panel-heading">我的评论<span class="label label-default" id="myCommentCount"></span></div>
                     <!-- List group -->
                     <ul class="list-group">
 
@@ -286,12 +286,14 @@
                 $('#myCommentList').find('.list-group').parseHTML(str);
             }else if (result.code==200&&result.data.comments.length!=0){
                 var comments=result.data.comments;
+                $('#myCommentCount').text(comments.length);
                 $.each(comments,function (i,item) {
                     var htmlStr='<li class="list-group-item" id="'+item.commentId+'">'+item.commentContent+'<span style="float: right;color: #d9534f" class="glyphicon glyphicon-trash deleteComment" aria-hidden="true"></span></li>';
                     $('#myCommentList').find('.list-group').append($.parseHTML(htmlStr));
                 });
             }
             else if (result.code=200&&result.data.comments.length==0){
+                $('#myCommentCount').text(0);
                 var str='<li class="list-group-item">暂无评论~</li>';
                 $('#myCommentList').find('.list-group').append($.parseHTML(str));
             }
@@ -301,6 +303,9 @@
     $('.deleteComment').on('click',function () {
         var commentid=$(this).parent().attr('id');
         var li=$(this).parent();
+        var c_count=0;
+        c_count=$('#myCommentCount').text();
+        console.log("得到的评论数===》"+c_count)
         layer.confirm('确认删除该内容吗', {icon: 0, title:'确认框'}, function(index){
             //确认操作
             $.ajax({
@@ -308,6 +313,8 @@
                 type:'get',
                 success:function (result) {
                     if (result.code==200){
+                        c_count--;
+                        $('#myCommentCount').text(c_count);
                         li.remove();
                         layer.msg("删除成功！");
                     }

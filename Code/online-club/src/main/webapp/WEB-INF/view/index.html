@@ -164,7 +164,9 @@
                               <a th:href="'/u/'+${comment.getU_id()}" th:text="${comment.getU_name()}"></a>回复<a th:href="'/u/'+${comment.getReply_u_id()}" th:text="${comment.getReply_u_name()}"></a>:<span th:text="${comment.getContent()}"></span>
                            </div>
                         </div>
-                        <div class="comment_item moreParent" th:id="${active.getA_id()}"><a class="more" data-toggle="modal" data-target="#content_area">共<span th:text="${active.getComment_count()}"></span>条评论 ></a></div>
+                        <div class="comment_item moreParent" th:id="${active.getA_id()}">
+                           <a class="more" data-toggle="modal" data-target="#content_area">共<span th:text="${active.getComment_count()}"></span>条评论 ></a>
+                        </div>
                      </div>
                   </div>
                </div>

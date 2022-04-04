@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljy.oneclub.dao.ClubMemberMapper" >
+  <resultMap id="BaseResultMap" type="com.ljy.oneclub.entity.ClubMember" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="club_id" property="clubId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="mem_name" property="memName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="mem_tel_num" property="memTelNum" jdbcType="VARCHAR" />
+    <result column="mem_detail_info" property="memDetailInfo" jdbcType="VARCHAR" />
+    <result column="mem_join_time" property="memJoinTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, club_id, user_id, mem_name, gender, mem_tel_num, mem_detail_info, mem_join_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljy.oneclub.entity.ClubMemberExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from club_member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from club_member
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from club_member
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljy.oneclub.entity.ClubMemberExample" >
+    delete from club_member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljy.oneclub.entity.ClubMember" >
+    insert into club_member (id, club_id, user_id, 
+      mem_name, gender, mem_tel_num, 
+      mem_detail_info, mem_join_time)
+    values (#{id,jdbcType=INTEGER}, #{clubId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{memName,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{memTelNum,jdbcType=VARCHAR}, 
+      #{memDetailInfo,jdbcType=VARCHAR}, #{memJoinTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljy.oneclub.entity.ClubMember" >
+    insert into club_member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="clubId != null" >
+        club_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="memName != null" >
+        mem_name,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="memTelNum != null" >
+        mem_tel_num,
+      </if>
+      <if test="memDetailInfo != null" >
+        mem_detail_info,
+      </if>
+      <if test="memJoinTime != null" >
+        mem_join_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="clubId != null" >
+        #{clubId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="memName != null" >
+        #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="memTelNum != null" >
+        #{memTelNum,jdbcType=VARCHAR},
+      </if>
+      <if test="memDetailInfo != null" >
+        #{memDetailInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="memJoinTime != null" >
+        #{memJoinTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljy.oneclub.entity.ClubMemberExample" resultType="java.lang.Integer" >
+    select count(*) from club_member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update club_member
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.clubId != null" >
+        club_id = #{record.clubId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.memName != null" >
+        mem_name = #{record.memName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memTelNum != null" >
+        mem_tel_num = #{record.memTelNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memDetailInfo != null" >
+        mem_detail_info = #{record.memDetailInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memJoinTime != null" >
+        mem_join_time = #{record.memJoinTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update club_member
+    set id = #{record.id,jdbcType=INTEGER},
+      club_id = #{record.clubId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      mem_name = #{record.memName,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=VARCHAR},
+      mem_tel_num = #{record.memTelNum,jdbcType=VARCHAR},
+      mem_detail_info = #{record.memDetailInfo,jdbcType=VARCHAR},
+      mem_join_time = #{record.memJoinTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljy.oneclub.entity.ClubMember" >
+    update club_member
+    <set >
+      <if test="clubId != null" >
+        club_id = #{clubId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="memName != null" >
+        mem_name = #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="memTelNum != null" >
+        mem_tel_num = #{memTelNum,jdbcType=VARCHAR},
+      </if>
+      <if test="memDetailInfo != null" >
+        mem_detail_info = #{memDetailInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="memJoinTime != null" >
+        mem_join_time = #{memJoinTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljy.oneclub.entity.ClubMember" >
+    update club_member
+    set club_id = #{clubId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      mem_name = #{memName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      mem_tel_num = #{memTelNum,jdbcType=VARCHAR},
+      mem_detail_info = #{memDetailInfo,jdbcType=VARCHAR},
+      mem_join_time = #{memJoinTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

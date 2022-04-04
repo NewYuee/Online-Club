@@ -107,6 +107,61 @@ public class UserController {
     }
 
 
+    @RequestMapping("index")
+    public ModelAndView getIndexPage(HttpSession session){
+        ModelAndView modelAndView = new ModelAndView();
+        User selectOne=(User)session.getAttribute("userInfo");
+        if (selectOne==null){
+            modelAndView.setViewName("login");
+            return modelAndView;
+        }
+        //首页动态获取---start
+        //得到与自己相关的动态，包括:自己发布的和加入社团的活动
+        List<ActiveVO> activeVOList=activeService.selectActiveVOAboutByUid(selectOne.getuId());
+        logger.info("用户"+selectOne.getuName()+"登录首页，获取相关动态共"+activeVOList.size()+"条");
+        if (activeVOList.size()!=0){
+            for (ActiveVO activeVO:activeVOList){
+                //完善评论预览、关联社团ID和名字、评论数
+                activeVO.setComment_count(commentService.getCommentCountByAid(activeVO.getA_id()));
+                ActiveAndClubVO activeAndClubVO = activeAndClubService.getActiveAndClubVO(activeVO.getA_id());
+                if (activeAndClubVO!=null){
+                    activeVO.setFrom_uname(activeAndClubVO.getUname());
+                    activeVO.setFrom_uid(activeAndClubVO.getUid());
+                }
+                int comment_count=commentService.getCommentCountByAid(activeVO.getA_id());
+                //添加评论数和是否点赞和点赞数
+                activeVO.setComment_count(comment_count);
+                activeVO.setIsliked(likeRecordService.selectByActiveIdAndUid(activeVO.getA_id(), selectOne.getuId()).size());
+                activeVO.setLiked_count(likeRecordService.getCountByActiveId(activeVO.getA_id()));
+                List<Comment> comments =commentService.getTop2CommentBySourceId(activeVO.getA_id());
+                List<CommentVO> commentVOList=new ArrayList<>();
+                if (comments.size()!=0) {
+                    for (Comment comment:comments){
+                        CommentVO commentVO = new CommentVO();
+                        //设置评论的用户名和用户id
+                        String u_name=userService.getNameById(comment.getuId());
+                        commentVO.setU_id(comment.getuId());
+                        commentVO.setU_name(u_name);
+                        //如果回复的评论id不为空
+                        if (comment.getReplyCommentId()!=null){
+                            Comment comment1=commentService.selectCommentById(comment.getReplyCommentId());
+                            //根据回复的评论id找到原评论的用户名和用户id
+                            commentVO.setReply_u_id(comment1.getuId());
+                            commentVO.setReply_u_name(userService.getNameById(comment1.getuId()));
+                        }
+                        commentVO.setContent(comment.getCommentContent());
+                        commentVO.setC_id(comment.getCommentId());
+                        commentVOList.add(commentVO);
+                    }
+                    activeVO.setCommentVOList(commentVOList);
+                }
+            }
+            modelAndView.addObject("actives",activeVOList);
+        }
+        //首页动态获取---end
+        modelAndView.setViewName("index");
+        return modelAndView;
+    }
 
     @RequestMapping("searchResult")
     public ModelAndView searchResult(@Param("content") String content, HttpSession session){

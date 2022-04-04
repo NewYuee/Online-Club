@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Online-Club</title>
     <link rel="icon" type="image/png" href="../../static/img/MMAD.png">
+   <link rel="stylesheet" href="../../static/css/amazeui.css">
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../static/css/index/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
@@ -34,15 +35,8 @@
                   <div class="box-title  p-3" style="border-bottom: 1px solid #eaebec;">
                      <h4><span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> 与我相关</h4>
                   </div>
-                  <div class="box-body ">
-                     <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span><a>大风文学社的入会申请</a>--待处理
-                  </div>
-                  <div class="box-body">
-                     <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span><a>其它文学社的入会申请</a>--已通过
-                  </div>
-                  <div class="box-body">
-                     热门s
-                  </div>
+                  <ul class="list-group" id="myApplicationList">
+                  </ul>
                </div>
             </div>
          </div>
@@ -126,7 +120,7 @@
                   </ul>
                </div>
             </div>
-            <div th:if="${session.actives!=null}" th:each="active:${session.actives}">
+            <div th:if="${actives!=null}" th:each="active:${actives}">
                <div class="card active" th:if="${active.getA_type()==40}">
                   <div class="u_head">
                      <div class="u_profile">
@@ -260,6 +254,12 @@
            </div>
          </div>
       </div>
+      <!--回到顶部按钮-->
+      <div data-am-widget="gotop" class="am-gotop am-gotop-fixed" style="padding-right: 50px">
+         <a href="#top" title="回到顶部">
+            <img src="../../static/img/回到顶部.svg" style="height: 50px;height: 50px">
+         </a>
+      </div>
    </div>
 <!-- Modal -->
 <div class="modal fade" id="content_area" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -295,6 +295,7 @@
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <script src="../../static/js/bootstrap.js"></script>
 <script src="../../static/layer/layer.js"></script>
+<script src="../../static/js/amazeui.js"></script>
 <script src="../../static/summernote/summernote.min.js"></script>
 <script src="../../static/js/index.js"></script>
 <script type="text/javascript" th:inline="javascript">
@@ -309,6 +310,52 @@
       trigger : 'hover',//鼠标以上时触发弹出提示框
       html:true,//开启html 为true的话，data-content里就能放html代码了
       content:"<img style='width: 140px;width: 140px' src='../../static/img/QRCode_QQ.png'>"
+   });
+
+   //获取申请事务列表
+   $.ajax({
+      url:'application/getAll',
+      data:'uid='+[[${session.userInfo.uId}]],
+      type:'GET',
+      success:function (result) {
+         var passStr='<span style="float: right;">已通过</span>';
+         if (result.code==200&&result.data.appSize!=0){
+            var applicationVOS=result.data.applications;
+            $.each(applicationVOS,function (i,item) {
+               var htmlStr='<li class="list-group-item">' +
+                       '<a href="/apply/'+item.applyId+'" style="text-decoration: none">'+item.applyToName+'的'+item.type+'</a>' +
+                       '<span id="'+item.applyId+'" style="float: right;color: #d9534f" class="glyphicon glyphicon-trash deleteApplication" aria-hidden="true"></span>' +
+                       '<span style="float: right;">'+item.status+'</span></li>';
+               $('#myApplicationList').prepend($.parseHTML(htmlStr));
+            })
+         }
+         else {
+            var htmlStr='<li class="list-group-item">暂无更多~</li>';
+            $('#myApplicationList').append($.parseHTML(htmlStr));
+         }
+      }
+   });
+   $('#myApplicationList').on('click','.deleteApplication',function () {
+      var applicationId=$(this).attr('id');
+      var li=$(this).parent('li');
+      console.log("得到删除的申请id==》"+applicationId);
+      layer.confirm('确认删除该申请吗', {icon: 0, title:'确认框'}, function(index){
+         //确认操作
+         $.ajax({
+            url:'/application/delete/'+applicationId,
+            type:'get',
+            success:function (result) {
+               if (result.code==200){
+                  li.remove();
+                  layer.msg("删除成功！");
+               }
+               else {
+                  layer.msg("删除失败!");
+               }
+            }
+         });
+         layer.close(index);
+      });
    });
 
    //点赞效果实现

@@ -1,92 +1,126 @@
-3月 30, 2022 8:21:53 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:04 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: find java src paths:  [F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\]
-3月 30, 2022 8:21:53 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:04 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: project type not set, try to figure out...
-3月 30, 2022 8:21:53 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:04 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start find controllers in path : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:05 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: find controller file : ActiveController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:05 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: find controller file : ApplicationController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:05 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: find controller file : ChatController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:05 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: find controller file : ClubController.java
+4月 04, 2022 11:17:05 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: find controller file : CommentController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:05 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: find controller file : FileController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:05 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: find controller file : LoginController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:05 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: find controller file : RedirectHandler.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:05 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: find controller file : UserController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:05 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to parse controller file : ActiveController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils warn
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils warn
 警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils warn
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils warn
 警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils warn
+警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils warn
+警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils warn
+警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils warn
+警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: success to parse controller file : ActiveController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to parse controller file : ApplicationController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils warn
+警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils warn
+警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: success to parse controller file : ApplicationController.java
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to parse controller file : ChatController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: success to parse controller file : ChatController.java
-3月 30, 2022 8:21:54 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: start to parse controller file : ClubController.java
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils warn
+警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: success to parse controller file : ClubController.java
+4月 04, 2022 11:17:06 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to parse controller file : CommentController.java
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils warn
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils warn
 警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils warn
+警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils warn
+警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: success to parse controller file : CommentController.java
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to parse controller file : FileController.java
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to parse controller file : LoginController.java
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils warn
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils warn
 警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils warn
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils warn
 警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils warn
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils warn
 警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: success to parse controller file : LoginController.java
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to parse controller file : RedirectHandler.java
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to parse controller file : UserController.java
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils warn
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils warn
 警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils warn
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils warn
 警告: warning!! Cannot find java file , in java file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\msg\Msg.java, className : HashMap, we cannot found more information of it, you've better to make it a JavaBean
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: success to parse controller file : UserController.java
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: generate api docs start...
-3月 30, 2022 8:21:55 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:07 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\ActiveController.java
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: success to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\ActiveController.java
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: start to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\ApplicationController.java
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: success to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\ApplicationController.java
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\ChatController.java
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: success to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\ChatController.java
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: start to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\ClubController.java
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: success to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\ClubController.java
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\CommentController.java
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: success to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\CommentController.java
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\LoginController.java
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: success to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\LoginController.java
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: start to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\UserController.java
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: success to generate docs for controller file : F:\A毕业设计\基于SSM的学生社团系统的设计与实现\Code\online-club\src\main\java\com\ljy\oneclub\controller\UserController.java
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: generate index start !!!
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: generate index done !!!
-3月 30, 2022 8:21:57 下午 io.github.yedaxia.apidocs.LogUtils info
+4月 04, 2022 11:17:08 下午 io.github.yedaxia.apidocs.LogUtils info
 信息: info: generate api docs done !!!

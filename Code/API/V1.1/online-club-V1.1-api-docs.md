@@ -48,6 +48,140 @@ title|string|是|标题
 	"data":{}
 }
 ```
+## 根据资源id对活动进行点赞
+
+**
+
+**请求URL**
+
+active/like/{sourceId} `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+sourceId|int|否|活动id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据资源id对活动取消点赞
+
+**
+
+**请求URL**
+
+active/unlike/{sourceId} `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+sourceId|int|否|活动id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据活动id获取点赞数，以及是否点赞
+
+**
+
+**请求URL**
+
+active/getLikeNum/{sourceId} `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+sourceId|string|否|活动id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据id删除动态
+
+**
+
+**请求URL**
+
+active/delete/{id} `GET` `POST` 
+
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+# ApplicationController
+## 获取用户所有申请
+
+**
+
+**请求URL**
+
+/application/getAll `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+uid|string|否|用户id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据申请单id删除申请
+
+**
+
+**请求URL**
+
+/application/delete/{appId} `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+appId|string|否|申请单id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
 # ChatController
 ## 聊天接口
 
@@ -69,6 +203,30 @@ toUserId|string|是|聊天对象id
 ```json
 string{}
 ```
+# ClubController
+## 根据用户id查找其加入的社团数
+
+**
+
+**请求URL**
+
+/club/getCount/{uid} `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+uid|string|否|用户id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
 # CommentController
 ## 根据活动Id获取评论
 
@@ -83,6 +241,47 @@ string{}
 参数名|类型|必须|描述
 --:|:--:|:--:|:--
 activeId|string|否|活动Id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据用户id获取用自己的评论信息
+
+**
+
+**请求URL**
+
+/get/comments/{uid} `GET` `POST` 
+
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据id删除评论
+
+**
+
+**请求URL**
+
+/comment/delete/{commentId} `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+commentId|string|否|评论id
 
 **返回结果**
 

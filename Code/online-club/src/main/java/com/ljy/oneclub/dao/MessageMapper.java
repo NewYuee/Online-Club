@@ -3,6 +3,8 @@ package com.ljy.oneclub.dao;
 import com.ljy.oneclub.entity.Message;
 import com.ljy.oneclub.entity.MessageExample;
 import java.util.List;
+
+import com.ljy.oneclub.vo.NotReadMsgVO;
 import org.apache.ibatis.annotations.Param;
 
 public interface MessageMapper {
@@ -33,4 +35,11 @@ public interface MessageMapper {
     int updateByPrimaryKeyWithBLOBs(Message record);
 
     int updateByPrimaryKey(Message record);
+
+    List<Message> selectMessagesByUidAndToUid(@Param("uid") int uid, @Param("toUid") int toUid);
+    List<Message> selectMessagesByUidAndToUidLimit5(@Param("uid") int uid, @Param("toUid") int toUid);
+
+    List<NotReadMsgVO> getNotReadMsgsByUid(@Param("uid") String userId);
+
+    Message getLastNotReadMessageByUidAndToUid(@Param("uid")String uid, @Param("touid")String touid);
 }

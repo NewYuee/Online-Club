@@ -8,6 +8,12 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="isread" property="isread" jdbcType="CHAR" />
   </resultMap>
+  <resultMap id="notReadMsg" type="com.ljy.oneclub.vo.NotReadMsgVO" >
+    <result column="uname" property="uname" jdbcType="VARCHAR" />
+    <result column="fromUProfilePicName" property="uProfilePicName" jdbcType="VARCHAR" />
+    <result column="from_uid" property="uid" jdbcType="VARCHAR" />
+    <result column="msgcount" property="messageCount"/>
+  </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.ljy.oneclub.entity.Message" extends="BaseResultMap" >
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -75,6 +81,42 @@
   <sql id="Blob_Column_List" >
     content
   </sql>
+  <select id="selectMessagesByUidAndToUidLimit5" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from message
+    where  (from_uid=#{uid} and to_uid=#{toUid}) or (from_uid=#{toUid} and to_uid=#{uid})
+    order by update_time desc
+    limit 0,5
+  </select>
+  <select id="selectMessagesByUidAndToUid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from message
+    where (from_uid=#{uid} and to_uid=#{toUid}) or (from_uid=#{toUid} and to_uid=#{uid} )
+    order by update_time desc
+  </select>
+  <select id="getNotReadMsgsByUid" resultMap="notReadMsg">
+    SELECT b.u_name as uname,b.u_profile_photo_name as fromUProfilePicName, from_uid,count(a.m_id) as msgcount
+    from message a
+    LEFT JOIN user b on a.from_uid=b.u_id
+    WHERE to_uid=#{uid} and isread='0'
+    GROUP BY from_uid
+  </select>
+  <select id="getLastNotReadMessageByUidAndToUid" resultMap="BaseResultMap">
+                SELECT
+                <include refid="Base_Column_List" />
+                ,
+                <include refid="Blob_Column_List" />
+                from message
+                WHERE from_uid=#{uid} and to_uid=#{touid} and isread='0'
+                ORDER BY update_time desc
+                LIMIT 0,1
+  </select>
   <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ljy.oneclub.entity.MessageExample" >
     select
     <if test="distinct" >

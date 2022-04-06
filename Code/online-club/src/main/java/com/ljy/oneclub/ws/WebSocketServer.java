@@ -2,8 +2,11 @@ package com.ljy.oneclub.ws;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ljy.oneclub.entity.Message;
+import com.ljy.oneclub.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.SessionScope;
 
@@ -11,8 +14,11 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 @ServerEndpoint(value="/websocket/{from}/{to}")
@@ -29,6 +35,13 @@ public class WebSocketServer {
     //private HttpSession httpSession;
     private String from;
     private String to;
+
+    static MessageService messageService;
+
+    @Autowired
+    public void setMessageService(MessageService messageService){
+        WebSocketServer.messageService = messageService;
+    }
 
     public String getFrom() {
         return from;
@@ -49,7 +62,7 @@ public class WebSocketServer {
         this.from=name;
         webSocketMap.put(name,this);            //发送者对应的socket
         addOnlineCount();           //在线数加1
-        System.out.println("有新连接加入！当前在线人数为" + onlineCount);
+        System.out.println("用户"+name+"上线，当前在线人数为" + webSocketMap.size());
     }
 
     /**
@@ -58,8 +71,14 @@ public class WebSocketServer {
     @OnClose
     public void onClose(Session session){
         subOnlineCount();
-        System.out.println("webMap size==>"+webSocketMap.size());
-        System.out.println("有连接断开！当前在线人数为"+onlineCount);
+        Iterator<String> iterator=webSocketMap.keySet().iterator();
+        while (iterator.hasNext()){
+            String key=iterator.next();
+            if (from.equals(key)){
+                iterator.remove();
+                System.out.println("用户"+key+"已下线;当前在线人数:"+webSocketMap.size());
+            }
+        }
     }
 
     /**
@@ -68,19 +87,28 @@ public class WebSocketServer {
      * @param session 可选的参数
      */
     @OnMessage
-    public void onMessage(String message, Session session) {
-        System.out.println("来自客户端的消息:" + message);
+    public void onMessage(String message, Session session) throws ParseException {
         JSONObject jsonObject = JSON.parseObject(message);
-        System.out.println("context=>"+jsonObject.get("text").toString());
         String text=jsonObject.get("text").toString();
         if (text==null||text.replace(" ","").length()==0){
             logger.error("发送的消息为null或者无内容");
             return;
         }
 
+        Message chatMsg = new Message();
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = simpleDateFormat.format(date);
+        Date time=simpleDateFormat.parse(format);
+        chatMsg.setUpdateTime(time);
+        chatMsg.setFromUid(from);
+        chatMsg.setToUid(to);
+        chatMsg.setContent(text);
         //如果两个客户端同时在线，消息已读
         if (webSocketMap.containsKey(to)&&webSocketMap.get(to).getTo().equals(from)){
             try {
+                chatMsg.setIsread("1");
+                int i=messageService.insertMsg(chatMsg);
                 webSocketMap.get(to).sendMessage(text);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -88,9 +116,9 @@ public class WebSocketServer {
         }
         //有一方不在线，消息未读，存入数据库
         else {
-            System.out.println("用户离线，消息未读");
-            System.out.println("Map没有这个名字的session==>"+to);
-            System.out.println("当前Map的大小==>"+webSocketMap.size());
+            System.out.println("用户"+to+"离线");
+            chatMsg.setIsread("0");
+            int i=messageService.insertMsg(chatMsg);
         }
     }
 
@@ -104,7 +132,7 @@ public class WebSocketServer {
         try{
             session.close();
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error("用户"+from+"向用户"+to+"聊天的WebSocket连接出错！");
         }
     }
     /**

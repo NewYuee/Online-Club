@@ -12,4 +12,6 @@ public interface ApplicationService {
     List<Application> getApplicationByUid(int userId);
 
     int deleteApplicationById(int aid);
+
+    List<Application> getSuccessOrFailApplicationByUid(int uid);
 }

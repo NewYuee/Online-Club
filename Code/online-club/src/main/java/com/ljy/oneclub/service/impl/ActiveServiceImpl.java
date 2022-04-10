@@ -72,4 +72,12 @@ public class ActiveServiceImpl implements ActiveService {
     public List<ActiveVO> selectLikeArticleByUid(int uid) {
         return activeMapper.selectLikeArticleByUid(uid);
     }
+
+    @Override
+    public int countActiveByUid(Integer getuId) {
+        ActiveExample activeExample = new ActiveExample();
+        ActiveExample.Criteria criteria = activeExample.createCriteria();
+        criteria.andActiveIdEqualTo(getuId);
+        return activeMapper.countByExample(activeExample);
+    }
 }

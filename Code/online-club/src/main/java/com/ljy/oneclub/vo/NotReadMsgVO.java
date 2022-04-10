@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class NotReadMsgVO {
-    Integer messageCount;
+    private Integer messageCount;
     @JsonFormat(pattern="MM月dd日 HH:mm:ss",timezone="UTC")
-    Date lastTime;
-    String messageContent;
-    int nowUid;
-    String uid;
-    String uname;
-    String uProfilePicName;
+    private Date lastTime;
+    private String messageContent;
+    private int nowUid;
+    private String uid;
+    private String uname;
+    private String uProfilePicName;
 
     public String getUid() {
         return uid;

@@ -204,7 +204,7 @@ public class ActiveController {
             notice.setNoticeSourceId(active.getActiveId());
             notice.setNoticeStatus("0");
             notice.setNoticeType("15");
-            if (notice.getNoticeToUserId().equals(notice.getNoticeUserId())){
+            if (!notice.getNoticeToUserId().equals(notice.getNoticeUserId())){
                 noticeService.insertOne(notice);
             }
             return Msg.success();
@@ -284,6 +284,8 @@ public class ActiveController {
         }
         if (active.getuId().equals(user.getuId())){
             int i=activeService.deleteActiveByAid(aid);
+            noticeService.deleteNoticeBySourceId(aid);
+            commentService.deleteCommentBySourceId(aid);
             if (i==0){
                 return Msg.fail();
             }

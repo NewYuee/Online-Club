@@ -8,9 +8,6 @@ import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.*;
 import com.ljy.oneclub.utils.RandomValidateCodeUtil;
 import com.ljy.oneclub.utils.RedisUtil;
-import com.ljy.oneclub.vo.ActiveAndClubVO;
-import com.ljy.oneclub.vo.ActiveVO;
-import com.ljy.oneclub.vo.CommentVO;
 import com.ljy.oneclub.vo.MyClub;
 import com.sun.mail.smtp.DigestMD5;
 import io.github.yedaxia.apidocs.ApiDoc;
@@ -316,7 +313,7 @@ public class LoginController {
      * 返回admin登录界面
      * @return
      */
-    @RequestMapping("admin/login")
+    @RequestMapping("admin")
     public String loadAdminLoginPage(){
         return "admin/login";
     }
@@ -327,11 +324,11 @@ public class LoginController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "admin")
-    public String adminLogin(User user,HttpSession session){
+    @RequestMapping(value = "admin/login")
+    @ResponseBody
+    public Msg adminLogin(User user,HttpSession session){
         if (user.getuName()==null||user.getuPassword()==null){
-            session.setAttribute("errorInfo","Please Input Your Username and Password");
-            return "error/500";
+            return Msg.fail();
         }
         String encodePwd=DigestUtils.md5DigestAsHex(user.getuPassword().getBytes());
         user.setuPassword(encodePwd);
@@ -341,15 +338,14 @@ public class LoginController {
             session.setAttribute("admin",one);
         }
         else {
-            session.setAttribute("errorInfo","Error Username or Password");
-            return "error/500";
+            return Msg.fail();
         }
         if (one.getuAuthNo().equals(5)){
-            return "admin/clubindex";
+            return Msg.success().addData("auth",5);
         }else if (one.getuAuthNo().equals(1)){
-            return "admin/platformindex";
+            return Msg.success().addData("auth",1);
         }
-        return "error/500";
+        return Msg.fail();
     }
 
 

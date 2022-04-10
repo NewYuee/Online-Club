@@ -26,4 +26,6 @@ public interface ActiveService {
     int deleteActiveByAid(int aid);
 
     List<ActiveVO> selectLikeArticleByUid(int uid);
+
+    int countActiveByUid(Integer getuId);
 }

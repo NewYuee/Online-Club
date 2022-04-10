@@ -69,4 +69,17 @@ public class CommentServiceImpl implements CommentService {
         //再删除本条评论
         return commentMapper.deleteByPrimaryKey(cid);
     }
+
+    @Override
+    public Comment getCommentByPrimaryKey(Integer noticeSourceId) {
+        return commentMapper.selectByPrimaryKey(noticeSourceId);
+    }
+
+    @Override
+    public void deleteCommentBySourceId(int aid) {
+        CommentExample commentExample = new CommentExample();
+        CommentExample.Criteria criteria = commentExample.createCriteria();
+        criteria.andSourceIdEqualTo(aid);
+        commentMapper.deleteByExample(commentExample);
+    }
 }

@@ -29,4 +29,8 @@ public interface UserService {
     String getNameById(Integer getuId);
 
     int collectActive(LikedRecord likedRecord);
+
+    List<User> getAllUserByAid(int i);
+
+    void deleteByUid(int userId);
 }

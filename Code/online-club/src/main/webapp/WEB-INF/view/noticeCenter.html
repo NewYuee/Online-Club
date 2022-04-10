@@ -16,13 +16,13 @@
                 <div class="panel-heading">消息中心</div>
                 <ul id="myTab" class="nav nav-pills nav-stacked">
                     <li role="presentation" class="active">
-                        <a href="#application" data-toggle="tab">通知<span style="float: right" class="badge">0</span></a>
+                        <a href="#application" data-toggle="tab">通知<span style="float: right" class="badge" id="appNoticeCount">0</span></a>
                     </li>
                     <li role="presentation">
-                        <a href="#like" data-toggle="tab">点赞<span style="float: right" class="badge">0</span></a>
+                        <a href="#like" data-toggle="tab">点赞<span style="float: right" class="badge" id="likeNoticeCount">0</span></a>
                     </li>
                     <li role="presentation">
-                        <a href="#comment" data-toggle="tab">评论<span style="float: right" class="badge">0</span></a>
+                        <a href="#comment" data-toggle="tab">评论<span style="float: right" class="badge" id="commentNoticeCount">0</span></a>
                     </li>
                     <li role="presentation">
                         <a href="#message" data-toggle="tab">私信<span style="float: right" class="badge" id="msgCount">0</span></a>
@@ -35,20 +35,14 @@
             <div id="myTabContent" class="tab-content">
                 <div class="tab-pane fade in active" id="application">
                     <ul class="list-group">
-                        <li class="list-group-item list-group-item-success">Dxxxx申请成功xxx<a class="checkmore" id="xxx" style="float: right">查看备注</a></li>
-                        <li class="list-group-item list-group-item-danger">Dxxxx申请失败xxx<a class="checkmore" id="xxxx" style="float: right">查看备注</a></li>
                     </ul>
                 </div>
                 <div class="tab-pane fade" id="like">
                     <div class="list-group">
-                        <li class="list-group-item list-group-item-info">xxx赞了你的文章xxxxx<a href="#" style="float: right">查看</a></li>
-                        <li class="list-group-item list-group-item-info">xxx赞了你的动态xxxx<a href="#" style="float: right">查看</a></li>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="comment">
                     <div class="list-group">
-                        <li class="list-group-item list-group-item-info">xxx在xxx中xx了你<a href="#" style="float: right">查看</a></li>
-                        <li class="list-group-item list-group-item-info">xxx在xxx中xx了你<a href="#" style="float: right">查看</a></li>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="message">
@@ -67,6 +61,7 @@
         $('#myTab li:eq(0) a').tab('show');
     });
 
+    //得到未读消息列表
     $.ajax({
         url:'/getNotReadMsgs/'+[[${session.userInfo.uId}]],
         type:'GET',
@@ -87,11 +82,97 @@
                 $('#msgCount').text(msgCount);
             }
         }
-    })
+    });
+
+    //得到点赞消息列表
+    $.ajax({
+        url:'/get/notice/like/'+[[${session.userInfo.uId}]],
+        type: 'GET',
+        success:function (result) {
+            if (result.code==200){
+                var notice=result.data.likeNotice;
+                var likeCount=0;
+                $.each(notice,function (i,item) {
+                    if (item.isArticle==1) {
+                        var htmlStr = '<li class="list-group-item list-group-item-info"><a href="/u/' + item.noticeUserId + '">' + item.noticeUserName + '</a> 收藏了你的文章 <a href="/active/article/'+item.noticeSourceId+'">'+item.decrips+'</a></li>';
+                        $('#like').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    if (item.isArticle==0){
+                        var htmlStr = '<li class="list-group-item list-group-item-info"><a href="/u/' + item.noticeUserId + '">' + item.noticeUserName + '</a> 赞了你的动态:'+item.decrips+'</li>';
+                        $('#like').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    likeCount+=1;
+                })
+                $('#likeNoticeCount').text(likeCount);
+            }
+        }
+    });
+
+    //得到评论通知列表
+    $.ajax({
+        url:'/get/notice/comment/'+[[${session.userInfo.uId}]],
+        type: 'GET',
+        success:function (result) {
+            if (result.code==200){
+                var notice=result.data.commentNotice;
+                var noticeCount=0;
+                $.each(notice,function (i,item) {
+                    if (item.isArticle==null){
+                        var htmlStr = '<li class="list-group-item list-group-item-info"><a href="/u/' + item.noticeUserId + '">' + item.noticeUserName + '</a>回复了你的评论:'+item.decrips+'</li>';
+                        $('#comment').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    if (item.isArticle==1) {
+                        var htmlStr = '<li class="list-group-item list-group-item-info"><a href="/u/' + item.noticeUserId + '">' + item.noticeUserName + '</a>评论了你的文章<a href="/active/article/'+item.noticeSourceId+'">'+item.decrips+'</a></li>';
+                        $('#comment').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    if (item.isArticle==0){
+                        var htmlStr = '<li class="list-group-item list-group-item-info"><a href="/u/' + item.noticeUserId + '">' + item.noticeUserName + '</a>评论了你的动态:'+item.decrips+'</li>';
+                        $('#comment').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    noticeCount+=1;
+                })
+                $('#commentNoticeCount').text(noticeCount);
+            }
+        }
+    });
+
+    //得到申请通知结果
+    $.ajax({
+        url:'/get/notice/apply/'+[[${session.userInfo.uId}]],
+        type: 'GET',
+        success:function (result) {
+            if (result.code==200){
+                var applications=result.data.applications;
+                var noticeCount=result.data.appSize;
+                $.each(applications,function (i,item) {
+                    if (item.status=='申请成功') {
+                        var htmlStr = '<li class="list-group-item list-group-item-success"><a href="/u/'+item.applyToUid+'">'+item.applyToName+'</a>的'+item.type+' 申请成功<a class="checkmore" id="'+item.applyId+'" style="float: right">查看备注</a></li>';
+                        $('#application').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    if (item.status=='申请失败'){
+                        var htmlStr = '<li class="list-group-item list-group-item-danger"><a href="/u/'+item.applyToUid+'">'+item.applyToName+'</a>的'+item.type+' 申请失败<a class="checkmore" id="'+item.applyId+'" style="float: right">查看备注</a></li>';
+                        $('#application').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                });
+                $('#appNoticeCount').text(noticeCount);
+            }
+        }
+    });
 
     //查看入会或者退会申请的处理结果
-    $('.checkmore').click(function () {
-        var content=$(this).attr('id');
+    $('#application').on('click','.checkmore',function () {
+        var applyId=$(this).attr('id');
+        var content='';
+        $.ajax({
+            url:'/application/get/'+applyId,
+            type: 'GET',
+            async:false,
+            success:function (result) {
+                if (result.code==200){
+                    content=result.data.application.appDealResult;
+                }
+            }
+        });
         console.log(content);
         layer.alert(content,{closeBtn:false,shift:2,title:'备注'});
     });

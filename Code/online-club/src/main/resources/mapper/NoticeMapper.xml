@@ -9,6 +9,15 @@
     <result column="notice_status" property="noticeStatus" jdbcType="VARCHAR" />
     <result column="notice_source_id" property="noticeSourceId" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="LikeNotice" type="com.ljy.oneclub.vo.NoticeOfLike" >
+    <id column="notice_id" property="noticeId" jdbcType="INTEGER" />
+    <result column="notice_user_id" property="noticeUserId" jdbcType="INTEGER" />
+    <result column="notice_to_user_id" property="noticeToUserId" jdbcType="INTEGER" />
+    <result column="notice_type" property="noticeType" jdbcType="VARCHAR" />
+    <result column="notice_status" property="noticeStatus" jdbcType="VARCHAR" />
+    <result column="notice_source_id" property="noticeSourceId" jdbcType="INTEGER" />
+    <result column="noticeUserName" property="noticeUserName"/>
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -70,6 +79,16 @@
   <sql id="Base_Column_List" >
     notice_id, notice_user_id, notice_to_user_id, notice_type, notice_status, notice_source_id
   </sql>
+  <select id="getNoticeOfLikeByUid" resultMap="LikeNotice">
+    SELECT u.u_name as noticeUserName,notice_id, notice_user_id, notice_to_user_id, notice_type, notice_status, notice_source_id
+    FROM notice n,`user` u
+    where n.notice_user_id=u.u_id and notice_to_user_id=#{uid} and notice_type=#{type}
+  </select>
+  <select id="getNoticeOfComment" resultMap="LikeNotice">
+    SELECT u.u_name as noticeUserName,notice_id, notice_user_id, notice_to_user_id, notice_type, notice_status, notice_source_id
+    FROM notice n,`user` u
+    where n.notice_user_id=u.u_id and notice_to_user_id=#{uid} and (notice_type='13' or notice_type='11')
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljy.oneclub.entity.NoticeExample" >
     select
     <if test="distinct" >

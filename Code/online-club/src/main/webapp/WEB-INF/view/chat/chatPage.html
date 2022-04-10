@@ -82,9 +82,9 @@
 
     //WebSocket服务开始
     //服务器的ws服务地址,部署的时候需要改为下面地址
-    //var url = 'wss://mmad.top/websocket/'+from+'/'+to;
+    var url = 'wss://mmad.top/websocket/'+from+'/'+to;
     //本地ws地址
-    var url = 'ws://localhost/websocket/'+from+'/'+to;
+    //var url = 'ws://localhost/websocket/'+from+'/'+to;
     console.log(url);
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
@@ -111,7 +111,7 @@
 
     //连接关闭的回调方法
     websocket.onclose = function () {
-        console.log('用户'+from+'与用户'+to+'==>websocket建立连接断开~')
+        console.log('用户'+from+'与用户'+to+'==>websocket建立连接断开~');
     }
 
 

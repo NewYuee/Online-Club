@@ -1,0 +1,95 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "/adminpage/welcome.html?t=1"
+  },
+  "logoInfo": {
+    "title": "Online Club",
+    "image": "/static/img/MMAD.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "社团管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "主页",
+          "href": "/adminpage/welcome.html",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "用户管理",
+          "href": "",
+          "icon": "fa fa-user",
+          "target": "_self",
+          "child": [
+            {
+              "title": "用户列表",
+              "href": "/adminpage/table/usertable.html",
+              "icon": "fa fa-table",
+              "target": "_self"
+            },
+            {
+              "title": "新增用户",
+              "href": "",
+              "icon": "fa fa-user-plus",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "社团管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self",
+          "child": [
+            {
+              "title": "社团列表",
+              "href": "/adminpage/table/clubtable.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            },
+            {
+              "title": "新增社团",
+              "href": "/adminpage/table/addclub.html",
+              "icon": "fa fa-plus-square",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "活动管理",
+          "href": "",
+          "icon": "fa fa-snowflake-o",
+          "target": "",
+          "child": [
+            {
+              "title": "活动列表",
+              "href": "/adminpage/table/activeTable.html",
+              "icon": "fa fa-bar-chart",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "其它",
+      "icon": "fa fa-slideshare",
+      "href": "",
+      "target": "",
+      "child": [
+        {
+          "title": "社团联系人列表",
+          "href": "",
+          "icon": "fa fa-user-secret",
+          "target": "_self"
+        }
+      ]
+    }
+  ]
+}

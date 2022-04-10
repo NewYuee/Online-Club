@@ -20,4 +20,8 @@ public interface CommentService {
     List<Comment> getCommentsByUid(int user_id);
 
     int deleteCommentByCid(int cid);
+
+    Comment getCommentByPrimaryKey(Integer noticeSourceId);
+
+    void deleteCommentBySourceId(int aid);
 }

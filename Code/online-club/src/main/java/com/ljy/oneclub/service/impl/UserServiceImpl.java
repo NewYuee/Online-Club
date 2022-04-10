@@ -124,4 +124,17 @@ public class UserServiceImpl implements UserService {
         else
             return 0;
     }
+
+    @Override
+    public List<User> getAllUserByAid(int i) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUAuthNoEqualTo(i);
+        return userMapper.selectByExample(userExample);
+    }
+
+    @Override
+    public void deleteByUid(int userId) {
+        userMapper.deleteByPrimaryKey(userId);
+    }
 }

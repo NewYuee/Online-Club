@@ -7,9 +7,7 @@ import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.*;
 import com.ljy.oneclub.utils.RedisUtil;
-import com.ljy.oneclub.vo.ActiveAndClubVO;
-import com.ljy.oneclub.vo.ActiveVO;
-import com.ljy.oneclub.vo.CommentVO;
+import com.ljy.oneclub.vo.*;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -57,6 +55,9 @@ public class UserController {
 
     @Autowired
     ActiveAndClubService activeAndClubService;
+
+    @Autowired
+    ClubMemberService clubMemberService;
 
 
     /**
@@ -352,5 +353,72 @@ public class UserController {
         return modelAndView;
     }
 
+    @RequestMapping("user/getAll")
+    @ResponseBody
+    public UserTableData getAllUsers(){
+        UserTableData userTableData = new UserTableData();
+        List<User> users=userService.getAllUserByAid(10);
+        if (users.size()==0){
+            userTableData.setCode(0);
+            userTableData.setCount(0);
+        }
+        userTableData.setCount(users.size());
+        userTableData.setData(users);
+        userTableData.setCode(0);
+        return userTableData;
+    }
+
+    @RequestMapping("club/getAll")
+    @ResponseBody
+    public ClubTableData getAllClub(){
+        ClubTableData clubTableData = new ClubTableData();
+        List<User> users=userService.getAllUserByAid(5);
+        List<ClubTableJson> clubTableJsonList=new ArrayList<>();
+        for (User user:users){
+            ClubTableJson clubTableJson = new ClubTableJson();
+            clubTableJson.setClubId(user.getuId());
+            clubTableJson.setClubName(user.getuName());
+            int activeCount=activeService.countActiveByUid(user.getuId());
+            int membershipCount=clubMemberService.countMembershipByClubId(user.getuId());
+            clubTableJson.setActiveCount(activeCount);
+            clubTableJson.setMemberships(membershipCount);
+            clubTableJsonList.add(clubTableJson);
+        }
+        clubTableData.setCount(users.size());
+        clubTableData.setData(clubTableJsonList);
+        clubTableData.setCode(0);
+        return clubTableData;
+    }
+
+    @RequestMapping(value = "user/delete",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg deleteUserByUid(@RequestParam("uid")String uid){
+        int userId=0;
+        try {
+            userId=Integer.parseInt(uid);
+        } catch (NumberFormatException e) {
+            return Msg.fail();
+        }
+        userService.deleteByUid(userId);
+        return Msg.success();
+    }
+
+    @RequestMapping(value = "insert/club")
+    @ResponseBody
+    public Msg insertClub(@RequestParam("username")String uname,
+                          @RequestParam("password")String password,
+                          @RequestParam("email")String email){
+        String encodePwd=DigestUtils.md5DigestAsHex(password.getBytes());
+        User user=new User();
+        user.setuName(uname);
+        user.setuPassword(encodePwd);
+        user.setuMailAdd(email);
+        user.setuAuthNo(5);
+        user.setuProfilePhotoName("https://mmad.top:82/res/avatar/user_pic.jpg");
+        user.setuProfileBackgroundimgName("https://mmad.top:82/res/bkImg/defaultbkimg.jpeg");
+        user.setuProfile("这家伙很懒，什么也没说。");
+        userService.insertUser(user);
+        return Msg.success();
+    }
 
 }

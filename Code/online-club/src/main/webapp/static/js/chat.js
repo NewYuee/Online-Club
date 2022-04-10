@@ -23,7 +23,7 @@ function receive(innerHTML,toUserProfilePic) {
     let item = document.createElement('div');
     item.className = 'item item-left';
     item.innerHTML = '<div class="avatar"><img src="'+toUserProfilePic+'" /></div><div class="bubble bubble-right">'+innerHTML+'</div>';
-    document.querySelector('.content').appendChild(item);
+    document.querySelector('#messageContent').appendChild(item);
     document.querySelector('#textarea').focus();
     //滚动条置底
     let height = document.querySelector('.content').scrollHeight;

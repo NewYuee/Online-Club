@@ -190,4 +190,22 @@ public class ApplicationController {
         }
         return Msg.fail();
     }
+
+    @ApiDoc
+    @RequestMapping("application/get/{appId}")
+    @ResponseBody
+    public Msg getApplication(HttpSession session,@PathVariable("appId")String appId){
+        int aId=0;
+        try {
+            aId=Integer.parseInt(appId);
+        } catch (NumberFormatException e) {
+            return Msg.fail();
+        }
+        Application application = applicationService.selectById(aId);
+        User user=(User)session.getAttribute("userInfo");
+        if (application!=null&&user.getuId().equals(application.getAppUserId())){
+            return Msg.success().addData("application",application);
+        }
+        return Msg.fail();
+    }
 }

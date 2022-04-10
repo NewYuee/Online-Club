@@ -24,4 +24,12 @@ public class ClubMemberServiceImpl implements ClubMemberService {
         List<ClubMember> clubMemberList = clubMemberMapper.selectByExample(clubMemberExample);
         return clubMemberList;
     }
+
+    @Override
+    public int countMembershipByClubId(Integer getuId) {
+        ClubMemberExample clubMemberExample = new ClubMemberExample();
+        ClubMemberExample.Criteria criteria = clubMemberExample.createCriteria();
+        criteria.andClubIdEqualTo(getuId);
+        return clubMemberMapper.countByExample(clubMemberExample);
+    }
 }

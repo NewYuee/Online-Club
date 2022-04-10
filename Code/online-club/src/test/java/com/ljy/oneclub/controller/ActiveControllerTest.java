@@ -1,12 +1,11 @@
 package com.ljy.oneclub.controller;
 
 import com.ljy.oneclub.entity.Active;
-import com.ljy.oneclub.service.ActiveAndClubService;
-import com.ljy.oneclub.service.ActiveService;
-import com.ljy.oneclub.service.CommentService;
-import com.ljy.oneclub.service.UserService;
+import com.ljy.oneclub.entity.Notice;
+import com.ljy.oneclub.service.*;
 import com.ljy.oneclub.vo.ActiveAndClubVO;
 import com.ljy.oneclub.vo.ActiveVO;
+import com.ljy.oneclub.vo.NoticeOfLike;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +34,14 @@ public class ActiveControllerTest {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    NoticeService noticeService;
+
 
     @Test
     public void insertActive() {
-        //List<ActiveVO> activeVOList = activeService.selectHomePageActiveByUid(49382336);
-        //System.out.println(activeVOList.get(0).getU_name()+":"+activeVOList.size());
+        List<NoticeOfLike> notices=noticeService.getNoticeOfLikeByUid(49382333,"13");
+        System.out.println("noticeSize=>"+notices.size());
     }
 
     @Test

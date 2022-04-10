@@ -57,7 +57,8 @@ public class CommentController {
             notice.setNoticeSourceId(replyC_id);
             notice.setNoticeStatus("0");
             notice.setNoticeType("11");
-            noticeService.insertOne(notice);
+            if (!notice.getNoticeToUserId().equals(notice.getNoticeUserId()))
+                noticeService.insertOne(notice);
         }
         Date date=new Date();
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -76,7 +77,8 @@ public class CommentController {
         notice.setNoticeSourceId(sourceId);
         notice.setNoticeStatus("0");
         notice.setNoticeType("13");
-        noticeService.insertOne(notice);
+        if (!notice.getNoticeToUserId().equals(notice.getNoticeUserId()))
+            noticeService.insertOne(notice);
         return Msg.success();
     }
 
@@ -164,6 +166,7 @@ public class CommentController {
         int i=0;
         if (comment.getuId().equals(user.getuId())){
             i=commentService.deleteCommentByCid(cid);
+            noticeService.deleteNoticeBySourceId(cid);
         }
         if (i==0){
             return Msg.fail();

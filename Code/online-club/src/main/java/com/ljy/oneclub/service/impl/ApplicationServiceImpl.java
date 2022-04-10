@@ -7,6 +7,7 @@ import com.ljy.oneclub.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,5 +36,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public int deleteApplicationById(int aid) {
         return applicationMapper.deleteByPrimaryKey(aid);
+    }
+
+    @Override
+    public List<Application> getSuccessOrFailApplicationByUid(int uid) {
+        ApplicationExample applicationExample = new ApplicationExample();
+        ApplicationExample.Criteria criteria = applicationExample.createCriteria();
+        List<Integer> status=new ArrayList<>();
+        status.add(0);
+        status.add(1);
+        criteria.andAppUserIdEqualTo(uid);
+        criteria.andAppStatusIn(status);
+        return applicationMapper.selectByExample(applicationExample);
     }
 }

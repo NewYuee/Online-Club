@@ -5,9 +5,11 @@ import com.ljy.oneclub.entity.Active;
 import com.ljy.oneclub.entity.ActiveExample;
 import com.ljy.oneclub.service.ActiveService;
 import com.ljy.oneclub.vo.ActiveVO;
+import com.ljy.oneclub.vo.DayActiveVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -79,5 +81,23 @@ public class ActiveServiceImpl implements ActiveService {
         ActiveExample.Criteria criteria = activeExample.createCriteria();
         criteria.andActiveIdEqualTo(getuId);
         return activeMapper.countByExample(activeExample);
+    }
+
+    @Override
+    public void deleteActiveByUid(int userId) {
+        ActiveExample activeExample = new ActiveExample();
+        ActiveExample.Criteria criteria = activeExample.createCriteria();
+        criteria.andUIdEqualTo(userId);
+        activeMapper.deleteByExample(activeExample);
+    }
+
+    @Override
+    public int countByPrimaryKey() {
+        return activeMapper.countActive();
+    }
+
+    @Override
+    public DayActiveVO countActiveByDayDate(String time) {
+        return activeMapper.countActiveByDayDate(time);
     }
 }

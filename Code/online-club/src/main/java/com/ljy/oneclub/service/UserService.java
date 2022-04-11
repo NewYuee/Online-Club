@@ -33,4 +33,12 @@ public interface UserService {
     List<User> getAllUserByAid(int i);
 
     void deleteByUid(int userId);
+
+    int countByAid(int i);
+
+    List<User> getAllUserByAidAndKeyWord(int i, String keyword);
+
+    int countByAidAndKeyWord(int i, String keyword);
+
+    int updateClubInfo(User club);
 }

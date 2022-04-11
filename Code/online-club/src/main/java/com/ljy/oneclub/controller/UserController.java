@@ -1,5 +1,6 @@
 package com.ljy.oneclub.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.ljy.oneclub.entity.Active;
 import com.ljy.oneclub.entity.Comment;
 import com.ljy.oneclub.entity.LikedRecord;
@@ -58,6 +59,9 @@ public class UserController {
 
     @Autowired
     ClubMemberService clubMemberService;
+
+    @Autowired
+    MessageService messageService;
 
 
     /**
@@ -353,26 +357,68 @@ public class UserController {
         return modelAndView;
     }
 
+
+    /**
+     * 得到用户列表
+     * @param page 页码
+     * @param pageSize 分页大小
+     * @param keyword 搜索的关键词
+     * @return
+     */
+    @ApiDoc
     @RequestMapping("user/getAll")
     @ResponseBody
-    public UserTableData getAllUsers(){
+    public UserTableData getAllUsers(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                     @RequestParam(value = "limit",defaultValue = "15")Integer pageSize,
+                                     @RequestParam(value = "keyword",defaultValue = "null")String keyword){
         UserTableData userTableData = new UserTableData();
-        List<User> users=userService.getAllUserByAid(10);
-        if (users.size()==0){
+        if (keyword.equals("null")) {
+            //开始pagehelper
+            PageHelper.startPage(page,pageSize);
+            List<User> users=userService.getAllUserByAid(10);
+            int count=userService.countByAid(10);
+            userTableData.setCount(count);
+            userTableData.setData(users);
             userTableData.setCode(0);
-            userTableData.setCount(0);
+        } else {
+            //开始pagehelper
+            PageHelper.startPage(page,pageSize);
+            List<User> users=userService.selectUserByKeyWords(keyword);
+            int count=userService.countByAidAndKeyWord(10,keyword);
+            userTableData.setCount(count);
+            userTableData.setData(users);
+            userTableData.setCode(0);
         }
-        userTableData.setCount(users.size());
-        userTableData.setData(users);
-        userTableData.setCode(0);
         return userTableData;
     }
 
+
+    /**
+     * 得到社团列表
+     * @param page 页数
+     * @param pageSize 分页大小
+     * @param keyword 搜索的关键词
+     * @return
+     */
+    @ApiDoc
     @RequestMapping("club/getAll")
     @ResponseBody
-    public ClubTableData getAllClub(){
+    public ClubTableData getAllClub(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                    @RequestParam(value = "limit",defaultValue = "15")Integer pageSize,
+                                    @RequestParam(value = "keyword",defaultValue = "null")String keyword){
         ClubTableData clubTableData = new ClubTableData();
-        List<User> users=userService.getAllUserByAid(5);
+        //开始pagehelper
+        List<User> users;
+        int count;
+        if (keyword.equals("null")) {
+            PageHelper.startPage(page,pageSize);
+            users = userService.getAllUserByAid(5);
+            count = userService.countByAid(5);
+        } else {
+            PageHelper.startPage(page,pageSize);
+            users = userService.selectClubByKeyWords(keyword);
+            count = userService.countByAidAndKeyWord(5,keyword);
+        }
         List<ClubTableJson> clubTableJsonList=new ArrayList<>();
         for (User user:users){
             ClubTableJson clubTableJson = new ClubTableJson();
@@ -384,12 +430,45 @@ public class UserController {
             clubTableJson.setMemberships(membershipCount);
             clubTableJsonList.add(clubTableJson);
         }
-        clubTableData.setCount(users.size());
+        clubTableData.setCount(count);
         clubTableData.setData(clubTableJsonList);
         clubTableData.setCode(0);
         return clubTableData;
     }
 
+    /**
+     * 得到管理端首页系统数据统计
+     * @return
+     * @throws ParseException
+     */
+    @ApiDoc
+    @RequestMapping("getData/admin/index")
+    @ResponseBody
+    public Msg getDataIndexForAdmin() throws ParseException {
+        int userCount=userService.countByAid(10);
+        int clubCount=userService.countByAid(5);
+        int activeCount=activeService.countByPrimaryKey();
+        int activeDayCount=0;
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String format = simpleDateFormat.format(date);
+        Date time=simpleDateFormat.parse(format);
+        String timeStr = simpleDateFormat.format(time);
+        DayActiveVO dayActiveVO=activeService.countActiveByDayDate(timeStr);
+        if (dayActiveVO!=null){
+            activeDayCount=dayActiveVO.getCount();
+        }
+        AdminIndexVO adminIndexVO = new AdminIndexVO(userCount,clubCount,activeCount,activeDayCount);
+        return Msg.success().addData("indexData",adminIndexVO);
+    }
+
+
+    /**
+     * 根据id删除用户
+     * @param uid 用户id
+     * @return
+     */
+    @ApiDoc
     @RequestMapping(value = "user/delete",method = RequestMethod.POST)
     @ResponseBody
     public Msg deleteUserByUid(@RequestParam("uid")String uid){
@@ -400,14 +479,29 @@ public class UserController {
             return Msg.fail();
         }
         userService.deleteByUid(userId);
+        activeService.deleteActiveByUid(userId);
+        commentService.deleteCommentByUid(userId);
+        messageService.deleteMessageByUid(userId);
+
         return Msg.success();
     }
 
-    @RequestMapping(value = "insert/club")
+    /**
+     * 新增社团用户
+     * @param uname 社团名
+     * @param password 密码
+     * @param email 邮箱
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping(value = "insert/club",method = RequestMethod.POST)
     @ResponseBody
     public Msg insertClub(@RequestParam("username")String uname,
                           @RequestParam("password")String password,
                           @RequestParam("email")String email){
+        if (userService.quryUserByName(uname)!=null){
+            return Msg.fail().addData("errorInfo","该用户已存在！");
+        }
         String encodePwd=DigestUtils.md5DigestAsHex(password.getBytes());
         User user=new User();
         user.setuName(uname);
@@ -418,6 +512,56 @@ public class UserController {
         user.setuProfileBackgroundimgName("https://mmad.top:82/res/bkImg/defaultbkimg.jpeg");
         user.setuProfile("这家伙很懒，什么也没说。");
         userService.insertUser(user);
+        return Msg.success();
+    }
+
+    /**
+     * 新增用户
+     * @param uname 用户名
+     * @param password 密码
+     * @param email 邮箱
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping(value = "insert/user")
+    @ResponseBody
+    public Msg insertUser(@RequestParam("username")String uname,
+                          @RequestParam("password")String password,
+                          @RequestParam("email")String email){
+        String encodePwd=DigestUtils.md5DigestAsHex(password.getBytes());
+        if (userService.quryUserByName(uname)!=null){
+            return Msg.fail().addData("errorInfo","该用户已存在！");
+        }
+        User user=new User();
+        user.setuName(uname);
+        user.setuPassword(encodePwd);
+        user.setuMailAdd(email);
+        user.setuAuthNo(10);
+        user.setuProfilePhotoName("https://mmad.top:82/res/avatar/user_pic.jpg");
+        user.setuProfileBackgroundimgName("https://mmad.top:82/res/bkImg/defaultbkimg.jpeg");
+        user.setuProfile("这家伙很懒，什么也没说。");
+        userService.insertUser(user);
+        return Msg.success();
+    }
+
+
+    @ApiDoc
+    @RequestMapping(value = "user/updateClubInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg updateClubInfo(@RequestParam("username")String uname,
+                              @RequestParam("password")String password,
+                              @RequestParam("email")String email,
+                              @RequestParam("clubId")Integer clubId){
+        String encodePwd=DigestUtils.md5DigestAsHex(password.getBytes());
+        if (userService.quryUserByName(uname)!=null){
+            return Msg.fail().addData("errorInfo","该用户名已存在！");
+        }
+        User club=new User();
+        club.setuName(uname);
+        club.setuPassword(encodePwd);
+        club.setuMailAdd(email);
+        club.setuId(clubId);
+        int i=userService.updateClubInfo(club);
         return Msg.success();
     }
 

@@ -44,7 +44,7 @@
         <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="contactList">社团联系人</a>
+            <a class="layui-btn layui-btn-xs layui-btn-xs" lay-event="contactList">社团联系人</a>
         </script>
 
     </div>
@@ -63,11 +63,7 @@
             elem: '#currentTableId',
             url: '/club/getAll',
             toolbar: '#toolbarDemo',
-            defaultToolbar: ['filter', 'exports', 'print', {
-                title: '提示',
-                layEvent: 'LAYTABLE_TIPS',
-                icon: 'layui-icon-tips'
-            }],
+            defaultToolbar: ['filter', 'exports', 'print'],
             cols: [
                 [
                 {type: "checkbox", width: 50},
@@ -93,8 +89,8 @@
                     curr: 1
                 }
                 , where: {
-                    searchParams: result
-                }
+                keyword: data.field.uName
+            }
             }, 'data');
             return false;
         });
@@ -143,13 +139,18 @@
             var data = obj.data;
             if (obj.event === 'edit') {
                 var index = layer.open({
-                    title: '编辑用户',
+                    title: '编辑社团',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/adminpage/table/edit.html',
+                    content: '/adminpage/table/editClub',
+                    success:function (layero,indexin) {
+                        var form=layer.getChildFrame('form',index);
+                        form.attr("id",data.clubId);
+                        form.find('.clubname').attr("value",data.clubName);
+                    }
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -165,13 +166,13 @@
             else if (obj.event === 'contactList'){
 
                 var index = layer.open({
-                    title: '编辑用户',
+                    title: '社团联系人列表',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/adminpage/table/edit?clubId='+data.uId,
+                    content: '/adminpage/table/contactList?clubId='+data.clubId,
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

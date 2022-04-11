@@ -10,6 +10,10 @@
     <result column="active_title" property="activeTitle" jdbcType="VARCHAR" />
     <result column="liked" property="liked" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="DayACount" type="com.ljy.oneclub.vo.DayActiveVO">
+      <result column="date" property="time"/>
+      <result column="count" property="count"/>
+  </resultMap>
   <resultMap id="Active" type="com.ljy.oneclub.entity.Active">
     <id column="active_id" property="activeId" jdbcType="INTEGER" />
     <result column="u_id" property="uId" jdbcType="INTEGER" />
@@ -332,6 +336,7 @@
     LIMIT 0,1;
   </select>
   <!--查找当前用户相关的动态-->
+
   <select id="selectActiveAboutByUid" resultMap="BaseResultMap">
     SELECT
 	a.active_id,
@@ -448,5 +453,15 @@
 	LEFT JOIN user b ON a.u_id = b.u_id
     ORDER BY
 	update_time DESC
+  </select>
+  <select id="countActive" resultType="java.lang.Integer">
+        select count(*)
+        from active
+    </select>
+  <select id="countActiveByDayDate" resultMap="DayACount">
+    select date_format(update_time, '%Y-%m-%d') date, count(*) count
+    from active
+    group by date_format(update_time, '%Y-%m-%d')
+    HAVING date =#{time}
   </select>
 </mapper>

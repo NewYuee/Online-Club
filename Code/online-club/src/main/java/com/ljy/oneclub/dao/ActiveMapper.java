@@ -2,9 +2,12 @@ package com.ljy.oneclub.dao;
 
 import com.ljy.oneclub.entity.Active;
 import com.ljy.oneclub.entity.ActiveExample;
+
+import java.util.Date;
 import java.util.List;
 
 import com.ljy.oneclub.vo.ActiveVO;
+import com.ljy.oneclub.vo.DayActiveVO;
 import org.apache.ibatis.annotations.Param;
 
 public interface ActiveMapper {
@@ -44,4 +47,8 @@ public interface ActiveMapper {
 
     List<ActiveVO> selectHomePageActiveByUid(@Param("uid") Integer getuId);
     List<ActiveVO> selectLikeArticleByUid(@Param("uid")Integer uid);
+
+    int countActive();
+
+    DayActiveVO countActiveByDayDate(@Param("time") String time);
 }

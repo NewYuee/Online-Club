@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>新增社团</title>
+    <title>新增用户</title>
     <link rel="stylesheet" href="/static/lib/layui-v2.6.3/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/css/public.css" media="all">
     <style>
@@ -14,10 +14,10 @@
 <body>
 <form class="layui-form layuimini-form">
     <div class="layui-form-item">
-        <label class="layui-form-label required">社团名</label>
+        <label class="layui-form-label required">用户名</label>
         <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="名字不能为空" placeholder="请输入社团名" value="" class="layui-input">
-            <tip>填写社团的名称。</tip>
+            <input type="text" name="username" lay-verify="required" lay-reqtext="名字不能为空" placeholder="请输入用户名" value="" class="layui-input">
+            <tip>填写用户的登录用户名。</tip>
         </div>
     </div>
     <div class="layui-form-item">
@@ -50,21 +50,18 @@
         form.on('submit(saveBtn)', function (data) {
             var formData=data.field;
             $.ajax({
-                url:'/insert/club',
+                url:'/insert/user',
                 data:formData,
                 type:'POST',
-                async:false,
                 success:function (result) {
                     if (result.code==200){
-                        layer.msg("添加社团成功!");
-                    }
-                    else {
+                        layer.msg("添加用户成功!");
+                        setTimeout(reloadPage, 2000);
+                    }else {
                         layer.msg(result.data.errorInfo);
                     }
                 }
-            });
-            var iframeIndex = parent.layer.getFrameIndex(window.name);
-            parent.layer.close(iframeIndex);
+            })
             return false;
         });
 

@@ -54,4 +54,12 @@ public class MessageServiceImpl implements MessageService {
     public void updateMsgById(Message message) {
         messageMapper.updateByPrimaryKey(message);
     }
+
+    @Override
+    public void deleteMessageByUid(int userId) {
+        MessageExample messageExample = new MessageExample();
+        MessageExample.Criteria criteria = messageExample.createCriteria();
+        criteria.andFromUidEqualTo(String.valueOf(userId));
+        messageMapper.deleteByExample(messageExample);
+    }
 }

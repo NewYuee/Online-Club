@@ -19,4 +19,6 @@ public interface MessageService {
     List<Message> getAllNotMsgsByUids(String userId, String toUserId);
 
     void updateMsgById(Message message);
+
+    void deleteMessageByUid(int userId);
 }

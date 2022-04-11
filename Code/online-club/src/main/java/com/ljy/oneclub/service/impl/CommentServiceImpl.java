@@ -82,4 +82,12 @@ public class CommentServiceImpl implements CommentService {
         criteria.andSourceIdEqualTo(aid);
         commentMapper.deleteByExample(commentExample);
     }
+
+    @Override
+    public void deleteCommentByUid(int userId) {
+        CommentExample commentExample = new CommentExample();
+        CommentExample.Criteria criteria = commentExample.createCriteria();
+        criteria.andUIdEqualTo(userId);
+        commentMapper.deleteByExample(commentExample);
+    }
 }

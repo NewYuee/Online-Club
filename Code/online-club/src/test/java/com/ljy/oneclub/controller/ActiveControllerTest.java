@@ -1,10 +1,14 @@
 package com.ljy.oneclub.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ljy.oneclub.entity.Active;
 import com.ljy.oneclub.entity.Notice;
+import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.service.*;
 import com.ljy.oneclub.vo.ActiveAndClubVO;
 import com.ljy.oneclub.vo.ActiveVO;
+import com.ljy.oneclub.vo.DayActiveVO;
 import com.ljy.oneclub.vo.NoticeOfLike;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +41,9 @@ public class ActiveControllerTest {
     @Autowired
     NoticeService noticeService;
 
+    @Autowired
+    UserService userService;
+
 
     @Test
     public void insertActive() {
@@ -46,12 +53,23 @@ public class ActiveControllerTest {
 
     @Test
     public void insertArticle() {
-        //List<ActiveVO> activeVOList=activeService.selectLikeArticleByUid(49382336);
-        //System.out.println(activeVOList.size());
+        PageHelper.startPage(1,10);
+        List<User> users=userService.getAllUserByAid(10);
+        //PageInfo pageInfo = new PageInfo(users, 1);
+        System.out.println(users.size());
     }
 
     @Test
-    public void testActiveVO(){
+    public void testActiveVO() throws ParseException {
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String format = simpleDateFormat.format(date);
+        Date time=simpleDateFormat.parse(format);
+        DayActiveVO dayActiveVO = activeService.countActiveByDayDate("2022-04-08");
+        if (dayActiveVO==null){
+            System.out.println("null");
+        }
+        System.out.println(dayActiveVO.getCount());
     }
 
     @Test

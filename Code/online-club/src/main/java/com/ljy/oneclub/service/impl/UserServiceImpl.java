@@ -137,4 +137,36 @@ public class UserServiceImpl implements UserService {
     public void deleteByUid(int userId) {
         userMapper.deleteByPrimaryKey(userId);
     }
+
+    @Override
+    public int countByAid(int i) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUAuthNoEqualTo(i);
+        return userMapper.countByExample(userExample);
+    }
+
+    @Override
+    public List<User> getAllUserByAidAndKeyWord(int i, String keyword) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUAuthNoEqualTo(i);
+        criteria.andUNameLike("%"+keyword+"%");
+
+        return null;
+    }
+
+    @Override
+    public int countByAidAndKeyWord(int i, String keyword) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUAuthNoEqualTo(i);
+        criteria.andUNameLike("%"+keyword+"%");
+        return userMapper.countByExample(userExample);
+    }
+
+    @Override
+    public int updateClubInfo(User club) {
+        return userMapper.updateByPrimaryKeySelective(club);
+    }
 }

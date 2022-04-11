@@ -2,7 +2,9 @@ package com.ljy.oneclub.service;
 
 import com.ljy.oneclub.entity.Active;
 import com.ljy.oneclub.vo.ActiveVO;
+import com.ljy.oneclub.vo.DayActiveVO;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ActiveService {
@@ -28,4 +30,10 @@ public interface ActiveService {
     List<ActiveVO> selectLikeArticleByUid(int uid);
 
     int countActiveByUid(Integer getuId);
+
+    void deleteActiveByUid(int userId);
+
+    int countByPrimaryKey();
+
+    DayActiveVO countActiveByDayDate(String time);
 }

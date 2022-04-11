@@ -24,4 +24,6 @@ public interface CommentService {
     Comment getCommentByPrimaryKey(Integer noticeSourceId);
 
     void deleteCommentBySourceId(int aid);
+
+    void deleteCommentByUid(int userId);
 }

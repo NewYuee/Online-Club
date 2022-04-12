@@ -16,6 +16,18 @@
     <result column="app_deal_result" property="appDealResult" jdbcType="VARCHAR" />
     <result column="app_time" property="appTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="applyJson" type="com.ljy.oneclub.vo.ApplicationJson">
+    <id column="app_id" property="appId" jdbcType="INTEGER" />
+    <result column="type" property="type" />
+    <result column="app_user_name" property="name" jdbcType="VARCHAR" />
+    <result column="app_gender" property="gender" jdbcType="VARCHAR" />
+    <result column="app_user_tel_num" property="telNum" jdbcType="VARCHAR" />
+    <result column="app_user_detail_info" property="detailInfo" jdbcType="VARCHAR" />
+    <result column="app_reason" property="reason" jdbcType="VARCHAR" />
+    <result column="astatus" property="status" />
+    <result column="app_deal_result" property="dealResult" jdbcType="VARCHAR" />
+    <result column="app_time" property="time" jdbcType="TIMESTAMP" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -335,4 +347,34 @@
       app_time = #{appTime,jdbcType=TIMESTAMP}
     where app_id = #{appId,jdbcType=INTEGER}
   </update>
+  <select id="getApplicationByClubId" resultMap="applyJson">
+    SELECT
+	app_id,
+    CASE
+		WHEN app_type = 1 THEN
+		'入会申请'
+		WHEN app_type = 2 THEN
+		'退会申请'
+	END AS type,
+	app_user_name,
+	app_gender,
+	app_user_tel_num,
+	app_user_detail_info,
+	app_reason,
+    CASE
+		WHEN app_status = 2 THEN
+		'待处理'
+		WHEN app_status = 1 THEN
+		'申请成功'
+		WHEN app_status = 0 THEN
+		'申请失败'
+	END AS astatus,
+	app_deal_result,
+	app_time
+    FROM
+	application
+    WHERE
+	app_to_user_id = #{clubId}
+	order by app_time desc
+  </select>
 </mapper>

@@ -9,6 +9,13 @@
     <result column="source_id" property="sourceId" jdbcType="INTEGER" />
     <result column="reply_comment_id" property="replyCommentId" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="CommentJson" type="com.ljy.oneclub.vo.CommentJson">
+    <id column="comment_id" property="c_id" jdbcType="INTEGER" />
+    <result column="u_id" property="u_id" jdbcType="INTEGER" />
+    <result column="comment_content" property="content" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="u_name" property="u_name" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -230,5 +237,34 @@
     where source_id = #{aid}
     order by update_time desc
     limit 0,2
+  </select>
+  <select id="getAllCommentJson" resultMap="CommentJson">
+    SELECT
+    comment_id,
+    u.u_id,
+    u.u_name,
+    comment_content,
+    c.update_time
+    from `comment` c
+    LEFT JOIN `user` u
+    on c.u_id=u.u_id
+    ORDER BY update_time desc
+  </select>
+  <select id="countComment" resultType="java.lang.Integer">
+    select count(*)
+    from comment
+  </select>
+  <select id="getCommentByKeyword" parameterType="java.lang.String" resultMap="CommentJson">
+    SELECT
+    comment_id,
+    u.u_id,
+    u.u_name,
+    comment_content,
+    c.update_time
+    from `comment` c
+    LEFT JOIN `user` u
+    on c.u_id=u.u_id
+    WHERE comment_content like #{keyword}
+    ORDER BY update_time desc
   </select>
 </mapper>

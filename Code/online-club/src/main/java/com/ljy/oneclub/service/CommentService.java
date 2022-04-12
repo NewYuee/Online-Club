@@ -1,6 +1,7 @@
 package com.ljy.oneclub.service;
 
 import com.ljy.oneclub.entity.Comment;
+import com.ljy.oneclub.vo.CommentJson;
 
 import java.util.List;
 
@@ -26,4 +27,12 @@ public interface CommentService {
     void deleteCommentBySourceId(int aid);
 
     void deleteCommentByUid(int userId);
+
+    int countComment();
+
+    int countCommentByKeyword(String keyword);
+
+    List<CommentJson> getCommentByKeyword(String keyword);
+
+    List<CommentJson> getAllCommentJson();
 }

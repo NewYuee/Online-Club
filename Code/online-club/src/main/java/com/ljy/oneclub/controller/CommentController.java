@@ -1,5 +1,6 @@
 package com.ljy.oneclub.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.ljy.oneclub.entity.Active;
 import com.ljy.oneclub.entity.Comment;
 import com.ljy.oneclub.entity.Notice;
@@ -9,6 +10,8 @@ import com.ljy.oneclub.service.ActiveService;
 import com.ljy.oneclub.service.CommentService;
 import com.ljy.oneclub.service.NoticeService;
 import com.ljy.oneclub.service.UserService;
+import com.ljy.oneclub.vo.CommentJson;
+import com.ljy.oneclub.vo.CommentTableData;
 import com.ljy.oneclub.vo.CommentVO;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.slf4j.Logger;
@@ -145,6 +148,25 @@ public class CommentController {
         return Msg.fail();
     }
 
+
+    /**
+     * 根据id删除评论
+     * @param cid 评论id
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("comment/admin/delete")
+    @ResponseBody
+    public Msg admindeleteCommentByCid(@RequestParam("cid")Integer cid){
+        Comment comment = commentService.getCommentByCid(cid);
+        int i=commentService.deleteCommentByCid(cid);
+        noticeService.deleteNoticeBySourceId(cid);
+        if (i==0){
+            return Msg.fail();
+        }
+        return Msg.success();
+    }
+
     /**
      * 根据id删除评论
      * @param commentId 评论id
@@ -172,5 +194,29 @@ public class CommentController {
             return Msg.fail();
         }
         return Msg.success();
+    }
+
+    @RequestMapping("comment/getAll")
+    @ResponseBody
+    public CommentTableData getAllComment(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                          @RequestParam(value = "limit",defaultValue = "15")Integer pageSize,
+                                          @RequestParam(value = "keyword",defaultValue = "null")String keyword){
+        CommentTableData commentTableData = new CommentTableData();
+        commentTableData.setCode(0);
+        if (keyword.equals("null")){
+            int count=commentService.countComment();
+            commentTableData.setCount(count);
+            PageHelper.startPage(page,pageSize);
+            List<CommentJson> commentJsons=commentService.getAllCommentJson();
+            commentTableData.setData(commentJsons);
+        }
+        else {
+            int count=commentService.countCommentByKeyword("%"+keyword+"%");
+            commentTableData.setCount(count);
+            PageHelper.startPage(page,pageSize);
+            List<CommentJson> commentJsons = commentService.getCommentByKeyword("%"+keyword+"%");
+            commentTableData.setData(commentJsons);
+        }
+        return commentTableData;
     }
 }

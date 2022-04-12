@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ClubTableData</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.css">
+<link href="../style.css" rel="stylesheet" />
+</head>
+<body onload="PR.prettyPrint()">
+<pre class="prettyprint lang-java">
+public class ClubTableData implements Serializable{
+
+    private int code; //
+    private String msg; //
+    private ClubTableJson[] data; //
+    private int count; //
+
+    public int getCode(){
+        return code;
+    }
+
+    public void setCode(int code){
+        this.code = code;
+    }
+
+    public String getMsg(){
+        return msg;
+    }
+
+    public void setMsg(String msg){
+        this.msg = msg;
+    }
+
+    public ClubTableJson[] getData(){
+        return data;
+    }
+
+    public void setData(ClubTableJson[] data){
+        this.data = data;
+    }
+
+    public int getCount(){
+        return count;
+    }
+
+    public void setCount(int count){
+        this.count = count;
+    }
+
+}
+</pre>
+
+
+<pre class="prettyprint lang-java">
+public class ClubTableJson implements Serializable{
+
+    private int clubId; //
+    private String clubName; //
+    private int activeCount; //
+    private int memberships; //
+
+    public int getClubId(){
+        return clubId;
+    }
+
+    public void setClubId(int clubId){
+        this.clubId = clubId;
+    }
+
+    public String getClubName(){
+        return clubName;
+    }
+
+    public void setClubName(String clubName){
+        this.clubName = clubName;
+    }
+
+    public int getActiveCount(){
+        return activeCount;
+    }
+
+    public void setActiveCount(int activeCount){
+        this.activeCount = activeCount;
+    }
+
+    public int getMemberships(){
+        return memberships;
+    }
+
+    public void setMemberships(int memberships){
+        this.memberships = memberships;
+    }
+
+}
+</pre>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.js"></script>
+</body>
+</html>

@@ -6,6 +6,7 @@ import com.ljy.oneclub.entity.ActiveExample;
 import java.util.Date;
 import java.util.List;
 
+import com.ljy.oneclub.vo.ActiveJson;
 import com.ljy.oneclub.vo.ActiveVO;
 import com.ljy.oneclub.vo.DayActiveVO;
 import org.apache.ibatis.annotations.Param;
@@ -51,4 +52,8 @@ public interface ActiveMapper {
     int countActive();
 
     DayActiveVO countActiveByDayDate(@Param("time") String time);
+
+    List<ActiveJson> selectAllActive();
+
+    DayActiveVO countDayActiveByClubIdAndDateTime(@Param("clubId") Integer getuId, @Param("time") String timeStr);
 }

@@ -72,6 +72,16 @@
   <sql id="Base_Column_List" >
     id, club_id, real_name, tel_num, email, department_in_club, position_in_club, other
   </sql>
+  <select id="getAllContactInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from club_contact
+  </select>
+  <select id="countAll" resultType="java.lang.Integer">
+    select
+    count(*) countSize
+    from club_contact
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljy.oneclub.entity.ClubContactExample" >
     select
     <if test="distinct" >

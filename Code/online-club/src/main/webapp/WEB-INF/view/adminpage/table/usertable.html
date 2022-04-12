@@ -140,7 +140,12 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/adminpage/table/edit.html',
+                    content: '/adminpage/table/editUser.html',
+                    success:function (layero,indexIn) {
+                        var form=layer.getChildFrame('form',indexIn);
+                        form.attr("id",data.uId);
+                        form.find('.username').attr("value",data.uName);
+                    }
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

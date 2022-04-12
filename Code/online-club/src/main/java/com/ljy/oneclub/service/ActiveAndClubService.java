@@ -13,4 +13,8 @@ public interface ActiveAndClubService {
     List<ActiveAndClub> selectByFromUid(List<Integer> clubId);
 
     ActiveAndClubVO getActiveAndClubVO(int a_id);
+
+    int countByClubId(Integer getuId);
+
+    void deleteByAid(int a_id);
 }

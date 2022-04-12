@@ -99,14 +99,26 @@ public class FileController {
         filename = uuid+filename;
         String avatarPath="https://mmad.top:82/res/avatar/"+filename;
         User user = (User)session.getAttribute("userInfo");
-        user.setuProfilePhotoName(avatarPath);
-        userService.updateInfo(user);
-        session.removeAttribute("userInfo");
-        session.setAttribute("userInfo",user);
-        //完成文件上传
-        upload.transferTo(new File(p,filename));
-        logger.info("用户:"+user.getuName()+"更新了头像"+filename);
-        return Msg.success();
+        if (user!=null){
+            user.setuProfilePhotoName(avatarPath);
+            userService.updateInfo(user);
+            session.removeAttribute("userInfo");
+            session.setAttribute("userInfo",user);
+            //完成文件上传
+            upload.transferTo(new File(p,filename));
+            return Msg.success();
+        }
+        User admin = (User)session.getAttribute("admin");
+        if (admin!=null){
+            admin.setuProfilePhotoName(avatarPath);
+            userService.updateInfo(admin);
+            session.removeAttribute("admin");
+            session.setAttribute("admin",admin);
+            //完成文件上传
+            upload.transferTo(new File(p,filename));
+            return Msg.success();
+        }
+        return Msg.fail();
     }
 
     /**
@@ -133,14 +145,27 @@ public class FileController {
         filename = uuid+filename;
         String bkImgPath="https://mmad.top:82/res/bkImg/"+filename;
         User user = (User)session.getAttribute("userInfo");
-        user.setuProfileBackgroundimgName(bkImgPath);
-        userService.updateInfo(user);
-        session.removeAttribute("userInfo");
-        session.setAttribute("userInfo",user);
-        System.out.println(filename);
-        //完成文件上传
-        upload.transferTo(new File(p,filename));
-        logger.info("用户:"+user.getuName()+"更新了背景图"+filename);
-        return Msg.success();
+        if (user!=null){
+            user.setuProfileBackgroundimgName(bkImgPath);
+            userService.updateInfo(user);
+            session.removeAttribute("userInfo");
+            session.setAttribute("userInfo",user);
+            //完成文件上传
+            upload.transferTo(new File(p,filename));
+            logger.info("用户:"+user.getuName()+"更新了背景图"+filename);
+            return Msg.success();
+        }
+        User admin = (User)session.getAttribute("admin");
+        if (admin!=null){
+            admin.setuProfileBackgroundimgName(bkImgPath);
+            userService.updateInfo(admin);
+            session.removeAttribute("admin");
+            session.setAttribute("admin",admin);
+            //完成文件上传
+            upload.transferTo(new File(p,filename));
+            logger.info("社团管理员:"+admin.getuName()+"更新了背景图"+filename);
+            return Msg.success();
+        }
+        return Msg.fail();
     }
 }

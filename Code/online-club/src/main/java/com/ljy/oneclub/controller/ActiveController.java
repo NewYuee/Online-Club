@@ -1,11 +1,10 @@
 package com.ljy.oneclub.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.ljy.oneclub.entity.*;
 import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.*;
-import com.ljy.oneclub.vo.ActiveVO;
-import com.ljy.oneclub.vo.CommentVO;
-import com.ljy.oneclub.vo.MyClub;
+import com.ljy.oneclub.vo.*;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -270,7 +269,7 @@ public class ActiveController {
     @ApiDoc
     @RequestMapping("delete/{id}")
     @ResponseBody
-    public Msg getAllActiveIndex(@PathVariable("id")String activeId, HttpSession session){
+    public Msg delActiveByid(@PathVariable("id")String activeId, HttpSession session){
         int aid=0;
         try {
             aid=Integer.parseInt(activeId);
@@ -291,5 +290,62 @@ public class ActiveController {
             }
         }
         return Msg.success();
+    }
+
+    /**
+     * 根据活动id删除活动及其关联数据
+     * @param aid 活动id
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping(value = "admin/deleteActive",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg adminDelActiveByid(@RequestParam("aid")Integer aid){
+        Active active = activeService.selectById(aid);
+        if (active==null){
+            return Msg.fail();
+        }
+        int i=activeService.deleteActiveByAid(aid);
+        noticeService.deleteNoticeBySourceId(aid);
+        commentService.deleteCommentBySourceId(aid);
+        if (i==0){
+            return Msg.fail();
+        }
+        return Msg.success();
+    }
+
+    /**
+     * 获取全部活动信息
+     * @param page 页码
+     * @param pageSize 分页大小
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("getAll")
+    @ResponseBody
+    public ActiveTableData getAllActive(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                        @RequestParam(value = "limit",defaultValue = "15")Integer pageSize){
+        ActiveTableData activeTableData = new ActiveTableData();
+        activeTableData.setCode(0);
+        int count = activeService.countByPrimaryKey();
+        activeTableData.setCount(count);
+        PageHelper.startPage(page,pageSize);
+        List<ActiveJson> activeJsons=activeService.selectAllActive();
+        if (activeJsons.size()==0){
+            activeTableData.setData(activeJsons);
+            return activeTableData;
+        }
+        for (ActiveJson activeJson:activeJsons){
+            //获取评论数
+            activeJson.setComment_count(commentService.getCommentCountByAid(activeJson.getA_id()));
+            Active active = activeService.selectById(activeJson.getA_id());
+            if (active.getActiveType()==40){
+                activeJson.setOmitContent(active.getContent());
+            }else if (active.getActiveType()==50){
+                activeJson.setOmitContent("《"+active.getActiveTitle()+"》");
+            }
+        }
+        activeTableData.setData(activeJsons);
+        return activeTableData;
     }
 }

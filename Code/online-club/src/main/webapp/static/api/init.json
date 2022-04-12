@@ -63,9 +63,17 @@
         },
         {
           "title": "评论管理",
-          "href": "/adminpage/table/commenttable.html",
+          "href": "",
           "icon": "fa fa-quote-left",
-          "target": "_self"
+          "target": "",
+          "child": [
+            {
+              "title": "评论列表",
+              "href": "/adminpage/table/commenttable.html",
+              "icon": "fa fa-bar-chart",
+              "target": "_self"
+            }
+          ]
         },
         {
           "title": "活动管理",
@@ -91,7 +99,7 @@
       "child": [
         {
           "title": "社团联系人列表",
-          "href": "",
+          "href": "/adminpage/table/allclubContact.html",
           "icon": "fa fa-user-secret",
           "target": "_self"
         }

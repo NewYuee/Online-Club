@@ -4,6 +4,7 @@ import com.ljy.oneclub.dao.CommentMapper;
 import com.ljy.oneclub.entity.Comment;
 import com.ljy.oneclub.entity.CommentExample;
 import com.ljy.oneclub.service.CommentService;
+import com.ljy.oneclub.vo.CommentJson;
 import com.ljy.oneclub.vo.CommentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,5 +90,28 @@ public class CommentServiceImpl implements CommentService {
         CommentExample.Criteria criteria = commentExample.createCriteria();
         criteria.andUIdEqualTo(userId);
         commentMapper.deleteByExample(commentExample);
+    }
+
+    @Override
+    public int countComment() {
+        return commentMapper.countComment();
+    }
+
+    @Override
+    public int countCommentByKeyword(String keyword) {
+        CommentExample commentExample = new CommentExample();
+        CommentExample.Criteria criteria = commentExample.createCriteria();
+        criteria.andCommentContentLike("%"+keyword+"%");
+        return commentMapper.countByExample(commentExample);
+    }
+
+    @Override
+    public List<CommentJson> getCommentByKeyword(String keyword) {
+        return commentMapper.getCommentByKeyword(keyword);
+    }
+
+    @Override
+    public List<CommentJson> getAllCommentJson() {
+        return commentMapper.getAllCommentJson();
     }
 }

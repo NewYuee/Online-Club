@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>后台管理</title>
-    <link rel="icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="lib/layui-v2.6.3/css/layui.css" media="all">
-    <link rel="stylesheet" href="css/layuimini.css?v=2.0.4.2" media="all">
-    <link rel="stylesheet" href="css/themes/default.css" media="all">
-    <link rel="stylesheet" href="lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <title>社团后台管理</title>
+    <link rel="icon" href="/static/img/MMAD.png">
+    <link rel="stylesheet" href="/static/lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/css/layuimini.css?v=2.0.4.2" media="all">
+    <link rel="stylesheet" href="/static/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/static/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -51,13 +51,13 @@
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;">admin</a>
+                    <a href="javascript:;" th:text="${session.admin.uName}"></a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a href="javascript:;" layuimini-content-href="page/user-setting.html" data-title="基本资料" data-icon="fa fa-gears">基本资料<span class="layui-badge-dot"></span></a>
+                            <a href="javascript:;" layuimini-content-href="/clubpage/user-setting.html" data-title="基本资料" data-icon="fa fa-gears">基本资料<span class="layui-badge-dot"></span></a>
                         </dd>
                         <dd>
-                            <a href="javascript:;" layuimini-content-href="page/user-password.html" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
+                            <a href="javascript:;" layuimini-content-href="/clubpage/user-password.html" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
                         </dd>
                         <dd>
                             <hr>
@@ -118,9 +118,13 @@
 
     </div>
 </div>
-<script src="lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
-<script src="js/lay-config.js?v=2.0.0" charset="utf-8"></script>
-<script>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/static/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="/static/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+<script type="text/javascript" th:inline="javascript">
+
+
     layui.use(['jquery', 'layer', 'miniAdmin','miniTongji'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
@@ -128,7 +132,7 @@
             miniTongji = layui.miniTongji;
 
         var options = {
-            iniUrl: "api/init.json",    // 初始化接口
+            iniUrl: "/static/api/clubinit.json",    // 初始化接口
             clearUrl: "api/clear.json", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
@@ -140,13 +144,11 @@
         };
         miniAdmin.render(options);
 
-
         $('.login-out').on("click", function () {
             layer.msg('退出登录成功', function () {
-                window.location = 'page/login-3.html';
+                window.location = '/admin';
             });
         });
     });
 </script>
-</body>
 </html>

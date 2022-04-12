@@ -134,7 +134,7 @@ public class NoticeController {
     }
 
     /**
-     * 根据id获取评论通知
+     * 根据id获取申请通知列表
      * @param session 当前session
      * @param userid 用户id
      * @return

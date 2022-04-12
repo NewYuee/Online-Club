@@ -3,6 +3,8 @@ package com.ljy.oneclub.dao;
 import com.ljy.oneclub.entity.Comment;
 import com.ljy.oneclub.entity.CommentExample;
 import java.util.List;
+
+import com.ljy.oneclub.vo.CommentJson;
 import org.apache.ibatis.annotations.Param;
 
 public interface CommentMapper {
@@ -29,4 +31,10 @@ public interface CommentMapper {
     int updateByPrimaryKey(Comment record);
 
     List<Comment> getTop2CommentBySourceId(@Param("aid") Integer activeId);
+
+    List<CommentJson> getCommentByKeyword(@Param("keyword") String keyword);
+
+    List<CommentJson> getAllCommentJson();
+
+    int countComment();
 }

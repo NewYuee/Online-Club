@@ -4,6 +4,7 @@ import com.ljy.oneclub.dao.ApplicationMapper;
 import com.ljy.oneclub.entity.Application;
 import com.ljy.oneclub.entity.ApplicationExample;
 import com.ljy.oneclub.service.ApplicationService;
+import com.ljy.oneclub.vo.ApplicationJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,27 @@ public class ApplicationServiceImpl implements ApplicationService {
         criteria.andAppUserIdEqualTo(uid);
         criteria.andAppStatusIn(status);
         return applicationMapper.selectByExample(applicationExample);
+    }
+
+    @Override
+    public int countNotDealApplicationByClubid(Integer getuId) {
+        ApplicationExample applicationExample = new ApplicationExample();
+        ApplicationExample.Criteria criteria = applicationExample.createCriteria();
+        criteria.andAppToUserIdEqualTo(getuId);
+        criteria.andAppStatusEqualTo(2);
+        return applicationMapper.countByExample(applicationExample);
+    }
+
+    @Override
+    public List<ApplicationJson> getApplicationByClubId(Integer getuId) {
+        return applicationMapper.getApplicationByClubId(getuId);
+    }
+
+    @Override
+    public int countApplicationByClubId(Integer getuId) {
+        ApplicationExample applicationExample = new ApplicationExample();
+        ApplicationExample.Criteria criteria = applicationExample.createCriteria();
+        criteria.andAppToUserIdEqualTo(getuId);
+        return applicationMapper.countByExample(applicationExample);
     }
 }

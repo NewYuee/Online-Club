@@ -82,7 +82,6 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
             //执行搜索重载
             clubtable.reload('currentTableId', {
                 page: {
@@ -147,7 +146,7 @@
                     area: ['100%', '100%'],
                     content: '/adminpage/table/editClub',
                     success:function (layero,indexin) {
-                        var form=layer.getChildFrame('form',index);
+                        var form=layer.getChildFrame('form',indexin);
                         form.attr("id",data.clubId);
                         form.find('.clubname').attr("value",data.clubName);
                     }
@@ -172,7 +171,11 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/adminpage/table/contactList?clubId='+data.clubId,
+                    content: '/adminpage/table/clubContact.html',
+                    success:function (layero,indexin) {
+                        var body=layer.getChildFrame('body',index);
+                        body.attr("id",data.clubId);
+                    }
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

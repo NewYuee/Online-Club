@@ -1,6 +1,7 @@
 package com.ljy.oneclub.service;
 
 import com.ljy.oneclub.entity.Active;
+import com.ljy.oneclub.vo.ActiveJson;
 import com.ljy.oneclub.vo.ActiveVO;
 import com.ljy.oneclub.vo.DayActiveVO;
 
@@ -36,4 +37,8 @@ public interface ActiveService {
     int countByPrimaryKey();
 
     DayActiveVO countActiveByDayDate(String time);
+
+    List<ActiveJson> selectAllActive();
+
+    DayActiveVO countDayActiveByClubIdAndDateTime(Integer getuId, String timeStr);
 }

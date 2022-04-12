@@ -27,4 +27,8 @@ public interface ClubContactMapper {
     int updateByPrimaryKeySelective(ClubContact record);
 
     int updateByPrimaryKey(ClubContact record);
+
+    List<ClubContact> getAllContactInfo();
+
+    int countAll();
 }

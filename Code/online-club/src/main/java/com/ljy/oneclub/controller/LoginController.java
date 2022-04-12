@@ -303,6 +303,7 @@ public class LoginController {
                 session.setAttribute("myclub_list",clubList);
             }
             session.removeAttribute("userInfo");
+            session.removeAttribute("admin");
             session.setAttribute("userInfo",selectOne);
             return Msg.success();
         }
@@ -314,16 +315,18 @@ public class LoginController {
      * @return
      */
     @RequestMapping("admin")
-    public String loadAdminLoginPage(){
+    public String loadAdminLoginPage(HttpSession session){
+        session.removeAttribute("admin");
         return "admin/login";
     }
 
     /**
      * 后台登录处理,成功返回对应管理界面
-     * @param user
+     * @param user 登录用户对象
      * @param session
      * @return
      */
+    @ApiDoc
     @RequestMapping(value = "admin/login")
     @ResponseBody
     public Msg adminLogin(User user,HttpSession session){
@@ -335,6 +338,8 @@ public class LoginController {
         User one = userService.selectOne(user);
         if (one!=null){
             logger.info("管理员:"+one.getuName()+"登录了后台");
+            session.removeAttribute("userInfo");
+            session.removeAttribute("admin");
             session.setAttribute("admin",one);
         }
         else {

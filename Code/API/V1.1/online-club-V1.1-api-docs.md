@@ -135,6 +135,62 @@ active/delete/{id} `GET` `POST`
 	"data":{}
 }
 ```
+## 根据活动id删除活动及其关联数据
+
+**
+
+**请求URL**
+
+active/admin/deleteActive `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+aid|int|否|活动id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 获取全部活动信息
+
+**
+
+**请求URL**
+
+active/getAll `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+page|int|否|页码
+limit|int|否|分页大小
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":[{
+		"a_id":"int",
+		"a_type":"string",
+		"u_id":"int",
+		"u_name":"string",
+		"updateTime":"date",
+		"omitContent":"string",
+		"comment_count":"int"
+	}],
+	"count":"int"
+}
+```
 # ApplicationController
 ## 获取用户所有申请
 
@@ -182,26 +238,164 @@ appId|string|否|申请单id
 	"data":{}
 }
 ```
-# ChatController
-## 聊天接口
+## getApplication
 
 **
 
 **请求URL**
 
-/chat/{userId}/{toUserId} `GET` `POST` 
+/application/get/{appId} `GET` `POST` 
+
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+# ChatController
+## 根据用户id和聊天对象id获取最近聊天记录，默认5条
+
+**
+
+**请求URL**
+
+/get5ChatMsgs/{uId}/{toUid} `GET` `POST` 
 
 **请求参数**
 
 参数名|类型|必须|描述
 --:|:--:|:--:|:--
-userId|string|是|当前用户id
-toUserId|string|是|聊天对象id
+uId|string|否|当前用户id
+toUid|string|否|聊天对象id
 
 **返回结果**
 
 ```json
-string{}
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据用户id和聊天对象id获取全部聊天记录
+
+**
+
+**请求URL**
+
+/getAllMsgs/{uId}/{toUid} `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+uId|string|否|当前用户id
+toUid|string|否|聊天对象id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据用户id获取未读消息，由未读消息列表解析
+
+**
+
+**请求URL**
+
+/getNotReadMsgs/{uid} `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+uid|string|否|当前用户id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+# ClubContactController
+## 根据社团id获取社团联系人
+
+**
+
+**请求URL**
+
+/club/getContact `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+clubId|int|否|
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":[{
+		"id":"int",
+		"clubId":"int",
+		"realName":"string",
+		"telNum":"string",
+		"email":"string",
+		"departmentInClub":"string",
+		"positionInClub":"string",
+		"other":"string"
+	}],
+	"count":"int"
+}
+```
+## 获取全部社团联系人
+
+**
+
+**请求URL**
+
+/club/getContact/all `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+page|int|否|
+limit|int|否|
+keyword|string|否|
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":[{
+		"id":"int",
+		"clubId":"int",
+		"realName":"string",
+		"telNum":"string",
+		"email":"string",
+		"departmentInClub":"string",
+		"positionInClub":"string",
+		"other":"string"
+	}],
+	"count":"int"
+}
 ```
 # ClubController
 ## 根据用户id查找其加入的社团数
@@ -225,6 +419,116 @@ uid|string|否|用户id
 	"code":"int",
 	"msg":"string",
 	"data":{}
+}
+```
+## 得到社团列表
+
+**
+
+**请求URL**
+
+/club/getAll `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+page|int|否|页数
+limit|int|否|分页大小
+keyword|string|否|搜索的关键词
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":[{
+		"clubId":"int",
+		"clubName":"string",
+		"activeCount":"int",
+		"memberships":"int"
+	}],
+	"count":"int"
+}
+```
+## 更新社团信息
+
+**
+
+**请求URL**
+
+/club/updateInfo `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+username|string|否|社团名
+email|string|否|邮箱地址
+profile|string|否|简介
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 获取管理端首页统计数据
+
+**
+
+**请求URL**
+
+/getData/club/index `GET` `POST` 
+
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据当前session获取事务申请
+
+**
+
+**请求URL**
+
+/club/getApply/all `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+page|int|否|页码
+limit|int|否|分页大小
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":[{
+		"appId":"int",
+		"type":"string",
+		"name":"string",
+		"gender":"string",
+		"telNum":"string",
+		"detailInfo":"string",
+		"reason":"string",
+		"status":"string",
+		"dealResult":"string",
+		"time":"date"
+	}],
+	"count":"int"
 }
 ```
 # CommentController
@@ -259,6 +563,29 @@ activeId|string|否|活动Id
 
 /get/comments/{uid} `GET` `POST` 
 
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据id删除评论
+
+**
+
+**请求URL**
+
+/comment/admin/delete `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+cid|int|否|评论id
 
 **返回结果**
 
@@ -452,8 +779,108 @@ r_email|string|是|邮箱地址
 	"data":{}
 }
 ```
+## 后台登录处理,成功返回对应管理界面
+
+**
+
+**请求URL**
+
+/admin/login `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+uId|int|否|
+uName|string|否|
+uPassword|string|否|
+uMailAdd|string|否|
+uAuthNo|int|否|
+uProfile|string|否|
+uProfilePhotoName|string|否|
+uProfileBackgroundimgName|string|否|
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+# NoticeController
+## 根据用户id查找点赞消息
+
+**
+
+**请求URL**
+
+/get/notice/like/{uid} `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+uid|string|否|用户id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据id获取评论通知
+
+**
+
+**请求URL**
+
+/get/notice/comment/{uid} `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+uid|string|否|用户id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据id获取申请通知列表
+
+**
+
+**请求URL**
+
+/get/notice/apply/{uid} `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+uid|string|否|用户id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
 # UserController
-## 更改密码
+## updatePasswordInEmail
 
 **
 
@@ -461,13 +888,6 @@ r_email|string|是|邮箱地址
 
 /user/updatePassword `POST` 
 
-**请求参数**
-
-参数名|类型|必须|描述
---:|:--:|:--:|:--
-usermail|string|是|用户邮箱
-uPassword|string|是|用户新密码
-reuPassword|string|是|确认密码
 
 **返回结果**
 
@@ -491,6 +911,150 @@ reuPassword|string|是|确认密码
 参数名|类型|必须|描述
 --:|:--:|:--:|:--
 content|string|否|
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 得到用户列表
+
+**
+
+**请求URL**
+
+/user/getAll `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+page|int|否|页码
+limit|int|否|分页大小
+keyword|string|否|搜索的关键词
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":[{
+		"uId":"int",
+		"uName":"string",
+		"uPassword":"string",
+		"uMailAdd":"string",
+		"uAuthNo":"int",
+		"uProfile":"string",
+		"uProfilePhotoName":"string",
+		"uProfileBackgroundimgName":"string"
+	}],
+	"count":"int"
+}
+```
+## 得到管理端首页系统数据统计
+
+**
+
+**请求URL**
+
+/getData/admin/index `GET` `POST` 
+
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 根据id删除用户
+
+**
+
+**请求URL**
+
+/user/delete `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+uid|string|否|用户id
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 新增社团用户
+
+**
+
+**请求URL**
+
+/insert/club `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+username|string|否|社团名
+password|string|否|密码
+email|string|否|邮箱
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 新增用户
+
+**
+
+**请求URL**
+
+/insert/user `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+username|string|否|用户名
+password|string|否|密码
+email|string|否|邮箱
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## updateClubInfo
+
+**
+
+**请求URL**
+
+/user/updateClubInfo `POST` 
+
 
 **返回结果**
 

@@ -1,16 +1,21 @@
 package com.ljy.oneclub.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.ljy.oneclub.entity.ClubMember;
+import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.msg.Msg;
-import com.ljy.oneclub.service.ClubMemberService;
-import com.ljy.oneclub.service.UserService;
+import com.ljy.oneclub.service.*;
+import com.ljy.oneclub.vo.*;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -21,6 +26,15 @@ public class ClubController {
 
     @Autowired
     ClubMemberService clubMemberService;
+
+    @Autowired
+    ActiveService activeService;
+
+    @Autowired
+    ApplicationService applicationService;
+
+    @Autowired
+    ActiveAndClubService activeAndClubService;
 
     /**
      * 根据用户id查找其加入的社团数
@@ -40,4 +54,134 @@ public class ClubController {
         List<ClubMember> clubMemberList = clubMemberService.selectMyClubByUid(uid);
         return Msg.success().addData("clubCount",clubMemberList.size());
     }
+
+    /**
+     * 得到社团列表
+     * @param page 页数
+     * @param pageSize 分页大小
+     * @param keyword 搜索的关键词
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("club/getAll")
+    @ResponseBody
+    public ClubTableData getAllClub(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                    @RequestParam(value = "limit",defaultValue = "15")Integer pageSize,
+                                    @RequestParam(value = "keyword",defaultValue = "null")String keyword){
+        ClubTableData clubTableData = new ClubTableData();
+        //开始pagehelper
+        List<User> users;
+        int count;
+        if (keyword.equals("null")) {
+            PageHelper.startPage(page,pageSize);
+            users = userService.getAllUserByAid(5);
+            count = userService.countByAid(5);
+        } else {
+            PageHelper.startPage(page,pageSize);
+            users = userService.selectClubByKeyWords(keyword);
+            count = userService.countByAidAndKeyWord(5,keyword);
+        }
+        List<ClubTableJson> clubTableJsonList=new ArrayList<>();
+        for (User user:users){
+            ClubTableJson clubTableJson = new ClubTableJson();
+            clubTableJson.setClubId(user.getuId());
+            clubTableJson.setClubName(user.getuName());
+            int activeCount=activeService.countActiveByUid(user.getuId());
+            int membershipCount=clubMemberService.countMembershipByClubId(user.getuId());
+            clubTableJson.setActiveCount(activeCount);
+            clubTableJson.setMemberships(membershipCount);
+            clubTableJsonList.add(clubTableJson);
+        }
+        clubTableData.setCount(count);
+        clubTableData.setData(clubTableJsonList);
+        clubTableData.setCode(0);
+        return clubTableData;
+    }
+
+    /**
+     * 更新社团信息
+     * @param username 社团名
+     * @param email 邮箱地址
+     * @param profile 简介
+     * @param session 当前session
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping(value = "club/updateInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg updateClubInfo(@RequestParam("username") String username,
+                              @RequestParam("email") String email,
+                              @RequestParam("profile") String profile,
+                              HttpSession session){
+        User admin=(User) session.getAttribute("admin");
+        if (admin!=null&&admin.getuName().equals(username)){
+            admin.setuProfile(profile);
+            admin.setuMailAdd(email);
+            userService.updateInfo(admin);
+            session.removeAttribute("admin");
+            session.setAttribute("admin",admin);
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+
+    /**
+     * 获取管理端首页统计数据
+     * @param session
+     * @return
+     * @throws ParseException
+     */
+    @ApiDoc
+    @RequestMapping("getData/club/index")
+    @ResponseBody
+    public Msg getClubIndexData(HttpSession session) throws ParseException {
+        User admin=(User)session.getAttribute("admin");
+        if (admin==null){
+            return Msg.fail();
+        }
+        int membershipCount = clubMemberService.countMembershipByClubId(admin.getuId());
+        int notDealApplicationCount=applicationService.countNotDealApplicationByClubid(admin.getuId());
+        int activeCountInClub=activeAndClubService.countByClubId(admin.getuId());
+        int dayActiveCount=0;
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String format = simpleDateFormat.format(date);
+        Date time=simpleDateFormat.parse(format);
+        String timeStr = simpleDateFormat.format(time);
+        DayActiveVO dayActiveVO =activeService.countDayActiveByClubIdAndDateTime(admin.getuId(),timeStr);
+        if (dayActiveVO!=null){
+            dayActiveCount=dayActiveVO.getCount();
+        }
+        ClubIndexData clubIndexData=new ClubIndexData(notDealApplicationCount,membershipCount,activeCountInClub,dayActiveCount);
+        return Msg.success().addData("indexData",clubIndexData);
+    }
+
+    /**
+     * 根据当前session获取事务申请
+     * @param page 页码
+     * @param pageSize 分页大小
+     * @param session 当前session
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("club/getApply/all")
+    @ResponseBody
+    public ClubAppTable getApplyList(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                     @RequestParam(value = "limit",defaultValue = "15")Integer pageSize,
+                                     HttpSession session){
+        ClubAppTable tableData = new ClubAppTable();
+        tableData.setCode(0);
+        User admin=(User)session.getAttribute("admin");
+        if (admin==null){
+            tableData.setCode(1);
+            return tableData;
+        }
+        tableData.setCount(applicationService.countApplicationByClubId(admin.getuId()));
+        PageHelper.startPage(page,pageSize);
+        List<ApplicationJson> applicationJsons=applicationService.getApplicationByClubId(admin.getuId());
+        tableData.setData(applicationJsons);
+        return tableData;
+    }
+
 }

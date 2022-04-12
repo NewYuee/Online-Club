@@ -3,6 +3,8 @@ package com.ljy.oneclub.dao;
 import com.ljy.oneclub.entity.Application;
 import com.ljy.oneclub.entity.ApplicationExample;
 import java.util.List;
+
+import com.ljy.oneclub.vo.ApplicationJson;
 import org.apache.ibatis.annotations.Param;
 
 public interface ApplicationMapper {
@@ -27,4 +29,6 @@ public interface ApplicationMapper {
     int updateByPrimaryKeySelective(Application record);
 
     int updateByPrimaryKey(Application record);
+
+    List<ApplicationJson> getApplicationByClubId(@Param("clubId") Integer getuId);
 }

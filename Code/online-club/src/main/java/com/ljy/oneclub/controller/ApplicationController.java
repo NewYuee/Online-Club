@@ -40,12 +40,23 @@ public class ApplicationController {
     @RequestMapping("apply/{appId}")
     public ModelAndView appDetail(@PathVariable(value = "appId")String aid,HttpSession session){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("error/500");
+        modelAndView.setViewName("error/404");
         int appid=0;
         try {
             appid=Integer.parseInt(aid);
         } catch (NumberFormatException e) {
             logger.error("查看申请表单详情输入错误参数！");
+            return modelAndView;
+        }
+        User admin=(User)session.getAttribute("admin");
+        if (admin!=null){
+            modelAndView.setViewName("clubpage/applicationdetails");
+            Application application=applicationService.selectById(appid);
+            User club=userService.selectUserById(application.getAppToUserId());
+            if (club!=null){
+                modelAndView.addObject("club",club);
+            }
+            modelAndView.addObject("applicationInfo",application);
             return modelAndView;
         }
         User user=(User)session.getAttribute("userInfo");

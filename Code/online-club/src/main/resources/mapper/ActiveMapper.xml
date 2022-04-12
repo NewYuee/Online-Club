@@ -37,6 +37,13 @@
     <result column="u_profile_photo_name" property="profile_name" jdbcType="VARCHAR"/>
     <result column="u_profile_backgroundimg_name" property="bkpicName" jdbcType="VARCHAR"/>
   </resultMap>
+    <resultMap id="ActiveJson" type="com.ljy.oneclub.vo.ActiveJson">
+        <id column="active_id" property="a_id" jdbcType="INTEGER" />
+        <result column="u_id" property="u_id" jdbcType="INTEGER" />
+        <result column="a_type" property="a_type" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="u_name" property="u_name" jdbcType="VARCHAR"/>
+    </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.ljy.oneclub.entity.Active" extends="BaseResultMap" >
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -461,6 +468,25 @@
   <select id="countActiveByDayDate" resultMap="DayACount">
     select date_format(update_time, '%Y-%m-%d') date, count(*) count
     from active
+    group by date_format(update_time, '%Y-%m-%d')
+    HAVING date =#{time}
+  </select>
+  <select id="selectAllActive" resultMap="ActiveJson">
+    SELECT active_id,
+    case
+    when active_type=40 then '文章'
+    when active_type=50 then '动态'
+    end as a_type,
+    a.u_id,
+    u.u_name,
+    update_time
+    from active a LEFT JOIN user u on a.u_id=u.u_id
+    ORDER BY update_time desc
+  </select>
+  <select id="countDayActiveByClubIdAndDateTime" resultMap="DayACount">
+    select date_format(update_time, '%Y-%m-%d') date, count(*) count
+    from (SELECT a.active_id,a.u_id,a.update_time from active a , active_and_club ac
+		where  ac.active_id=a.active_id and ac.from_club_id=#{clubId}) se
     group by date_format(update_time, '%Y-%m-%d')
     HAVING date =#{time}
   </select>

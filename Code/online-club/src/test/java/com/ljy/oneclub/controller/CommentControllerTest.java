@@ -4,6 +4,7 @@ import com.ljy.oneclub.entity.Message;
 import com.ljy.oneclub.service.CommentService;
 import com.ljy.oneclub.service.MessageService;
 import com.ljy.oneclub.service.UserService;
+import com.ljy.oneclub.vo.CommentJson;
 import com.ljy.oneclub.vo.NotReadMsgVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,5 +37,11 @@ public class CommentControllerTest {
             Message message = messageService.getLastNotReadMessageByUidAndToUid(notReadMsgVO.getUid(), "49382333");
             System.out.println("最后一消息为:"+message.getContent()+" "+message.getUpdateTime());
         }
+    }
+
+    @Test
+    public void testKeyword(){
+        List<CommentJson> commentJsons = commentService.getCommentByKeyword("%好%");
+        System.out.println(commentJsons.size());
     }
 }

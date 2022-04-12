@@ -24,6 +24,16 @@ public class RedirectHandler {
     public String redictAPage(@PathVariable("urla") String urla,@PathVariable("urlb") String urlb){
         return "adminpage/"+urla+"/"+urlb;
     }
+
+    @GetMapping("clubpage/{urlb}")
+    public String redirectclubM(@PathVariable("urlb") String urlb){
+        return "clubpage/"+urlb;
+    }
+    @GetMapping("clubpage/{urla}/{urlb}")
+    public String redictclubAPage(@PathVariable("urla") String urla,@PathVariable("urlb") String urlb){
+        return "clubpage/"+urla+"/"+urlb;
+    }
+
     @RequestMapping("admin/{urlb}/{urlc}")
     public String redirectT(@PathVariable("urlb") String urlb,@PathVariable("urlc") String urlc){
         return "admin/"+urlb+"/"+urlc;

@@ -41,4 +41,20 @@ public class ActiveAndClubServiceImpl implements ActiveAndClubService {
     public ActiveAndClubVO getActiveAndClubVO(int a_id) {
         return activeAndClubMapper.getActiveAndClubVO(a_id);
     }
+
+    @Override
+    public int countByClubId(Integer getuId) {
+        ActiveAndClubExample activeAndClubExample = new ActiveAndClubExample();
+        ActiveAndClubExample.Criteria criteria = activeAndClubExample.createCriteria();
+        criteria.andFromClubIdEqualTo(getuId);
+        return activeAndClubMapper.countByExample(activeAndClubExample);
+    }
+
+    @Override
+    public void deleteByAid(int a_id) {
+        ActiveAndClubExample activeAndClubExample = new ActiveAndClubExample();
+        ActiveAndClubExample.Criteria criteria = activeAndClubExample.createCriteria();
+        criteria.andFromClubIdEqualTo(a_id);
+        activeAndClubMapper.deleteByExample(activeAndClubExample);
+    }
 }

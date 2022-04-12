@@ -57,8 +57,14 @@
                     <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#getLikeNum">
                         根据活动id获取点赞数，以及是否点赞
                     </a>
-                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#getAllActiveIndex">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#delActiveByid">
                         根据id删除动态
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#adminDelActiveByid">
+                        根据活动id删除活动及其关联数据
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#getAllActive">
+                        获取全部活动信息
                     </a>
             </div>
         </div>
@@ -74,6 +80,9 @@
                     <a class="catalog-item" href="com_ljy_oneclub_controller_ApplicationController.html#deleteApplicationById">
                         根据申请单id删除申请
                     </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ApplicationController.html#getApplication">
+                        getApplication
+                    </a>
             </div>
         </div>
         <div class="panel">
@@ -82,33 +91,68 @@
                 <i class="glyphicon glyphicon-align-justify"></i> ChatController
             </div>
             <div id="collapse2" class="collapse " aria-labelledby="heading2">
-                    <a class="catalog-item" href="com_ljy_oneclub_controller_ChatController.html#getChat">
-                        聊天接口
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ChatController.html#get5Messages">
+                        根据用户id和聊天对象id获取最近聊天记录，默认5条
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ChatController.html#getAllMsgByUidAndToUid">
+                        根据用户id和聊天对象id获取全部聊天记录
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ChatController.html#getMessageNotRead">
+                        根据用户id获取未读消息，由未读消息列表解析
                     </a>
             </div>
         </div>
         <div class="panel">
             <div id="heading3" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
                  aria-expanded="true" data-target="#collapse3" aria-controls="collapse3">
-                <i class="glyphicon glyphicon-align-justify"></i> ClubController
+                <i class="glyphicon glyphicon-align-justify"></i> ClubContactController
             </div>
             <div id="collapse3" class="collapse " aria-labelledby="heading3">
-                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getClubCountByUid">
-                        根据用户id查找其加入的社团数
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubContactController.html#getContactByClubId">
+                        根据社团id获取社团联系人
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubContactController.html#getAllContactByClubId">
+                        获取全部社团联系人
                     </a>
             </div>
         </div>
         <div class="panel">
             <div id="heading4" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
                  aria-expanded="true" data-target="#collapse4" aria-controls="collapse4">
-                <i class="glyphicon glyphicon-align-justify"></i> CommentController
+                <i class="glyphicon glyphicon-align-justify"></i> ClubController
             </div>
             <div id="collapse4" class="collapse " aria-labelledby="heading4">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getClubCountByUid">
+                        根据用户id查找其加入的社团数
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getAllClub">
+                        得到社团列表
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#updateClubInfo">
+                        更新社团信息
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getClubIndexData">
+                        获取管理端首页统计数据
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getApplyList">
+                        根据当前session获取事务申请
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading5" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse5" aria-controls="collapse5">
+                <i class="glyphicon glyphicon-align-justify"></i> CommentController
+            </div>
+            <div id="collapse5" class="collapse " aria-labelledby="heading5">
                     <a class="catalog-item" href="com_ljy_oneclub_controller_CommentController.html#getCommentsByActiveId">
                         根据活动Id获取评论
                     </a>
                     <a class="catalog-item" href="com_ljy_oneclub_controller_CommentController.html#getCommentsByUid">
                         根据用户id获取用自己的评论信息
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_CommentController.html#admindeleteCommentByCid">
+                        根据id删除评论
                     </a>
                     <a class="catalog-item" href="com_ljy_oneclub_controller_CommentController.html#deleteCommentByCid">
                         根据id删除评论
@@ -116,11 +160,11 @@
             </div>
         </div>
         <div class="panel">
-            <div id="heading5" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
-                 aria-expanded="true" data-target="#collapse5" aria-controls="collapse5">
+            <div id="heading6" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse6" aria-controls="collapse6">
                 <i class="glyphicon glyphicon-align-justify"></i> LoginController
             </div>
-            <div id="collapse5" class="collapse " aria-labelledby="heading5">
+            <div id="collapse6" class="collapse " aria-labelledby="heading6">
                     <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#loginPage">
                         返回登录注册页面
                     </a>
@@ -145,19 +189,57 @@
                     <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#login">
                         用户登录
                     </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#adminLogin">
+                        后台登录处理,成功返回对应管理界面
+                    </a>
             </div>
         </div>
         <div class="panel">
-            <div id="heading6" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
-                 aria-expanded="true" data-target="#collapse6" aria-controls="collapse6">
+            <div id="heading7" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse7" aria-controls="collapse7">
+                <i class="glyphicon glyphicon-align-justify"></i> NoticeController
+            </div>
+            <div id="collapse7" class="collapse " aria-labelledby="heading7">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_NoticeController.html#getNoticeOfLike">
+                        根据用户id查找点赞消息
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_NoticeController.html#getCommentNotice">
+                        根据id获取评论通知
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_NoticeController.html#getApplicationNotice">
+                        根据id获取申请通知列表
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading8" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse8" aria-controls="collapse8">
                 <i class="glyphicon glyphicon-align-justify"></i> UserController
             </div>
-            <div id="collapse6" class="collapse in " aria-labelledby="heading6">
+            <div id="collapse8" class="collapse in " aria-labelledby="heading8">
                     <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#updatePasswordInEmail">
-                        更改密码
+                        updatePasswordInEmail
                     </a>
                     <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#updateIntro">
                         更新个人简介
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#getAllUsers">
+                        得到用户列表
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#getDataIndexForAdmin">
+                        得到管理端首页系统数据统计
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#deleteUserByUid">
+                        根据id删除用户
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#insertClub">
+                        新增社团用户
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#insertUser">
+                        新增用户
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#updateClubInfo">
+                        updateClubInfo
                     </a>
             </div>
         </div>
@@ -174,39 +256,12 @@
                 <div class="page-inner">
                     <div class="action-list">
                         <div class="action-item">
-<h2 id="updatePasswordInEmail"><a href="#">更改密码 </a></h2>
+<h2 id="updatePasswordInEmail"><a href="#">updatePasswordInEmail </a></h2>
 <p><strong>请求URL</strong></p>
 <p>
     <code>/user/updatePassword</code>
         <span class="label label-default">POST</span>
 </p>
-        <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
-        <table class="table table-bordered">
-            <tr>
-                <th>参数名</th>
-                <th>类型</th>
-                <th>必须</th>
-                <th>描述</th>
-            </tr>
-                    <tr>
-                        <td>usermail</td>
-                        <td>string</td>
-                        <td>是</td>
-                        <td>用户邮箱</td>
-                    </tr>
-                    <tr>
-                        <td>uPassword</td>
-                        <td>string</td>
-                        <td>是</td>
-                        <td>用户新密码</td>
-                    </tr>
-                    <tr>
-                        <td>reuPassword</td>
-                        <td>string</td>
-                        <td>是</td>
-                        <td>确认密码</td>
-                    </tr>
-        </table>
     <p><strong>返回结果</strong></p>
     <pre class="prettyprint lang-json">{
 	"code":"int",
@@ -259,6 +314,247 @@
         </div>
                         </div>
                         <hr>
+                        <div class="action-item">
+<h2 id="getAllUsers"><a href="#">得到用户列表 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/user/getAll</code>
+        <span class="label label-default">GET</span>
+        <span class="label label-default">POST</span>
+</p>
+        <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
+        <table class="table table-bordered">
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必须</th>
+                <th>描述</th>
+            </tr>
+                    <tr>
+                        <td>page</td>
+                        <td>int</td>
+                        <td>否</td>
+                        <td>页码</td>
+                    </tr>
+                    <tr>
+                        <td>limit</td>
+                        <td>int</td>
+                        <td>否</td>
+                        <td>分页大小</td>
+                    </tr>
+                    <tr>
+                        <td>keyword</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>搜索的关键词</td>
+                    </tr>
+        </table>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{
+	"code":"int",
+	"msg":"string",
+	"data":[{
+		"uId":"int",
+		"uName":"string",
+		"uPassword":"string",
+		"uMailAdd":"string",
+		"uAuthNo":"int",
+		"uProfile":"string",
+		"uProfilePhotoName":"string",
+		"uProfileBackgroundimgName":"string"
+	}],
+	"count":"int"
+}</pre>
+        <div class="form-group">
+            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_UserController_getAllUsers_UserTableData.html"><i
+                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
+            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_UserController_getAllUsers_UserTableData.html"><i class="fa fa-apple"
+                                                                                                 aria-hidden="true"></i>
+                iOS Model</a>
+        </div>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="getDataIndexForAdmin"><a href="#">得到管理端首页系统数据统计 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/getData/admin/index</code>
+        <span class="label label-default">GET</span>
+        <span class="label label-default">POST</span>
+</p>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}</pre>
+        <div class="form-group">
+            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_UserController_getDataIndexForAdmin_Msg.html"><i
+                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
+            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_UserController_getDataIndexForAdmin_Msg.html"><i class="fa fa-apple"
+                                                                                                 aria-hidden="true"></i>
+                iOS Model</a>
+        </div>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="deleteUserByUid"><a href="#">根据id删除用户 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/user/delete</code>
+        <span class="label label-default">POST</span>
+</p>
+        <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
+        <table class="table table-bordered">
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必须</th>
+                <th>描述</th>
+            </tr>
+                    <tr>
+                        <td>uid</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>用户id</td>
+                    </tr>
+        </table>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}</pre>
+        <div class="form-group">
+            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_UserController_deleteUserByUid_Msg.html"><i
+                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
+            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_UserController_deleteUserByUid_Msg.html"><i class="fa fa-apple"
+                                                                                                 aria-hidden="true"></i>
+                iOS Model</a>
+        </div>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="insertClub"><a href="#">新增社团用户 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/insert/club</code>
+        <span class="label label-default">POST</span>
+</p>
+        <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
+        <table class="table table-bordered">
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必须</th>
+                <th>描述</th>
+            </tr>
+                    <tr>
+                        <td>username</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>社团名</td>
+                    </tr>
+                    <tr>
+                        <td>password</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>密码</td>
+                    </tr>
+                    <tr>
+                        <td>email</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>邮箱</td>
+                    </tr>
+        </table>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}</pre>
+        <div class="form-group">
+            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_UserController_insertClub_Msg.html"><i
+                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
+            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_UserController_insertClub_Msg.html"><i class="fa fa-apple"
+                                                                                                 aria-hidden="true"></i>
+                iOS Model</a>
+        </div>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="insertUser"><a href="#">新增用户 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/insert/user</code>
+        <span class="label label-default">GET</span>
+        <span class="label label-default">POST</span>
+</p>
+        <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
+        <table class="table table-bordered">
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必须</th>
+                <th>描述</th>
+            </tr>
+                    <tr>
+                        <td>username</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>用户名</td>
+                    </tr>
+                    <tr>
+                        <td>password</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>密码</td>
+                    </tr>
+                    <tr>
+                        <td>email</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>邮箱</td>
+                    </tr>
+        </table>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}</pre>
+        <div class="form-group">
+            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_UserController_insertUser_Msg.html"><i
+                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
+            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_UserController_insertUser_Msg.html"><i class="fa fa-apple"
+                                                                                                 aria-hidden="true"></i>
+                iOS Model</a>
+        </div>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="updateClubInfo"><a href="#">updateClubInfo </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/user/updateClubInfo</code>
+        <span class="label label-default">POST</span>
+</p>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}</pre>
+        <div class="form-group">
+            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_UserController_updateClubInfo_Msg.html"><i
+                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
+            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_UserController_updateClubInfo_Msg.html"><i class="fa fa-apple"
+                                                                                                 aria-hidden="true"></i>
+                iOS Model</a>
+        </div>
+                        </div>
+                        <hr>
                     </div>
                 </div>
             </div>
@@ -277,13 +573,25 @@
             {name: 'ActiveController.根据资源id对活动进行点赞', url: 'com_ljy_oneclub_controller_ActiveController.html#collectActive'},
             {name: 'ActiveController.根据资源id对活动取消点赞', url: 'com_ljy_oneclub_controller_ActiveController.html#uncollectActive'},
             {name: 'ActiveController.根据活动id获取点赞数，以及是否点赞', url: 'com_ljy_oneclub_controller_ActiveController.html#getLikeNum'},
-            {name: 'ActiveController.根据id删除动态', url: 'com_ljy_oneclub_controller_ActiveController.html#getAllActiveIndex'},
+            {name: 'ActiveController.根据id删除动态', url: 'com_ljy_oneclub_controller_ActiveController.html#delActiveByid'},
+            {name: 'ActiveController.根据活动id删除活动及其关联数据', url: 'com_ljy_oneclub_controller_ActiveController.html#adminDelActiveByid'},
+            {name: 'ActiveController.获取全部活动信息', url: 'com_ljy_oneclub_controller_ActiveController.html#getAllActive'},
             {name: 'ApplicationController.获取用户所有申请', url: 'com_ljy_oneclub_controller_ApplicationController.html#getApplications'},
             {name: 'ApplicationController.根据申请单id删除申请', url: 'com_ljy_oneclub_controller_ApplicationController.html#deleteApplicationById'},
-            {name: 'ChatController.聊天接口', url: 'com_ljy_oneclub_controller_ChatController.html#getChat'},
+            {name: 'ApplicationController.getApplication', url: 'com_ljy_oneclub_controller_ApplicationController.html#getApplication'},
+            {name: 'ChatController.根据用户id和聊天对象id获取最近聊天记录，默认5条', url: 'com_ljy_oneclub_controller_ChatController.html#get5Messages'},
+            {name: 'ChatController.根据用户id和聊天对象id获取全部聊天记录', url: 'com_ljy_oneclub_controller_ChatController.html#getAllMsgByUidAndToUid'},
+            {name: 'ChatController.根据用户id获取未读消息，由未读消息列表解析', url: 'com_ljy_oneclub_controller_ChatController.html#getMessageNotRead'},
+            {name: 'ClubContactController.根据社团id获取社团联系人', url: 'com_ljy_oneclub_controller_ClubContactController.html#getContactByClubId'},
+            {name: 'ClubContactController.获取全部社团联系人', url: 'com_ljy_oneclub_controller_ClubContactController.html#getAllContactByClubId'},
             {name: 'ClubController.根据用户id查找其加入的社团数', url: 'com_ljy_oneclub_controller_ClubController.html#getClubCountByUid'},
+            {name: 'ClubController.得到社团列表', url: 'com_ljy_oneclub_controller_ClubController.html#getAllClub'},
+            {name: 'ClubController.更新社团信息', url: 'com_ljy_oneclub_controller_ClubController.html#updateClubInfo'},
+            {name: 'ClubController.获取管理端首页统计数据', url: 'com_ljy_oneclub_controller_ClubController.html#getClubIndexData'},
+            {name: 'ClubController.根据当前session获取事务申请', url: 'com_ljy_oneclub_controller_ClubController.html#getApplyList'},
             {name: 'CommentController.根据活动Id获取评论', url: 'com_ljy_oneclub_controller_CommentController.html#getCommentsByActiveId'},
             {name: 'CommentController.根据用户id获取用自己的评论信息', url: 'com_ljy_oneclub_controller_CommentController.html#getCommentsByUid'},
+            {name: 'CommentController.根据id删除评论', url: 'com_ljy_oneclub_controller_CommentController.html#admindeleteCommentByCid'},
             {name: 'CommentController.根据id删除评论', url: 'com_ljy_oneclub_controller_CommentController.html#deleteCommentByCid'},
             {name: 'LoginController.返回登录注册页面', url: 'com_ljy_oneclub_controller_LoginController.html#loginPage'},
             {name: 'LoginController.获取验证码图片', url: 'com_ljy_oneclub_controller_LoginController.html#getVerify'},
@@ -293,8 +601,18 @@
             {name: 'LoginController.用户注册', url: 'com_ljy_oneclub_controller_LoginController.html#verifyMailCode'},
             {name: 'LoginController.发送验证码到邮箱', url: 'com_ljy_oneclub_controller_LoginController.html#getHtml'},
             {name: 'LoginController.用户登录', url: 'com_ljy_oneclub_controller_LoginController.html#login'},
-            {name: 'UserController.更改密码', url: 'com_ljy_oneclub_controller_UserController.html#updatePasswordInEmail'},
+            {name: 'LoginController.后台登录处理,成功返回对应管理界面', url: 'com_ljy_oneclub_controller_LoginController.html#adminLogin'},
+            {name: 'NoticeController.根据用户id查找点赞消息', url: 'com_ljy_oneclub_controller_NoticeController.html#getNoticeOfLike'},
+            {name: 'NoticeController.根据id获取评论通知', url: 'com_ljy_oneclub_controller_NoticeController.html#getCommentNotice'},
+            {name: 'NoticeController.根据id获取申请通知列表', url: 'com_ljy_oneclub_controller_NoticeController.html#getApplicationNotice'},
+            {name: 'UserController.updatePasswordInEmail', url: 'com_ljy_oneclub_controller_UserController.html#updatePasswordInEmail'},
             {name: 'UserController.更新个人简介', url: 'com_ljy_oneclub_controller_UserController.html#updateIntro'},
+            {name: 'UserController.得到用户列表', url: 'com_ljy_oneclub_controller_UserController.html#getAllUsers'},
+            {name: 'UserController.得到管理端首页系统数据统计', url: 'com_ljy_oneclub_controller_UserController.html#getDataIndexForAdmin'},
+            {name: 'UserController.根据id删除用户', url: 'com_ljy_oneclub_controller_UserController.html#deleteUserByUid'},
+            {name: 'UserController.新增社团用户', url: 'com_ljy_oneclub_controller_UserController.html#insertClub'},
+            {name: 'UserController.新增用户', url: 'com_ljy_oneclub_controller_UserController.html#insertUser'},
+            {name: 'UserController.updateClubInfo', url: 'com_ljy_oneclub_controller_UserController.html#updateClubInfo'},
     ];
 
 

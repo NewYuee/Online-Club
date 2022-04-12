@@ -64,29 +64,38 @@ public class UserController {
     MessageService messageService;
 
 
-    /**
-     * 更改密码
-     * @param usermail 用户邮箱
-     * @param uPassword 用户新密码
-     * @param reuPassword 确认密码
-     * @return
-     */
+
     @ApiDoc
     @RequestMapping(value = "user/updatePassword",method = RequestMethod.POST)
     @ResponseBody
-    public Msg updatePasswordInEmail(@RequestParam String usermail,
-                                     @RequestParam String uPassword,
-                                     @RequestParam String reuPassword){
-        Jedis jedis = redisUtil.getJedis();
-        String s = jedis.get(usermail);
-        if (s!=null&&uPassword==reuPassword&&uPassword!=null){
-            String encodePassword = DigestUtils.md5DigestAsHex(uPassword.getBytes());
-            if (userService.updatePasswordByEmail(usermail,encodePassword)==0){
-                return Msg.fail();
-            }
-            return Msg.success();
+    public Msg updatePasswordInEmail(@RequestParam("new_password") String new_password,
+                                     @RequestParam("old_password") String old_password,
+                                     @RequestParam("again_password") String again_password,
+                                     HttpSession session){
+        String encodePwd="";
+        String encodeOldPwd=DigestUtils.md5DigestAsHex(old_password.getBytes());
+        if (!again_password.equals(new_password)){
+            return Msg.fail().addData("errorInfo","前后两次密码不正确");
         }
-        return Msg.fail();
+        else {
+            encodePwd=DigestUtils.md5DigestAsHex(new_password.getBytes());
+        }
+        User user=(User)session.getAttribute("userInfo");
+        if (user!=null){
+            return Msg.fail().addData("errorInfo","登录用户身份不合法");
+        }
+        User admin=(User)session.getAttribute("admin");
+        if (admin!=null){
+            if (!admin.getuPassword().equals(encodeOldPwd)){
+                return Msg.fail().addData("errorInfo","旧密码输入不正确");
+            }else {
+                admin.setuPassword(encodePwd);
+                userService.updateInfo(admin);
+                session.removeAttribute("admin");
+                return Msg.success();
+            }
+        }
+        return Msg.fail().addData("errorInfo","未知错误，请稍后再试");
     }
 
     /**
@@ -394,49 +403,6 @@ public class UserController {
 
 
     /**
-     * 得到社团列表
-     * @param page 页数
-     * @param pageSize 分页大小
-     * @param keyword 搜索的关键词
-     * @return
-     */
-    @ApiDoc
-    @RequestMapping("club/getAll")
-    @ResponseBody
-    public ClubTableData getAllClub(@RequestParam(value = "page",defaultValue = "1") Integer page,
-                                    @RequestParam(value = "limit",defaultValue = "15")Integer pageSize,
-                                    @RequestParam(value = "keyword",defaultValue = "null")String keyword){
-        ClubTableData clubTableData = new ClubTableData();
-        //开始pagehelper
-        List<User> users;
-        int count;
-        if (keyword.equals("null")) {
-            PageHelper.startPage(page,pageSize);
-            users = userService.getAllUserByAid(5);
-            count = userService.countByAid(5);
-        } else {
-            PageHelper.startPage(page,pageSize);
-            users = userService.selectClubByKeyWords(keyword);
-            count = userService.countByAidAndKeyWord(5,keyword);
-        }
-        List<ClubTableJson> clubTableJsonList=new ArrayList<>();
-        for (User user:users){
-            ClubTableJson clubTableJson = new ClubTableJson();
-            clubTableJson.setClubId(user.getuId());
-            clubTableJson.setClubName(user.getuName());
-            int activeCount=activeService.countActiveByUid(user.getuId());
-            int membershipCount=clubMemberService.countMembershipByClubId(user.getuId());
-            clubTableJson.setActiveCount(activeCount);
-            clubTableJson.setMemberships(membershipCount);
-            clubTableJsonList.add(clubTableJson);
-        }
-        clubTableData.setCount(count);
-        clubTableData.setData(clubTableJsonList);
-        clubTableData.setCode(0);
-        return clubTableData;
-    }
-
-    /**
      * 得到管理端首页系统数据统计
      * @return
      * @throws ParseException
@@ -479,10 +445,13 @@ public class UserController {
             return Msg.fail();
         }
         userService.deleteByUid(userId);
+        List<ActiveVO> activeVOList = activeService.selectHomePageActiveByUid(userId);
+        for (ActiveVO activeVO:activeVOList){
+            activeAndClubService.deleteByAid(activeVO.getA_id());
+        }
         activeService.deleteActiveByUid(userId);
         commentService.deleteCommentByUid(userId);
         messageService.deleteMessageByUid(userId);
-
         return Msg.success();
     }
 

@@ -60,3 +60,54 @@ function reloadPage() {
     });
     location.reload();
 }
+
+function delAppById(appId) {
+    $.ajax({
+        url:'/application/delete/'+appId,
+        type:'GET',
+        async:false,
+        success:function (result) {
+            if (result.code==200){
+                return 1;
+            }
+            else {
+                console.log("删除申请失败，appid="+appId);
+                return 0;
+            }
+        }
+    })
+}
+
+function delClubMember(memberId) {
+    $.ajax({
+        url:'/club/delete/member',
+        data:'memberId='+memberId,
+        type:'POST',
+        async:false,
+        success:function (result) {
+            if (result.code==200){
+                return 1;
+            }
+            else {
+                console.log("删除成员失败，id="+memberId);
+                return 0;
+            }
+        }
+    })
+}
+
+function dealApplyStatus(appid,type,value) {
+    $.ajax({
+        url:'/club/dealApply',
+        data:{'appId':appid,'type':type,'other':value},
+        type:'POST',
+        dataType:'json',
+        async:false,
+        success:function (result) {
+            if (result.code!=200){
+                console.log("操作失败,稍后再试");
+                return 0;
+            }
+        }
+    });
+}

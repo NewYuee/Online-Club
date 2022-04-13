@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ActiveTableData</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.css">
+<link href="../style.css" rel="stylesheet" />
+</head>
+<body onload="PR.prettyPrint()">
+<pre class="prettyprint">
+<xmp>
+#import <Foundation/Foundation>;
+
+@interface ActiveTableData : NSObject
+
+//
+@property (nonatomic, strong) NSInteger code;
+//
+@property (nonatomic, assign) NSString msg;
+//
+@property (nonatomic, strong) ActiveJson[] data;
+//
+@property (nonatomic, strong) NSInteger count;
+
+
+@end
+</xmp>
+</pre>
+
+<pre class="prettyprint">
+<xmp>
+#import <Foundation/Foundation>;
+
+@interface ActiveJson : NSObject
+
+//
+@property (nonatomic, strong) NSInteger aId;
+//
+@property (nonatomic, assign) NSString aType;
+//
+@property (nonatomic, strong) NSInteger uId;
+//
+@property (nonatomic, assign) NSString uName;
+//
+@property (nonatomic, assign) NSString updateTime;
+//
+@property (nonatomic, assign) NSString omitContent;
+//
+@property (nonatomic, strong) NSInteger commentCount;
+
+
+@end
+</xmp>
+</pre>
+
+
+<script src="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.js"></script>
+</body>
+</html>

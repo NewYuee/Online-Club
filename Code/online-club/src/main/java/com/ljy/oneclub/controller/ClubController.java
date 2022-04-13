@@ -1,6 +1,7 @@
 package com.ljy.oneclub.controller;
 
 import com.github.pagehelper.PageHelper;
+import com.ljy.oneclub.entity.Application;
 import com.ljy.oneclub.entity.ClubMember;
 import com.ljy.oneclub.entity.User;
 import com.ljy.oneclub.msg.Msg;
@@ -184,4 +185,148 @@ public class ClubController {
         return tableData;
     }
 
+    /**
+     * 获取社团成员
+     * @param page 页码
+     * @param pageSize 页大小
+     * @param keyword 用户名关键词
+     * @param session 当前session
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("club/getMember")
+    @ResponseBody
+    public ClubMemberTableData getMemberByClubId(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                                 @RequestParam(value = "limit",defaultValue = "15")Integer pageSize,
+                                                 @RequestParam(value = "keyword",defaultValue = "null")String keyword,
+                                                 HttpSession session){
+        ClubMemberTableData clubMember = new ClubMemberTableData();
+        clubMember.setCode(0);
+        User club=(User)session.getAttribute("admin");
+        if (club==null){
+            return clubMember;
+        }
+        int count = clubMemberService.countMembershipByClubId(club.getuId());
+        clubMember.setCount(count);
+        if (keyword.equals("null")){
+            PageHelper.startPage(page,pageSize);
+            List<ClubMember> members=clubMemberService.selectMemberByClubId(club.getuId());
+            clubMember.setData(members);
+        }
+        else{
+            int nums=clubMemberService.countClubMembersLikeName("%"+keyword+"%",club.getuId());
+            clubMember.setCount(nums);
+            PageHelper.startPage(page,pageSize);
+            List<ClubMember> members=clubMemberService.selectClubMembersLikeName("%"+keyword+"%",club.getuId());
+            clubMember.setData(members);
+        }
+        return clubMember;
+    }
+
+    /**
+     * 根据id删除社团成员
+     * @param session 当前session
+     * @param mId 成员id
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping(value = "club/delete/member",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg delMemberById(HttpSession session,@RequestParam("memberId")Integer mId){
+        ClubMember clubMember=clubMemberService.selectById(mId);
+        User club=(User)session.getAttribute("admin");
+        if (club==null){
+            return Msg.fail();
+        }
+        if (clubMember.getClubId().equals(club.getuId())){
+            int i=clubMemberService.deleteById(mId);
+        }
+        return Msg.success();
+    }
+
+    /**
+     * 添加社团成员
+     * @param session 当前session
+     * @param clubMember 成员对象
+     * @return
+     * @throws ParseException
+     */
+    @ApiDoc
+    @RequestMapping(value = "club/addMember",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg addClubMember(HttpSession session,ClubMember clubMember) throws ParseException {
+        User club=(User)session.getAttribute("admin");
+        if (club==null){
+            return Msg.fail().addData("errorInfo","没有登录");
+        }
+        clubMember.setClubId(club.getuId());
+        clubMember.setUserId(404);
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = simpleDateFormat.format(date);
+        Date time=simpleDateFormat.parse(format);
+        clubMember.setMemJoinTime(time);
+        int i = clubMemberService.insertClubMember(clubMember);
+        if (i==0){
+            return Msg.fail().addData("errorInfo","添加失败！");
+        }
+        return Msg.success();
+    }
+
+
+
+    /**
+     * 根据申请id处理事务
+     * @param appId 申请id
+     * @param type 处理结果(成功/失败)
+     * @param dealResult 处理意见
+     * @return
+     * @throws ParseException
+     */
+    @ApiDoc
+    @RequestMapping(value = "club/dealApply",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg dealApplyById(@RequestParam("appId")Integer appId,
+                             @RequestParam("type")Integer type,
+                             @RequestParam("other")String dealResult) throws ParseException {
+        Application application = new Application();
+        application.setAppId(appId);
+        if (dealResult.length()==0){
+            application.setAppDealResult("无");
+        }else {
+            application.setAppDealResult(dealResult);
+        }
+        application.setAppStatus(type);
+        int i=applicationService.updateApplicationSelect(application);
+        if (i==0){
+            return Msg.fail();
+        }
+        if (type==0){
+            return Msg.success();
+        }
+        if (type==1){
+            Application sourceInfo = applicationService.selectById(appId);
+            int res=0;
+            if (sourceInfo.getAppType()==1){
+                ClubMember clubMember = new ClubMember();
+                clubMember.setClubId(sourceInfo.getAppToUserId());
+                clubMember.setUserId(sourceInfo.getAppUserId());
+                clubMember.setMemName(sourceInfo.getAppUserName());
+                clubMember.setGender(sourceInfo.getAppGender());
+                clubMember.setMemTelNum(sourceInfo.getAppUserTelNum());
+                clubMember.setMemDetailInfo(sourceInfo.getAppUserDetailInfo());
+                Date date=new Date();
+                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String format = simpleDateFormat.format(date);
+                Date time=simpleDateFormat.parse(format);
+                clubMember.setMemJoinTime(time);
+                res=clubMemberService.insertClubMember(clubMember);
+            }
+            else if (sourceInfo.getAppType()==2){
+                res=clubMemberService.deleteClubMemberByUidAndClubId(sourceInfo.getAppUserId(),sourceInfo.getAppToUserId());
+            }
+        }
+
+        return Msg.success();
+    }
 }

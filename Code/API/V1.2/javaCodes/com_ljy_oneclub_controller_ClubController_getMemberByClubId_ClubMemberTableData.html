@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ClubMemberTableData</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.css">
+<link href="../style.css" rel="stylesheet" />
+</head>
+<body onload="PR.prettyPrint()">
+<pre class="prettyprint lang-java">
+public class ClubMemberTableData implements Serializable{
+
+    private int code; //
+    private String msg; //
+    private ClubMember[] data; //
+    private int count; //
+
+    public int getCode(){
+        return code;
+    }
+
+    public void setCode(int code){
+        this.code = code;
+    }
+
+    public String getMsg(){
+        return msg;
+    }
+
+    public void setMsg(String msg){
+        this.msg = msg;
+    }
+
+    public ClubMember[] getData(){
+        return data;
+    }
+
+    public void setData(ClubMember[] data){
+        this.data = data;
+    }
+
+    public int getCount(){
+        return count;
+    }
+
+    public void setCount(int count){
+        this.count = count;
+    }
+
+}
+</pre>
+
+
+<pre class="prettyprint lang-java">
+public class ClubMember implements Serializable{
+
+    private int id; //
+    private int clubId; //
+    private int userId; //
+    private String memName; //
+    private String gender; //
+    private String memTelNum; //
+    private String memDetailInfo; //
+    private String memJoinTime; //
+
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public int getClubId(){
+        return clubId;
+    }
+
+    public void setClubId(int clubId){
+        this.clubId = clubId;
+    }
+
+    public int getUserId(){
+        return userId;
+    }
+
+    public void setUserId(int userId){
+        this.userId = userId;
+    }
+
+    public String getMemName(){
+        return memName;
+    }
+
+    public void setMemName(String memName){
+        this.memName = memName;
+    }
+
+    public String getGender(){
+        return gender;
+    }
+
+    public void setGender(String gender){
+        this.gender = gender;
+    }
+
+    public String getMemTelNum(){
+        return memTelNum;
+    }
+
+    public void setMemTelNum(String memTelNum){
+        this.memTelNum = memTelNum;
+    }
+
+    public String getMemDetailInfo(){
+        return memDetailInfo;
+    }
+
+    public void setMemDetailInfo(String memDetailInfo){
+        this.memDetailInfo = memDetailInfo;
+    }
+
+    public String getMemJoinTime(){
+        return memJoinTime;
+    }
+
+    public void setMemJoinTime(String memJoinTime){
+        this.memJoinTime = memJoinTime;
+    }
+
+}
+</pre>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.js"></script>
+</body>
+</html>

@@ -60,22 +60,21 @@ public class ApplicationController {
             return modelAndView;
         }
         User user=(User)session.getAttribute("userInfo");
-        Application application=applicationService.selectById(appid);
-        if (application==null){
+        Application applicationInfo=applicationService.selectById(appid);
+        if (applicationInfo==null){
             logger.error("查看表单不存在");
             return modelAndView;
         }
-        if (!application.getAppUserId().equals(user.getuId())){
+        if (!applicationInfo.getAppUserId().equals(user.getuId())){
             logger.error("查看表单不属于当前用户:"+user.getuName());
             return modelAndView;
         }
         modelAndView.setViewName("application");
-        User club=userService.selectUserById(application.getAppToUserId());
+        User club=userService.selectUserById(applicationInfo.getAppToUserId());
         if (club!=null){
             modelAndView.addObject("club",club);
         }
-        modelAndView.addObject("applicationInfo",application);
-
+        modelAndView.addObject("applicationInfo",applicationInfo);
         return modelAndView;
     }
 
@@ -193,7 +192,14 @@ public class ApplicationController {
         }
         Application application = applicationService.selectById(aId);
         User user=(User)session.getAttribute("userInfo");
-        if (user.getuId().equals(application.getAppUserId())){
+        if (user!=null&&user.getuId().equals(application.getAppUserId())){
+            int res=applicationService.deleteApplicationById(aId);
+            if (res!=0){
+                return Msg.success();
+            }
+        }
+        User admin=(User)session.getAttribute("admin");
+        if (admin!=null){
             int res=applicationService.deleteApplicationById(aId);
             if (res!=0){
                 return Msg.success();

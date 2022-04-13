@@ -1,5 +1,7 @@
 package com.ljy.oneclub.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class ClubMember {
@@ -17,6 +19,7 @@ public class ClubMember {
 
     private String memDetailInfo;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="UTC")
     private Date memJoinTime;
 
     public Integer getId() {

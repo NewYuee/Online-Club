@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>UserTableData</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.css">
+<link href="../style.css" rel="stylesheet" />
+</head>
+<body onload="PR.prettyPrint()">
+<pre class="prettyprint lang-java">
+public class UserTableData implements Serializable{
+
+    private int code; //
+    private String msg; //
+    private User[] data; //
+    private int count; //
+
+    public int getCode(){
+        return code;
+    }
+
+    public void setCode(int code){
+        this.code = code;
+    }
+
+    public String getMsg(){
+        return msg;
+    }
+
+    public void setMsg(String msg){
+        this.msg = msg;
+    }
+
+    public User[] getData(){
+        return data;
+    }
+
+    public void setData(User[] data){
+        this.data = data;
+    }
+
+    public int getCount(){
+        return count;
+    }
+
+    public void setCount(int count){
+        this.count = count;
+    }
+
+}
+</pre>
+
+
+<pre class="prettyprint lang-java">
+public class User implements Serializable{
+
+    private int uId; //
+    private String uName; //
+    private String uPassword; //
+    private String uMailAdd; //
+    private int uAuthNo; //
+    private String uProfile; //
+    private String uProfilePhotoName; //
+    private String uProfileBackgroundimgName; //
+
+    public int getUId(){
+        return uId;
+    }
+
+    public void setUId(int uId){
+        this.uId = uId;
+    }
+
+    public String getUName(){
+        return uName;
+    }
+
+    public void setUName(String uName){
+        this.uName = uName;
+    }
+
+    public String getUPassword(){
+        return uPassword;
+    }
+
+    public void setUPassword(String uPassword){
+        this.uPassword = uPassword;
+    }
+
+    public String getUMailAdd(){
+        return uMailAdd;
+    }
+
+    public void setUMailAdd(String uMailAdd){
+        this.uMailAdd = uMailAdd;
+    }
+
+    public int getUAuthNo(){
+        return uAuthNo;
+    }
+
+    public void setUAuthNo(int uAuthNo){
+        this.uAuthNo = uAuthNo;
+    }
+
+    public String getUProfile(){
+        return uProfile;
+    }
+
+    public void setUProfile(String uProfile){
+        this.uProfile = uProfile;
+    }
+
+    public String getUProfilePhotoName(){
+        return uProfilePhotoName;
+    }
+
+    public void setUProfilePhotoName(String uProfilePhotoName){
+        this.uProfilePhotoName = uProfilePhotoName;
+    }
+
+    public String getUProfileBackgroundimgName(){
+        return uProfileBackgroundimgName;
+    }
+
+    public void setUProfileBackgroundimgName(String uProfileBackgroundimgName){
+        this.uProfileBackgroundimgName = uProfileBackgroundimgName;
+    }
+
+}
+</pre>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.js"></script>
+</body>
+</html>

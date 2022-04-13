@@ -21,4 +21,6 @@ public interface ApplicationService {
     List<ApplicationJson> getApplicationByClubId(Integer getuId);
 
     int countApplicationByClubId(Integer getuId);
+
+    int updateApplicationSelect(Application application);
 }

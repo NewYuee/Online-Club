@@ -72,4 +72,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         criteria.andAppToUserIdEqualTo(getuId);
         return applicationMapper.countByExample(applicationExample);
     }
+
+    @Override
+    public int updateApplicationSelect(Application application) {
+        return applicationMapper.updateByPrimaryKeySelective(application);
+    }
 }

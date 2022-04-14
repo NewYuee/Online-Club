@@ -48,6 +48,12 @@
           "target": "_self",
           "child": [
             {
+              "title": "社团联系人列表",
+              "href": "/adminpage/table/allclubContact.html",
+              "icon": "fa fa-user-secret",
+              "target": "_self"
+            },
+            {
               "title": "社团列表",
               "href": "/adminpage/table/clubtable.html",
               "icon": "fa fa-list-alt",
@@ -98,9 +104,9 @@
       "target": "",
       "child": [
         {
-          "title": "社团联系人列表",
-          "href": "/adminpage/table/allclubContact.html",
-          "icon": "fa fa-user-secret",
+          "title": "服务器日志",
+          "href": "https://mmad.top:82/log/",
+          "icon": "fa fa-share-alt",
           "target": "_self"
         }
       ]

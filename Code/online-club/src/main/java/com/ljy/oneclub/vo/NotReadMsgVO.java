@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class NotReadMsgVO {
     private Integer messageCount;
-    @JsonFormat(pattern="MM月dd日 HH:mm:ss",timezone="UTC")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date lastTime;
     private String messageContent;
     private int nowUid;

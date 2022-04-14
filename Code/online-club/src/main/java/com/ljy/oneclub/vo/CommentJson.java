@@ -10,7 +10,7 @@ public class CommentJson {
     private int u_id;
     private String u_name;
     private String content;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="UTC")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updateTime;
 
     public int getC_id() {

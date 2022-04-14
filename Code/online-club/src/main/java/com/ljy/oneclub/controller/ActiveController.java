@@ -262,7 +262,7 @@ public class ActiveController {
     }
 
     /**
-     * 根据id删除动态
+     * 用户根据id删除动态
      * @param session
      * @return
      */
@@ -285,6 +285,7 @@ public class ActiveController {
             int i=activeService.deleteActiveByAid(aid);
             noticeService.deleteNoticeBySourceId(aid);
             commentService.deleteCommentBySourceId(aid);
+            likeRecordService.deleteBySourceId(aid);
             if (i==0){
                 return Msg.fail();
             }
@@ -293,7 +294,7 @@ public class ActiveController {
     }
 
     /**
-     * 根据活动id删除活动及其关联数据
+     * 管理员根据活动id删除活动及其关联数据
      * @param aid 活动id
      * @return
      */
@@ -308,6 +309,7 @@ public class ActiveController {
         int i=activeService.deleteActiveByAid(aid);
         noticeService.deleteNoticeBySourceId(aid);
         commentService.deleteCommentBySourceId(aid);
+        likeRecordService.deleteBySourceId(aid);
         if (i==0){
             return Msg.fail();
         }

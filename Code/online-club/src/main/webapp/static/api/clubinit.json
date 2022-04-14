@@ -42,12 +42,6 @@
               "target": "_self"
             },
             {
-              "title": "文章/新闻管理",
-              "href": "/clubpage/table/articleList.html",
-              "icon": "fa fa-calendar-o",
-              "target": "_self"
-            },
-            {
               "title": "新增动态",
               "href": "/clubpage/addActive.html",
               "icon": "fa fa-pencil",

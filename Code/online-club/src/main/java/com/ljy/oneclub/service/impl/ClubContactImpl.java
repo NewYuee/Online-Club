@@ -73,4 +73,9 @@ public class ClubContactImpl implements ClubContactService {
         criteria.andRealNameLike("%"+keyword+"%");
         return clubContactMapper.countByExample(clubContactExample);
     }
+
+    @Override
+    public int insertOne(ClubContact clubContact) {
+        return clubContactMapper.insertSelective(clubContact);
+    }
 }

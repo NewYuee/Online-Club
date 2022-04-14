@@ -11,7 +11,7 @@ public class Active {
 
     private Integer activeType;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="UTC")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updateTime;
 
     private Integer viewedCount;

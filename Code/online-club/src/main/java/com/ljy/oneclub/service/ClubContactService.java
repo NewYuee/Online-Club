@@ -20,4 +20,6 @@ public interface ClubContactService {
     List<ClubContact> getContactInfoByKeyword(String keyword);
 
     int countByKeyword(String keyword);
+
+    int insertOne(ClubContact clubContact);
 }

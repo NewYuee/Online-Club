@@ -1,9 +1,7 @@
 package com.ljy.oneclub.controller;
 
 import com.github.pagehelper.PageHelper;
-import com.ljy.oneclub.entity.Application;
-import com.ljy.oneclub.entity.ClubMember;
-import com.ljy.oneclub.entity.User;
+import com.ljy.oneclub.entity.*;
 import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.*;
 import com.ljy.oneclub.vo.*;
@@ -36,6 +34,12 @@ public class ClubController {
 
     @Autowired
     ActiveAndClubService activeAndClubService;
+
+    @Autowired
+    ClubContactService clubContactService;
+
+    @Autowired
+    CommentService commentService;
 
     /**
      * 根据用户id查找其加入的社团数
@@ -273,7 +277,155 @@ public class ClubController {
         return Msg.success();
     }
 
+    /**
+     * 新增社团联系人
+     * @param session 当前社团session
+     * @param clubContact 插入的联系人对象
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping(value = "club/addContact",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg addClubContact(HttpSession session, ClubContact clubContact){
+        User club=(User)session.getAttribute("admin");
+        if (club==null){
+            return Msg.fail().addData("errorInfo","请登录！");
+        }
+        clubContact.setClubId(club.getuId());
+        int i=clubContactService.insertOne(clubContact);
+        if (i==0){
+            return Msg.fail().addData("errorInfo","添加失败，未知错误,稍后再试！");
+        }
+        return Msg.success();
+    }
 
+    /**
+     * 社团发布一般动态
+     * @param session 当前社团session
+     * @param content 发送的内容
+     * @return
+     * @throws ParseException
+     */
+    @ApiDoc
+    @RequestMapping(value = "club/sendActive",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg addActive(HttpSession session, @RequestParam("content")String content) throws ParseException {
+        User club=(User)session.getAttribute("admin");
+        if (club==null){
+            return Msg.fail().addData("errorInfo","请登录！");
+        }
+        Active active = new Active();
+        active.setuId(club.getuId());
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = simpleDateFormat.format(date);
+        Date time=simpleDateFormat.parse(format);
+        active.setUpdateTime(time);
+        active.setActiveType(40);
+        active.setLiked(0);
+        active.setViewedCount(0);
+        active.setContent(content);
+        int res = activeService.insertOne(active);
+        if (res==0){
+            return Msg.fail().addData("errorInfo","发送失败，未知错误,稍后再试！");
+        }
+        Active newestActive = activeService.selectNewActiveByUid(club.getuId(), 40);
+        ActiveAndClub activeAndClub = new ActiveAndClub();
+        activeAndClub.setActiveId(newestActive.getActiveId());
+        activeAndClub.setFromClubId(club.getuId());
+        int i=activeAndClubService.insertOne(activeAndClub);
+        if (i==0){
+            return Msg.fail().addData("errorInfo","发表成功但动态绑定失败，稍后再试！");
+        }
+        return Msg.success();
+    }
+
+
+    /**
+     * 社团发布文章/新闻
+     * @param session 当前社团的session
+     * @param content 发布的内容
+     * @param title 标题
+     * @return
+     * @throws ParseException
+     */
+    @ApiDoc
+    @RequestMapping(value = "club/sendArticle",method = RequestMethod.POST)
+    @ResponseBody
+    public Msg addArticle(HttpSession session, @RequestParam("content")String content,@RequestParam("title")String title) throws ParseException {
+        User club=(User)session.getAttribute("admin");
+        if (club==null){
+            return Msg.fail().addData("errorInfo","请登录！");
+        }
+        Active active = new Active();
+        active.setuId(club.getuId());
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = simpleDateFormat.format(date);
+        Date time=simpleDateFormat.parse(format);
+        active.setUpdateTime(time);
+        active.setActiveType(50);
+        active.setLiked(0);
+        active.setViewedCount(0);
+        active.setContent(content);
+        active.setActiveTitle(title);
+        int res = activeService.insertOne(active);
+        if (res==0){
+            return Msg.fail().addData("errorInfo","发送失败，未知错误,稍后再试！");
+        }
+        Active newestActive = activeService.selectNewActiveByUid(club.getuId(), 50);
+        ActiveAndClub activeAndClub = new ActiveAndClub();
+        activeAndClub.setActiveId(newestActive.getActiveId());
+        activeAndClub.setFromClubId(club.getuId());
+        int i=activeAndClubService.insertOne(activeAndClub);
+        if (i==0){
+            return Msg.fail().addData("errorInfo","发表成功但社团绑定失败，稍后再试！");
+        }
+        return Msg.success();
+    }
+
+
+    /**
+     * 社团活动列表
+     * @param page 页码
+     * @param pageSize 分页大小
+     * @param session 当前session
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("club/active/getAll")
+    @ResponseBody
+    public ActiveTableData getAllClubActive(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                            @RequestParam(value = "limit",defaultValue = "15")Integer pageSize,
+                                            HttpSession session){
+        User club=(User)session.getAttribute("admin");
+        ActiveTableData activeTableData = new ActiveTableData();
+        activeTableData.setCode(0);
+        if (club==null){
+            activeTableData.setCount(0);
+            return activeTableData;
+        }
+        int count = activeService.countActiveByUid(club.getuId());
+        activeTableData.setCount(count);
+        PageHelper.startPage(page,pageSize);
+        List<ActiveJson> activeJsons=activeService.selectAllActiveByClubId(club.getuId());
+        if (activeJsons.size()==0){
+            activeTableData.setData(activeJsons);
+            return activeTableData;
+        }
+        for (ActiveJson activeJson:activeJsons){
+            //获取评论数
+            activeJson.setComment_count(commentService.getCommentCountByAid(activeJson.getA_id()));
+            Active active = activeService.selectById(activeJson.getA_id());
+            if (active.getActiveType()==40){
+                activeJson.setOmitContent(active.getContent());
+            }else if (active.getActiveType()==50){
+                activeJson.setOmitContent("《"+active.getActiveTitle()+"》");
+            }
+        }
+        activeTableData.setData(activeJsons);
+        return activeTableData;
+    }
 
     /**
      * 根据申请id处理事务

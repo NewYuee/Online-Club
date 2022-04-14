@@ -41,4 +41,6 @@ public interface ActiveService {
     List<ActiveJson> selectAllActive();
 
     DayActiveVO countDayActiveByClubIdAndDateTime(Integer getuId, String timeStr);
+
+    List<ActiveJson> selectAllActiveByClubId(Integer getuId);
 }

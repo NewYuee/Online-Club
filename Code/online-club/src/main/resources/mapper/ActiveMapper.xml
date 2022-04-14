@@ -483,6 +483,19 @@
     from active a LEFT JOIN user u on a.u_id=u.u_id
     ORDER BY update_time desc
   </select>
+  <select id="selectAllActiveByClubId" resultMap="ActiveJson">
+    SELECT active_id,
+    case
+    when active_type=40 then '文章'
+    when active_type=50 then '动态'
+    end as a_type,
+    a.u_id,
+    u.u_name,
+    update_time
+    from active a LEFT JOIN user u on a.u_id=u.u_id
+    where a.u_id=#{clubId}
+    ORDER BY update_time desc
+  </select>
   <select id="countDayActiveByClubIdAndDateTime" resultMap="DayACount">
     select date_format(update_time, '%Y-%m-%d') date, count(*) count
     from (SELECT a.active_id,a.u_id,a.update_time from active a , active_and_club ac

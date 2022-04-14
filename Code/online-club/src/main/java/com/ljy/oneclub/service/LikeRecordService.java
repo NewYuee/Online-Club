@@ -10,4 +10,6 @@ public interface LikeRecordService {
     int uncollectActiveByActiveIdAndUid(Integer sourceId, Integer getuId);
 
     int getCountByActiveId(int aid);
+
+    void deleteBySourceId(int aid);
 }

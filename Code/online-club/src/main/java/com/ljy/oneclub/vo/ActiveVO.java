@@ -13,7 +13,7 @@ public class ActiveVO {
     private String profile_name;
     private String bkpicName;
     private String u_name;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="UTC")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updateTime;
     private String content;
     private String title;

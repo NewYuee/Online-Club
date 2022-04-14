@@ -9,7 +9,7 @@ public class ActiveJson {
     private String a_type;
     private int u_id;
     private String u_name;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="UTC")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updateTime;
     private String omitContent;
     private int comment_count;

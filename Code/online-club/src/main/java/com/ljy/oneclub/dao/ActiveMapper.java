@@ -56,4 +56,6 @@ public interface ActiveMapper {
     List<ActiveJson> selectAllActive();
 
     DayActiveVO countDayActiveByClubIdAndDateTime(@Param("clubId") Integer getuId, @Param("time") String timeStr);
+
+    List<ActiveJson> selectAllActiveByClubId(@Param("clubId") Integer getuId);
 }

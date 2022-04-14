@@ -19,7 +19,7 @@ public class ClubMember {
 
     private String memDetailInfo;
 
-    @JsonFormat(pattern="yyyy-MM-dd",timezone="UTC")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date memJoinTime;
 
     public Integer getId() {

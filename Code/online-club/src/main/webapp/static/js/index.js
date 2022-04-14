@@ -5,8 +5,6 @@ function reloadPage() {
     location.reload();
 }
 
-
-//富文本编辑器=======start
 $(function () {
     $('#bxSlider').bxSlider({
         captions: true,//自动控制
@@ -25,6 +23,8 @@ $(function () {
 $(function (){
     $("[data-toggle='popover']").popover();
 });
+
+//富文本编辑器=======start
 $(document).ready(function(){
     $('#summernote').summernote({
         focus:true,

@@ -14,7 +14,7 @@ public class ApplicationJson {
     private String reason;
     private String status;
     private String dealResult;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="UTC")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date time;
 
     public Date getTime() {

@@ -40,4 +40,12 @@ public class LikeRecordServiceImpl implements LikeRecordService {
         criteria.andLikeActiveIdEqualTo(aid);
         return likedRecordMapper.countByExample(likedRecordExample);
     }
+
+    @Override
+    public void deleteBySourceId(int aid) {
+        LikedRecordExample likedRecordExample = new LikedRecordExample();
+        LikedRecordExample.Criteria criteria = likedRecordExample.createCriteria();
+        criteria.andLikeActiveIdEqualTo(aid);
+        likedRecordMapper.deleteByExample(likedRecordExample);
+    }
 }

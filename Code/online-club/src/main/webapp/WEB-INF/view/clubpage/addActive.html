@@ -12,32 +12,19 @@
     </style>
 </head>
 <body>
-<form class="layui-form layuimini-form">
-    <div class="layui-form-item">
-        <label class="layui-form-label required">社团名</label>
+<div class="layui-form layuimini-form">
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">详细信息</label>
         <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="名字不能为空" placeholder="请输入社团名" value="" class="layui-input">
-            <tip>填写社团的名称。</tip>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">密码</label>
-        <div class="layui-input-block">
-            <input type="password" name="password" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入密码"  value="" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">邮箱</label>
-        <div class="layui-input-block">
-            <input type="email" name="email" placeholder="请输入邮箱" value="" class="layui-input">
+            <textarea name="content" class="layui-textarea" placeholder="输入动态内容"></textarea>
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认发布</button>
         </div>
     </div>
-</form>
+</div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="/static/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script>
@@ -50,13 +37,13 @@
         form.on('submit(saveBtn)', function (data) {
             var formData=data.field;
             $.ajax({
-                url:'/insert/club',
+                url:'/club/sendActive',
                 data:formData,
                 type:'POST',
                 async:false,
                 success:function (result) {
                     if (result.code==200){
-                        layer.msg("添加社团成功!");
+                        layer.msg("发布成功!");
                     }
                     else {
                         layer.msg(result.data.errorInfo);

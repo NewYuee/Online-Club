@@ -120,5 +120,10 @@ public class ActiveServiceImpl implements ActiveService {
         return activeMapper.countDayActiveByClubIdAndDateTime(getuId,timeStr);
     }
 
+    @Override
+    public List<ActiveJson> selectAllActiveByClubId(Integer getuId) {
+        return activeMapper.selectAllActiveByClubId(getuId);
+    }
+
 
 }

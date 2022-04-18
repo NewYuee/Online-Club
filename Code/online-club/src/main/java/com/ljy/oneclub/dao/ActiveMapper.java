@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ljy.oneclub.vo.ActiveJson;
+import com.ljy.oneclub.vo.ActiveOneDayInfo;
 import com.ljy.oneclub.vo.ActiveVO;
 import com.ljy.oneclub.vo.DayActiveVO;
 import org.apache.ibatis.annotations.Param;
@@ -58,4 +59,12 @@ public interface ActiveMapper {
     DayActiveVO countDayActiveByClubIdAndDateTime(@Param("clubId") Integer getuId, @Param("time") String timeStr);
 
     List<ActiveJson> selectAllActiveByClubId(@Param("clubId") Integer getuId);
+
+    DayActiveVO getActiveOneTimeByType(@Param("type") int type, @Param("time") String time);
+
+    List<ActiveOneDayInfo> getActiveAfterOneTimeByType(@Param("type") int type, @Param("time") String time);
+
+    DayActiveVO countOneClubActiveOneTimeByType(@Param("type") int type, @Param("time") String time,@Param("clubId") Integer clubId);
+
+    List<Active> getOneClubActiveAfterOneTime(@Param("time") String s, @Param("clubId") int clubId);
 }

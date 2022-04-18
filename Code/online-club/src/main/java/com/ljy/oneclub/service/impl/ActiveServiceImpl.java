@@ -7,6 +7,7 @@ import com.ljy.oneclub.entity.ActiveAndClubExample;
 import com.ljy.oneclub.entity.ActiveExample;
 import com.ljy.oneclub.service.ActiveService;
 import com.ljy.oneclub.vo.ActiveJson;
+import com.ljy.oneclub.vo.ActiveOneDayInfo;
 import com.ljy.oneclub.vo.ActiveVO;
 import com.ljy.oneclub.vo.DayActiveVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,6 +124,28 @@ public class ActiveServiceImpl implements ActiveService {
     @Override
     public List<ActiveJson> selectAllActiveByClubId(Integer getuId) {
         return activeMapper.selectAllActiveByClubId(getuId);
+    }
+
+
+    @Override
+    public List<ActiveOneDayInfo> getAfterOneDayActiveByType(int type, String time) {
+        return activeMapper.getActiveAfterOneTimeByType(type,time);
+    }
+
+
+    @Override
+    public DayActiveVO countOneDayActiveByType(int type, String time) {
+        return activeMapper.getActiveOneTimeByType(type,time);
+    }
+
+    @Override
+    public DayActiveVO countOneClubActiveOneTimeByType(int type, String time, Integer clubId) {
+        return activeMapper.countOneClubActiveOneTimeByType(type,time,clubId);
+    }
+
+    @Override
+    public List<Active> getOneClubActiveAfterOneTime( String s, int clubId) {
+        return activeMapper.getOneClubActiveAfterOneTime(s,clubId);
     }
 
 

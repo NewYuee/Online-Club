@@ -59,10 +59,10 @@
                         根据活动id获取点赞数，以及是否点赞
                     </a>
                     <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#delActiveByid">
-                        根据id删除动态
+                        用户根据id删除动态
                     </a>
                     <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#adminDelActiveByid">
-                        根据活动id删除活动及其关联数据
+                        管理员根据活动id删除活动及其关联数据
                     </a>
                     <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#getAllActive">
                         获取全部活动信息
@@ -148,6 +148,22 @@
                     </a>
                     <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#addClubMember">
                         添加社团成员
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#addClubContact">
+                        新增社团联系人
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#addActive">
+                        社团发布一般动态
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#addArticle">
+                        社团发布文章/新闻
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getAllClubActive">
+                        社团活动列表
                             <span class="label label-success">新增</span>
                     </a>
                     <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#dealApplyById">
@@ -260,6 +276,10 @@
                     </a>
                     <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#updateClubInfo">
                         updateClubInfo
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#getSysInfo">
+                        获取系统资源数据接口
+                            <span class="label label-success">新增</span>
                     </a>
             </div>
         </div>
@@ -407,8 +427,8 @@
             {name: 'ActiveController.根据资源id对活动进行点赞', url: 'com_ljy_oneclub_controller_ActiveController.html#collectActive'},
             {name: 'ActiveController.根据资源id对活动取消点赞', url: 'com_ljy_oneclub_controller_ActiveController.html#uncollectActive'},
             {name: 'ActiveController.根据活动id获取点赞数，以及是否点赞', url: 'com_ljy_oneclub_controller_ActiveController.html#getLikeNum'},
-            {name: 'ActiveController.根据id删除动态', url: 'com_ljy_oneclub_controller_ActiveController.html#delActiveByid'},
-            {name: 'ActiveController.根据活动id删除活动及其关联数据', url: 'com_ljy_oneclub_controller_ActiveController.html#adminDelActiveByid'},
+            {name: 'ActiveController.用户根据id删除动态', url: 'com_ljy_oneclub_controller_ActiveController.html#delActiveByid'},
+            {name: 'ActiveController.管理员根据活动id删除活动及其关联数据', url: 'com_ljy_oneclub_controller_ActiveController.html#adminDelActiveByid'},
             {name: 'ActiveController.获取全部活动信息', url: 'com_ljy_oneclub_controller_ActiveController.html#getAllActive'},
             {name: 'ApplicationController.获取用户所有申请', url: 'com_ljy_oneclub_controller_ApplicationController.html#getApplications'},
             {name: 'ApplicationController.根据申请单id删除申请', url: 'com_ljy_oneclub_controller_ApplicationController.html#deleteApplicationById'},
@@ -426,6 +446,10 @@
             {name: 'ClubController.获取社团成员', url: 'com_ljy_oneclub_controller_ClubController.html#getMemberByClubId'},
             {name: 'ClubController.根据id删除社团成员', url: 'com_ljy_oneclub_controller_ClubController.html#delMemberById'},
             {name: 'ClubController.添加社团成员', url: 'com_ljy_oneclub_controller_ClubController.html#addClubMember'},
+            {name: 'ClubController.新增社团联系人', url: 'com_ljy_oneclub_controller_ClubController.html#addClubContact'},
+            {name: 'ClubController.社团发布一般动态', url: 'com_ljy_oneclub_controller_ClubController.html#addActive'},
+            {name: 'ClubController.社团发布文章/新闻', url: 'com_ljy_oneclub_controller_ClubController.html#addArticle'},
+            {name: 'ClubController.社团活动列表', url: 'com_ljy_oneclub_controller_ClubController.html#getAllClubActive'},
             {name: 'ClubController.根据申请id处理事务', url: 'com_ljy_oneclub_controller_ClubController.html#dealApplyById'},
             {name: 'CommentController.根据活动Id获取评论', url: 'com_ljy_oneclub_controller_CommentController.html#getCommentsByActiveId'},
             {name: 'CommentController.根据用户id获取用自己的评论信息', url: 'com_ljy_oneclub_controller_CommentController.html#getCommentsByUid'},
@@ -451,6 +475,7 @@
             {name: 'UserController.新增社团用户', url: 'com_ljy_oneclub_controller_UserController.html#insertClub'},
             {name: 'UserController.新增用户', url: 'com_ljy_oneclub_controller_UserController.html#insertUser'},
             {name: 'UserController.updateClubInfo', url: 'com_ljy_oneclub_controller_UserController.html#updateClubInfo'},
+            {name: 'UserController.获取系统资源数据接口', url: 'com_ljy_oneclub_controller_UserController.html#getSysInfo'},
     ];
 
 

@@ -211,8 +211,8 @@ public class LoginController {
         JSONObject jsonMail = JSON.parseObject(jsonObject.get("mail").toString());
         if (emailcode!=null&&jsonMail.getString("validateCode").equals(emailcode)){
             logger.info("注册验证成功");
-            user.setuProfilePhotoName("user_pic.jpg");
-            user.setuProfileBackgroundimgName("defaultbkimg.jpeg");
+            user.setuProfilePhotoName("https://mmad.top:82/res/avatar/user_pic.jpg");
+            user.setuProfileBackgroundimgName("https://mmad.top:82/res/bkImg/defaultbkimg.jpeg");
             user.setuProfile("这家伙很懒，什么也没说。");
             int i = userService.insertUser(user);
             Long del = jedis.del(user.getuMailAdd());
@@ -275,14 +275,14 @@ public class LoginController {
     @ApiDoc
     @RequestMapping(value = "user/login")
     @ResponseBody
-    public Msg login(@RequestParam String verificationCode,User user,HttpSession session){
+    public Msg login(@RequestParam("verificationCode") String verificationCode,User user,HttpSession session){
         String encodePwd = DigestUtils.md5DigestAsHex(user.getuPassword().getBytes());
         logger.info("encodePwd=>"+encodePwd);
         user.setuPassword(encodePwd);
         user.setuAuthNo(10);
-        Object attribute = session.getAttribute(RandomValidateCodeUtil.RANDOMCODEKEY);
+        String attribute =(String) session.getAttribute(RandomValidateCodeUtil.RANDOMCODEKEY);
         if (!attribute.equals(verificationCode)){
-            logger.error("验证码错误");
+            logger.error("验证码错误,用户输入的验证码为:"+verificationCode+" 当前session存入的验证码为:"+attribute);
             return Msg.fail().addData("info","验证码错误");
         }
         User selectOne = userService.selectOne(user);
@@ -294,9 +294,13 @@ public class LoginController {
             if (clubMemberList!=null){
                 for (ClubMember clubMember:clubMemberList){
                     MyClub myClub = new MyClub();
-                    myClub.setClubId(clubMember.getClubId());
-                    String clubName=userService.queryNameById(clubMember.getClubId());
-                    myClub.setClubName(clubName);
+                    User club = userService.selectUserById(clubMember.getClubId());
+                    myClub.setClubName(club.getuName());
+                    myClub.setClubId(club.getuId());
+                    myClub.setIntro(club.getuProfile());
+                    myClub.setHeadPic(club.getuProfilePhotoName());
+                    int i = clubMemberService.countMembershipByClubId(club.getuId());
+                    myClub.setHotVal(i*13);
                     clubList.add(myClub);
                 }
                 session.removeAttribute("myclub_list");

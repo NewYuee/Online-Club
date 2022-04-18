@@ -10,6 +10,7 @@ $(function () {
         captions: true,//自动控制
         auto: true,
         pager:null,
+        touchEnabled: false,
         minSlides: 3,
         maxSlides: 3,
         moveSlides: 1,

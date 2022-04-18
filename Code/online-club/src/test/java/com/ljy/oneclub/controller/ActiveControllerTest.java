@@ -1,15 +1,11 @@
 package com.ljy.oneclub.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.ljy.oneclub.entity.Active;
-import com.ljy.oneclub.entity.Notice;
-import com.ljy.oneclub.entity.User;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ljy.oneclub.entity.SysInfo;
 import com.ljy.oneclub.service.*;
-import com.ljy.oneclub.vo.ActiveAndClubVO;
-import com.ljy.oneclub.vo.ActiveVO;
-import com.ljy.oneclub.vo.DayActiveVO;
-import com.ljy.oneclub.vo.NoticeOfLike;
+import com.ljy.oneclub.utils.SysInfoUtil;
+import com.sun.management.OperatingSystemMXBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +13,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import java.lang.management.ManagementFactory;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+import java.util.ArrayDeque;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Set;
 
 @WebAppConfiguration
 @ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:springmvc.xml"})
@@ -44,36 +43,21 @@ public class ActiveControllerTest {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ClubMemberService clubMemberService;
+
 
     @Test
     public void insertActive() {
-        List<NoticeOfLike> notices=noticeService.getNoticeOfLikeByUid(49382333,"13");
-        System.out.println("noticeSize=>"+notices.size());
+        System.out.println("noticeSize=>");
     }
 
     @Test
-    public void insertArticle() {
-        PageHelper.startPage(1,10);
-        List<User> users=userService.getAllUserByAid(10);
-        //PageInfo pageInfo = new PageInfo(users, 1);
-        System.out.println(users.size());
+    public void testSystemUsage() throws InterruptedException {
     }
 
     @Test
-    public void testActiveVO() throws ParseException {
-        Date date=new Date();
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-        String format = simpleDateFormat.format(date);
-        Date time=simpleDateFormat.parse(format);
-        DayActiveVO dayActiveVO = activeService.countActiveByDayDate("2022-04-08");
-        if (dayActiveVO==null){
-            System.out.println("null");
-        }
-        System.out.println(dayActiveVO.getCount());
+    public void testMap() throws InterruptedException {
     }
 
-    @Test
-    public void testActiveandClub(){
-
-    }
 }

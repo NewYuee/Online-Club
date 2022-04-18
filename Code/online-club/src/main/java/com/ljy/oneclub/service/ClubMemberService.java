@@ -1,6 +1,7 @@
 package com.ljy.oneclub.service;
 
 import com.ljy.oneclub.entity.ClubMember;
+import com.ljy.oneclub.vo.HotClubVO;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface ClubMemberService {
     ClubMember selectById(Integer mId);
 
     int deleteById(Integer mId);
+
+    List<HotClubVO> getIndexClubInfo();
 }

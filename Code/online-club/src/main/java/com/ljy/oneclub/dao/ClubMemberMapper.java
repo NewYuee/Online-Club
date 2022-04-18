@@ -3,6 +3,8 @@ package com.ljy.oneclub.dao;
 import com.ljy.oneclub.entity.ClubMember;
 import com.ljy.oneclub.entity.ClubMemberExample;
 import java.util.List;
+
+import com.ljy.oneclub.vo.HotClubVO;
 import org.apache.ibatis.annotations.Param;
 
 public interface ClubMemberMapper {
@@ -27,4 +29,6 @@ public interface ClubMemberMapper {
     int updateByPrimaryKeySelective(ClubMember record);
 
     int updateByPrimaryKey(ClubMember record);
+
+    List<HotClubVO> getIndexClubInfo();
 }

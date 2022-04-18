@@ -16,6 +16,7 @@ public class RedirectHandler {
         return url;
     }
 
+
     @GetMapping("adminpage/{urlb}")
     public String redirectM(@PathVariable("urlb") String urlb){
         return "adminpage/"+urlb;
@@ -26,11 +27,15 @@ public class RedirectHandler {
     }
 
     @GetMapping("clubpage/{urlb}")
-    public String redirectclubM(@PathVariable("urlb") String urlb){
+    public String redirectclubM(@PathVariable("urlb") String urlb,HttpSession session){
+        if (session.getAttribute("admin")==null)
+            return "admin/login";
         return "clubpage/"+urlb;
     }
     @GetMapping("clubpage/{urla}/{urlb}")
-    public String redictclubAPage(@PathVariable("urla") String urla,@PathVariable("urlb") String urlb){
+    public String redictclubAPage(@PathVariable("urla") String urla,@PathVariable("urlb") String urlb,HttpSession session){
+        if (session.getAttribute("admin")==null)
+            return "admin/login";
         return "clubpage/"+urla+"/"+urlb;
     }
 

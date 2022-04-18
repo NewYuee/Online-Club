@@ -11,6 +11,13 @@
     <result column="mem_detail_info" property="memDetailInfo" jdbcType="VARCHAR" />
     <result column="mem_join_time" property="memJoinTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="HotClubInfo" type="com.ljy.oneclub.vo.HotClubVO">
+    <result column="club_id" property="clubId" jdbcType="INTEGER" />
+    <result column="u_name" property="name" jdbcType="VARCHAR" />
+    <result column="u_profile_photo_name" property="headPicName"/>
+    <result column="u_profile" property="intro"/>
+    <result column="countNum" property="memberCount" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -255,4 +262,10 @@
       mem_join_time = #{memJoinTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getIndexClubInfo" resultMap="HotClubInfo">
+    SELECT a.club_id, u.u_name,u.u_profile_photo_name,u.u_profile,count(a.user_id) countNum
+    from club_member a LEFT JOIN user u ON a.club_id=u.u_id
+    GROUP BY a.club_id
+    ORDER BY countNum desc
+  </select>
 </mapper>

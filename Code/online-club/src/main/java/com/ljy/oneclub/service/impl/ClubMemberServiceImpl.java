@@ -4,6 +4,7 @@ import com.ljy.oneclub.dao.ClubMemberMapper;
 import com.ljy.oneclub.entity.ClubMember;
 import com.ljy.oneclub.entity.ClubMemberExample;
 import com.ljy.oneclub.service.ClubMemberService;
+import com.ljy.oneclub.vo.HotClubVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,5 +82,10 @@ public class ClubMemberServiceImpl implements ClubMemberService {
     @Override
     public int deleteById(Integer mId) {
         return clubMemberMapper.deleteByPrimaryKey(mId);
+    }
+
+    @Override
+    public List<HotClubVO> getIndexClubInfo() {
+        return clubMemberMapper.getIndexClubInfo();
     }
 }

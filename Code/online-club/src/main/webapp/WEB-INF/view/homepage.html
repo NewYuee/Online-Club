@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>用户名</title>
+    <title>我的主页</title>
     <link rel="icon" type="image/png" href="../../static/img/MMAD.png">
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../static/css/index/style.css">
@@ -56,7 +56,6 @@
             <div class="panel panel-warning" id="activeAndarticle">
                 <div class="panel-heading">个人动态</div>
                 <div class="panel-body">
-
                     <div th:if="${Myactives!=null}" th:each="active:${Myactives}">
                         <!--动态-->
                         <div class="card active" th:if="${active.getA_type()==40}">
@@ -141,49 +140,24 @@
                 <div class="panel-heading">我的关注</div>
                 <div class="panel-body">
                     <div class="row">
-                    <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
-                        <img src="../../static/img/user_pic.jpg" alt="...">
-                        <div class="caption" style="font-family:Arial, Helvetica, sans-serif;">
-                            <h4>xxxxxx协会</h4>
-                            <p>yie一个吻啊福娃缺乏却无法去污粉全微分</p>
-                            <p><img style="height: 20px;width: 20px;display: inline-block;"
-                                    src="../../static/img/hot.svg"><span
-                                    style="color: rgb(204, 204, 216);">活跃度:45824</span> <a href="#"
-                                                                                           class="btn btn-warning"
-                                                                                           role="button">进入主页</a></p>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="col-sm-6 col-md-4">
-                        <div class="thumbnail">
-                            <img src="../../static/img/user_pic.jpg" alt="...">
-                            <div class="caption" style="font-family:Arial, Helvetica, sans-serif;">
-                                <h4>xxxxxx协会</h4>
-                                <p>yie一个吻啊福娃缺乏却无法去污粉全微分</p>
-                                <p><img style="height: 20px;width: 20px;display: inline-block;"
-                                        src="../../static/img/hot.svg"><span
-                                        style="color: rgb(204, 204, 216);">活跃度:45824</span> <a href="#"
-                                                                                               class="btn btn-warning"
-                                                                                               role="button">进入主页</a></p>
+                        <div th:if="${session.myclub_list!=null}" th:each="clubs:${session.myclub_list}">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="thumbnail">
+                                    <img th:src="${clubs.getHeadPic()}">
+                                    <div class="caption" style="font-family:Arial, Helvetica, sans-serif;">
+                                        <h4 th:text="${clubs.clubName}"></h4>
+                                        <p th:text="${clubs.intro}"></p>
+                                        <p><img style="height: 20px;width: 20px;display: inline-block;"
+                                                src="../../static/img/hot.svg"><span style="color: rgb(204, 204, 216);" th:text="'活跃度:'+${clubs.hotVal}"></span>
+                                            <a th:href="'/u/'+${clubs.getClubId()}" class="btn btn-warning" role="button">访问主页</a></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-6 col-md-4">
-                        <div class="thumbnail">
-                            <img src="../../static/img/user_pic.jpg" alt="...">
-                            <div class="caption" style="font-family:Arial, Helvetica, sans-serif;">
-                                <h4>xxxxxx协会</h4>
-                                <p>yie一个吻啊福娃缺乏却无法去污粉全微分</p>
-                                <p><img style="height: 20px;width: 20px;display: inline-block;"
-                                        src="../../static/img/hot.svg"><span
-                                        style="color: rgb(204, 204, 216);">活跃度:45824</span> <a href="#"
-                                                                                               class="btn btn-warning"
-                                                                                               role="button">进入主页</a></p>
-                            </div>
+                        <div th:if="${session.myclub_list==null}">
+                            还没有关注任何社团噢~
                         </div>
                     </div>
-                </div>
                 </div>
             </div>
 

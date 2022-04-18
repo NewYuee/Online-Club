@@ -117,7 +117,7 @@ sourceId|string|否|活动id
 	"data":{}
 }
 ```
-## 根据id删除动态
+## 用户根据id删除动态
 
 **
 
@@ -135,7 +135,7 @@ active/delete/{id} `GET` `POST`
 	"data":{}
 }
 ```
-## 根据活动id删除活动及其关联数据
+## 管理员根据活动id删除活动及其关联数据
 
 **
 
@@ -617,6 +617,116 @@ memJoinTime|date|否|
 	"code":"int",
 	"msg":"string",
 	"data":{}
+}
+```
+## 新增社团联系人
+
+**
+
+**请求URL**
+
+/club/addContact `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+id|int|否|
+clubId|int|否|
+realName|string|否|
+telNum|string|否|
+email|string|否|
+departmentInClub|string|否|
+positionInClub|string|否|
+other|string|否|
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 社团发布一般动态
+
+**
+
+**请求URL**
+
+/club/sendActive `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+content|string|否|发送的内容
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 社团发布文章/新闻
+
+**
+
+**请求URL**
+
+/club/sendArticle `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+content|string|否|发布的内容
+title|string|否|标题
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 社团活动列表
+
+**
+
+**请求URL**
+
+/club/active/getAll `GET` `POST` 
+
+**请求参数**
+
+参数名|类型|必须|描述
+--:|:--:|:--:|:--
+page|int|否|页码
+limit|int|否|分页大小
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":[{
+		"a_id":"int",
+		"a_type":"string",
+		"u_id":"int",
+		"u_name":"string",
+		"updateTime":"date",
+		"omitContent":"string",
+		"comment_count":"int"
+	}],
+	"count":"int"
 }
 ```
 ## 根据申请id处理事务
@@ -1167,6 +1277,24 @@ email|string|否|邮箱
 **请求URL**
 
 /user/updateClubInfo `POST` 
+
+
+**返回结果**
+
+```json
+{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}
+```
+## 获取系统资源数据接口
+
+**
+
+**请求URL**
+
+/system/getSysInfo `GET` `POST` 
 
 
 **返回结果**

@@ -78,9 +78,7 @@ public class RandomValidateCodeUtil {
         g.dispose();
         try {
             // 将内存中的图片通过流动形式输出到客户端
-            logger.info("将内存中的图片通过流动形式输出到客户端");
             ImageIO.write(image, "JPEG", response.getOutputStream());
-            logger.info("将内存中的图片通过流动形式输出到客户端-finished");
         } catch (Exception e) {
             logger.error("将内存中的图片通过流动形式输出到客户端失败>>>>   ", e);
         }

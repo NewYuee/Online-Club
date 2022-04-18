@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.ljy.oneclub.entity.*;
 import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.*;
+import com.ljy.oneclub.utils.RecentWeekTimeUtil;
 import com.ljy.oneclub.vo.*;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ClubController {
@@ -126,6 +125,52 @@ public class ClubController {
             session.removeAttribute("admin");
             session.setAttribute("admin",admin);
             return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+    /**
+     *获取首页的社团推荐和受欢迎社团列表(前提是该社团至少人数>1)
+     * @return
+     */
+    @RequestMapping("club/getIndexClub")
+    @ResponseBody
+    public Msg getHotClub(){
+        List<HotClubVO> hotClubs=clubMemberService.getIndexClubInfo();
+        Date date = new Date();
+        List<Date> dates = RecentWeekTimeUtil.dateToWeek(date);
+        LinkedHashMap<String, String> weekAndDate = RecentWeekTimeUtil.getWeekAndDate(dates);
+        List<String> time=new ArrayList<>();
+        Iterator<String> iterator = weekAndDate.keySet().iterator();
+        while (iterator.hasNext()){
+            time.add(weekAndDate.get(iterator.next()));
+        }
+        if (hotClubs.size()==0){
+            return Msg.fail();
+        }
+        for (HotClubVO hotClubVO:hotClubs){
+            List<Active> actives = activeService.getOneClubActiveAfterOneTime(time.get(0), hotClubVO.getClubId());
+            hotClubVO.setRecentActiveCount(actives.size());
+        }
+        List<HotClubVO> activityClub=new ArrayList<>();
+        activityClub.addAll(hotClubs);
+        Collections.sort(activityClub, new Comparator<HotClubVO>() {
+            @Override
+            public int compare(HotClubVO c1, HotClubVO c2) {
+                if (c1.getRecentActiveCount()<c2.getRecentActiveCount()){
+                    return 1;
+                }
+                if (c1.getRecentActiveCount()==c2.getRecentActiveCount()){
+                    return 0;
+                }
+                return -1;
+            }
+        });
+        if (hotClubs.size()<=10){
+            return Msg.success().addData("hotClubInfo",hotClubs).addData("activityClubInfo",activityClub);
+        }
+        if (hotClubs.size()>10){
+            return Msg.success().addData("hotClubInfo",hotClubs.subList(0,10)).addData("activityClubInfo",activityClub.subList(0,5));
         }
         return Msg.fail();
     }

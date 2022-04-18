@@ -31,17 +31,10 @@ public class CommentControllerTest {
 
     @Test
     public void getCommentsByActiveId() {
-        List<NotReadMsgVO> notReadMsgsByUid = messageService.getNotReadMsgsByUid("49382333");
-        for (NotReadMsgVO notReadMsgVO:notReadMsgsByUid){
-            System.out.println("用户"+notReadMsgVO.getUid()+"de"+notReadMsgVO.getUname()+"的未读消息数="+notReadMsgVO.getMessageCount());
-            Message message = messageService.getLastNotReadMessageByUidAndToUid(notReadMsgVO.getUid(), "49382333");
-            System.out.println("最后一消息为:"+message.getContent()+" "+message.getUpdateTime());
-        }
     }
 
     @Test
     public void testKeyword(){
-        List<CommentJson> commentJsons = commentService.getCommentByKeyword("%好%");
-        System.out.println(commentJsons.size());
+
     }
 }

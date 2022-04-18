@@ -10,6 +10,13 @@
     <result column="active_title" property="activeTitle" jdbcType="VARCHAR" />
     <result column="liked" property="liked" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="OneDayActiveInfo" type="com.ljy.oneclub.vo.ActiveOneDayInfo">
+    <result column="active_id" property="activeId" jdbcType="INTEGER" />
+    <result column="time" property="time"/>
+    <result column="viewed_count" property="viewCount" jdbcType="INTEGER" />
+    <result column="active_title" property="activeTitle" jdbcType="VARCHAR" />
+    <result column="likeNum" property="likeCount" jdbcType="INTEGER" />
+  </resultMap>
   <resultMap id="DayACount" type="com.ljy.oneclub.vo.DayActiveVO">
       <result column="date" property="time"/>
       <result column="count" property="count"/>
@@ -37,7 +44,7 @@
     <result column="u_profile_photo_name" property="profile_name" jdbcType="VARCHAR"/>
     <result column="u_profile_backgroundimg_name" property="bkpicName" jdbcType="VARCHAR"/>
   </resultMap>
-    <resultMap id="ActiveJson" type="com.ljy.oneclub.vo.ActiveJson">
+  <resultMap id="ActiveJson" type="com.ljy.oneclub.vo.ActiveJson">
         <id column="active_id" property="a_id" jdbcType="INTEGER" />
         <result column="u_id" property="u_id" jdbcType="INTEGER" />
         <result column="a_type" property="a_type" />
@@ -343,7 +350,6 @@
     LIMIT 0,1;
   </select>
   <!--查找当前用户相关的动态-->
-
   <select id="selectActiveAboutByUid" resultMap="BaseResultMap">
     SELECT
 	a.active_id,
@@ -502,5 +508,44 @@
 		where  ac.active_id=a.active_id and ac.from_club_id=#{clubId}) se
     group by date_format(update_time, '%Y-%m-%d')
     HAVING date =#{time}
+  </select>
+
+  <!--根据日期和活动类型查找在该日期之后的所有该类型的活动，点赞为0的不统计-->
+  <select id="getActiveAfterOneTimeByType" resultMap="OneDayActiveInfo">
+    SELECT
+	a.active_title,
+	a.active_id,
+	a.viewed_count,
+	b.likeNum,
+	DATE_FORMAT( update_time, '%Y-%m-%d' ) time
+    FROM
+	active a,
+	( SELECT like_active_id, count( like_id ) likeNum FROM liked_record WHERE like_type = #{type} GROUP BY like_active_id ) b
+    WHERE
+	a.active_id = b.like_active_id
+	AND DATE_FORMAT( update_time, '%Y-%m-%d' )>= #{time}
+  </select>
+
+  <select id="getActiveOneTimeByType" resultMap="DayACount">
+    select date_format(update_time, '%Y-%m-%d') date, count(*) count
+    from active
+		WHERE date_format(update_time, '%Y-%m-%d') =#{time} and active_type=#{type}
+    group by date_format(update_time, '%Y-%m-%d')
+  </select>
+
+  <select id="countOneClubActiveOneTimeByType" resultMap="DayACount">
+    select date_format(update_time, '%Y-%m-%d') date, count(*) count
+    from (SELECT a.active_id,a.u_id,a.update_time,a.active_type from active a , active_and_club ac
+		where  ac.active_id=a.active_id and ac.from_club_id=#{clubId}) se
+		WHERE se.active_type=#{type}
+    group by date_format(update_time, '%Y-%m-%d')
+    HAVING date =#{time}
+  </select>
+
+  <select id="getOneClubActiveAfterOneTime" resultMap="BaseResultMap">
+    SELECT *
+    FROM active
+    WHERE active_id in (SELECT active_id FROM active_and_club WHERE from_club_id=#{clubId})
+    and DATE_FORMAT(update_time,'%Y-%m-%d')>=#{time}
   </select>
 </mapper>

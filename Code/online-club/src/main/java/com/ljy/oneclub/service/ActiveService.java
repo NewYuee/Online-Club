@@ -2,6 +2,7 @@ package com.ljy.oneclub.service;
 
 import com.ljy.oneclub.entity.Active;
 import com.ljy.oneclub.vo.ActiveJson;
+import com.ljy.oneclub.vo.ActiveOneDayInfo;
 import com.ljy.oneclub.vo.ActiveVO;
 import com.ljy.oneclub.vo.DayActiveVO;
 
@@ -43,4 +44,13 @@ public interface ActiveService {
     DayActiveVO countDayActiveByClubIdAndDateTime(Integer getuId, String timeStr);
 
     List<ActiveJson> selectAllActiveByClubId(Integer getuId);
+
+    List<ActiveOneDayInfo> getAfterOneDayActiveByType(int type, String time);
+
+    //根据类型和时间获取站内当天的活动计数
+    DayActiveVO countOneDayActiveByType(int i, String dateStr);
+
+    DayActiveVO countOneClubActiveOneTimeByType(int i, String dateStr, Integer getuId);
+
+    List<Active> getOneClubActiveAfterOneTime( String s, int clubId);
 }

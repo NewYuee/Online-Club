@@ -103,20 +103,11 @@
             <div class="card" style="text-align: center;">
                <div class="panel panel-warning">
                   <div class="panel-heading">
-                     <h4><span><img style="height: 23px;" src="../../static/img/tj.svg"></span>活跃社团推荐</h4>
+                     <h4><span><img style="height: 23px;" src="../../static/img/tj.svg"></span>一周活跃社团推荐</h4>
                   </div>
                   <!--推荐内容区域-->
                   <ul id="bxSlider">
-                     <li>
-                        <div class="thumbnail">
-                           <img src="../../static/img/user_pic.jpg">
-                           <div class="caption club_in_bxSlider_body">
-                              <div class="club_name_inbxSlider"><a href="#" title="名字">名字</a></div>
-                              <div class="club_in_bxSlider_intro">简介</div>
-                              <p><img style="display: inline-block;" src="../../static/img/hot.svg">活跃度:<span>45824</span> <a href="#" class="btn btn-warning" role="button">立即加入</a></p>
-                           </div>
-                        </div>
-                     </li>
+
                   </ul>
                </div>
             </div>
@@ -194,45 +185,16 @@
          </div>
          <!-- 右边栅格 -->
          <div class="col-md-3 col-xs-12 clearfix" style="padding-left: 7px;padding-right: 7px;padding-top: 30px;">
-            <div class="card">
-               <div class="box">
-                  <div class="box-title border-bottom p-3">
-                     <h4>24h热门文章<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></h4>
-                  </div>
-                  <div class="box-body p-3 table-responsive">
-                     <table class="table table-condensed">
-                        <tr>
-                           <td>xxxx社团xxx</td>
-                        </tr>
-                        <tr>
-                           <td>ssss社团xxx</td>
-                        </tr>
-                        <tr>
-                           <td><a href="#" style="text-decoration: none">x455wwwww啊发给我发社团xxx</a></td>
-                        </tr>
-                     </table>
-                  </div>
+
+            <div class="panel panel-warning">
+               <div class="panel-heading">一周热点</div>
+               <div class="list-group" id="HotArticleTable">
                </div>
             </div>
+            <div class="panel panel-warning">
+               <div class="panel-heading">人气社团排行</div>
+               <div class="list-group" id="HotClubTable">
 
-            <div class="card">
-               <div class="box">
-                  <div class="box-title border-bottom p-3">
-                     <h4>人气社团推荐<span class="glyphicon glyphicon-signal" aria-hidden="true"></span></h4>
-                  </div>
-                  <div class="box-body p-3">
-                     <table class="table table-condensed">
-                        <tr>
-                           <td><a href="#" style="text-decoration: none">发社团xxx2</a></td>
-                        </tr>
-                        <tr>
-                           <td><a href="#" style="text-decoration: none">啊发给我</a></td>
-                        </tr>
-                        <tr>
-                           <td><a href="#" style="text-decoration: none">啊发给我发社团xxx</a></td>
-                        </tr>
-                     </table>
-                  </div>
                </div>
             </div>
             <div class="panel panel-info">
@@ -335,6 +297,57 @@
          }
       }
    });
+
+   //获取热门文章内容
+   $.ajax({
+      url:'/active/getHotArticle',
+      type:'GET',
+      success:function (result) {
+         if (result.code==200&&result.data.articles.length!=0){
+            var articles=result.data.articles;
+            $.each(articles,function (i,item) {
+               var htmlStr='<a href="/active/article/'+item.activeId+'" class="list-group-item">'+item.activeTitle+'</a>';
+               $('#HotArticleTable').append($.parseHTML(htmlStr));
+            });
+         }
+         else {
+            var htmlStr='<tr><td>暂无热门推荐~</td></tr>';
+            $('#HotArticleTable').append($.parseHTML(htmlStr));
+         }
+      }
+   });
+
+   //获取首页的推荐社团和社团人气排行
+   $.ajax({
+      url:'/club/getIndexClub',
+      type:'GET',
+      async:false,
+      success:function (result) {
+         if (result.code==200){
+            var hotClubs=result.data.hotClubInfo;
+            var activityClubs=result.data.activityClubInfo;
+            $.each(hotClubs,function (i,item) {
+               var hotClubHtmlStr='<a href="/u/'+item.clubId+'" class="list-group-item">'+item.name+'</a>';
+               $('#HotClubTable').append($.parseHTML(hotClubHtmlStr));
+            });
+
+            $.each(activityClubs,function (i,item) {
+               var activityValue=0;
+               var acount=Number.parseInt(item.recentActiveCount)*5;
+               activityValue=45+acount;
+               var activityClubHtmlStr='<li><div class="thumbnail"><img src="'+item.headPicName+'">' +
+                       '<div class="caption club_in_bxSlider_body">' +
+                       '<div class="club_name_inbxSlider"><a href="/u/'+item.clubId+'" title="'+item.name+'">'+item.name+'</a></div><div class="club_in_bxSlider_intro">'+item.intro+'</div>' +
+                       '<p><img style="display: inline-block;" src="../../static/img/hot.svg">活跃度:<span>'+activityValue+'</span> <a href="/join/'+item.clubId+'" class="btn btn-warning" role="button">立即加入</a></p></div></div></li>'
+               $('#bxSlider').append($.parseHTML(activityClubHtmlStr));
+            });
+
+         }else {
+            console.log("获取首页的社团信息失败")
+         }
+      }
+   });
+
    $('#myApplicationList').on('click','.deleteApplication',function () {
       var applicationId=$(this).attr('id');
       var li=$(this).parent('li');

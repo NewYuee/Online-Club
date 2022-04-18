@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.ljy.oneclub.entity.*;
 import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.*;
+import com.ljy.oneclub.utils.RecentWeekTimeUtil;
 import com.ljy.oneclub.vo.*;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.slf4j.Logger;
@@ -17,9 +18,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("active")
@@ -350,4 +349,119 @@ public class ActiveController {
         activeTableData.setData(activeJsons);
         return activeTableData;
     }
+
+
+    /**
+     * 查询最近七天热度较高的文章动态
+     * @return
+     */
+    @RequestMapping("getHotArticle")
+    @ResponseBody
+    public Msg getHotArticle(){
+        Date date=new Date();
+        List<Date> dates = RecentWeekTimeUtil.dateToWeek(date);
+        LinkedHashMap<String, String> weekAndDate = RecentWeekTimeUtil.getWeekAndDate(dates);
+        Iterator<String> iterator = weekAndDate.keySet().iterator();
+        List<String> formatWeekDate=new ArrayList<>();
+        while (iterator.hasNext()){
+            formatWeekDate.add(weekAndDate.get(iterator.next()));
+        }
+        //得到最近七天的活动信息,0赞文章不统计
+        List<ActiveOneDayInfo> articleAfterOneTime = activeService.getAfterOneDayActiveByType(50, formatWeekDate.get(0));
+        //如果数量少于10条直接将其存入返回
+        if (articleAfterOneTime.size()<=10){
+            return Msg.success().addData("articles",articleAfterOneTime);
+        }
+        //如果跳数大于10条将进行热度计算，进行排序
+        if(articleAfterOneTime.size()>10){
+            for (ActiveOneDayInfo active:articleAfterOneTime){
+                double hotValue=(active.getLikeCount()*0.9)+(active.getViewCount()*0.1);
+                active.setHotValue(hotValue);
+            }
+        }
+        //开始对list字段中的hotValue进行排序
+        Collections.sort(articleAfterOneTime, new Comparator<ActiveOneDayInfo>() {
+            @Override
+            public int compare(ActiveOneDayInfo a1, ActiveOneDayInfo a2) {
+                if (a1.getHotValue()<a2.getHotValue()){
+                    return 1;
+                }
+                if (a1.getHotValue()==a2.getHotValue()){
+                    return 0;
+                }
+                return -1;
+            }
+        });
+        return Msg.success().addData("articles",articleAfterOneTime.subList(0,10));
+    }
+
+    /**
+     * 根据请求响应获取动态数据
+     * @param type 获取类型
+     * @param session 当前session
+     * @return
+     */
+    @RequestMapping("echartsData/{type}")
+    @ResponseBody
+    public Msg getEchartsData(@PathVariable("type")String type,HttpSession session){
+        Date date=new Date();
+        List<Date> dates = RecentWeekTimeUtil.dateToWeek(date);
+        LinkedHashMap<String, String> weekAndDate = RecentWeekTimeUtil.getWeekAndDate(dates);
+        Iterator<String> iterator = weekAndDate.keySet().iterator();
+        //元素对象格式为:2022-03-04
+        List<String> formatWeekDate=new ArrayList<>();
+        //元素对象格式为:周一、周二、周三...
+        List<String> weekNames=new ArrayList<>();
+        weekNames.addAll(weekAndDate.keySet());
+        ActiveEcharts activeEcharts = new ActiveEcharts();
+        activeEcharts.setxAxisData(weekNames);
+        List<Integer> activeCountData=new ArrayList<>();
+        List<Integer> articleCountData=new ArrayList<>();
+        while (iterator.hasNext()){
+            formatWeekDate.add(weekAndDate.get(iterator.next()));
+        }
+        if (type.equals("all")){
+            for (String dateStr:formatWeekDate){
+                DayActiveVO actives = activeService.countOneDayActiveByType(40, dateStr);
+                if (actives==null){
+                    activeCountData.add(0);
+                }
+                else {
+                    activeCountData.add(actives.getCount());
+                }
+                DayActiveVO articles = activeService.countOneDayActiveByType(50, dateStr);
+                if (articles==null){
+                    articleCountData.add(0);
+                }
+                else {
+                    articleCountData.add(articles.getCount());
+                }
+            }
+        }else if (type.equals("club")){
+            User club=(User)session.getAttribute("admin");
+            if (club==null){
+                return Msg.fail();
+            }
+            for (String dateStr:formatWeekDate){
+                DayActiveVO actives = activeService.countOneClubActiveOneTimeByType(40,dateStr,club.getuId());
+                if (actives==null){
+                    activeCountData.add(0);
+                }
+                else {
+                    activeCountData.add(actives.getCount());
+                }
+                DayActiveVO articles = activeService.countOneClubActiveOneTimeByType(50,dateStr,club.getuId());
+                if (articles==null){
+                    articleCountData.add(0);
+                }
+                else {
+                    articleCountData.add(articles.getCount());
+                }
+            }
+        }
+        activeEcharts.setActiveCountData(activeCountData);
+        activeEcharts.setArticleCountData(articleCountData);
+        return Msg.success().addData("echatsData",activeEcharts);
+    }
+
 }

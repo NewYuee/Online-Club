@@ -1,13 +1,11 @@
 package com.ljy.oneclub.controller;
 
 import com.github.pagehelper.PageHelper;
-import com.ljy.oneclub.entity.Active;
-import com.ljy.oneclub.entity.Comment;
-import com.ljy.oneclub.entity.LikedRecord;
-import com.ljy.oneclub.entity.User;
+import com.ljy.oneclub.entity.*;
 import com.ljy.oneclub.msg.Msg;
 import com.ljy.oneclub.service.*;
 import com.ljy.oneclub.utils.RedisUtil;
+import com.ljy.oneclub.utils.SysInfoThread;
 import com.ljy.oneclub.vo.*;
 import io.github.yedaxia.apidocs.ApiDoc;
 import org.apache.ibatis.annotations.Param;
@@ -24,9 +22,7 @@ import redis.clients.jedis.Jedis;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -63,6 +59,11 @@ public class UserController {
     @Autowired
     MessageService messageService;
 
+    @Autowired
+    ApplicationService applicationService;
+
+    @Autowired
+    SysInfoThread sysInfoThread;
 
 
     @ApiDoc
@@ -182,7 +183,7 @@ public class UserController {
         System.out.println("搜索内容为==="+content);
         ModelAndView modelAndView = new ModelAndView();
         if (content.replace(" ","").length()==0){
-            modelAndView.setViewName("error/500");
+            modelAndView.setViewName("error/404");
             return modelAndView;
         }
         User user= (User) session.getAttribute("userInfo");
@@ -210,13 +211,13 @@ public class UserController {
         try {
             id=Integer.parseInt(uid);
         } catch (NumberFormatException e) {
-            modelAndView.setViewName("error/500");
+            modelAndView.setViewName("error/404");
             return modelAndView;
         }
         //得到用户对象
         User user = userService.selectUserById(id);
         if (user==null){
-            modelAndView.setViewName("error/500");
+            modelAndView.setViewName("error/404");
             return modelAndView;
         }
         User thisUser=(User)session.getAttribute("userInfo");
@@ -282,6 +283,50 @@ public class UserController {
         if (user.getuAuthNo()==5){
             modelAndView.setViewName("clubPage");
             modelAndView.addObject("club",user);
+            int i = clubMemberService.countMembershipByClubId(user.getuId());
+            modelAndView.addObject("clubCount",i);
+            List<ActiveVO> activeVOList=activeService.selectHomePageActiveByUid(user.getuId());
+            List<ActiveVO> active=new ArrayList<>();
+            List<ActiveVO> article=new ArrayList<>();
+            if (activeVOList.size()!= 0) {
+                for (ActiveVO activeVO : activeVOList) {
+                    //完善评论预览、关联社团ID和名字、评论数
+                    activeVO.setComment_count(commentService.getCommentCountByAid(activeVO.getA_id()));
+                    activeVO.setFrom_uid(user.getuId());
+                    activeVO.setFrom_uname(user.getuName());
+                    activeVO.setIsliked(likeRecordService.selectByActiveIdAndUid(activeVO.getA_id(), thisUser.getuId()).size());
+                    activeVO.setLiked_count(likeRecordService.getCountByActiveId(activeVO.getA_id()));
+                    List<Comment> comments = commentService.getTop2CommentBySourceId(activeVO.getA_id());
+                    List<CommentVO> commentVOList = new ArrayList<>();
+                    if (comments.size() != 0) {
+                        for (Comment comment : comments) {
+                            CommentVO commentVO = new CommentVO();
+                            //设置评论的用户名和用户id
+                            String u_name = userService.getNameById(comment.getuId());
+                            commentVO.setU_id(comment.getuId());
+                            commentVO.setU_name(u_name);
+                            //如果回复的评论id不为空
+                            if (comment.getReplyCommentId() != null) {
+                                Comment comment1 = commentService.selectCommentById(comment.getReplyCommentId());
+                                //根据回复的评论id找到原评论的用户名和用户id
+                                commentVO.setReply_u_id(comment1.getuId());
+                                commentVO.setReply_u_name(userService.getNameById(comment1.getuId()));
+                            }
+                            commentVO.setContent(comment.getCommentContent());
+                            commentVO.setC_id(comment.getCommentId());
+                            commentVOList.add(commentVO);
+                        }
+                        activeVO.setCommentVOList(commentVOList);
+                    }
+                    if (activeVO.getA_type() == 40) {
+                        active.add(activeVO);
+                    } else {
+                        article.add(activeVO);
+                    }
+                }
+                modelAndView.addObject("ClubActive", active);
+                modelAndView.addObject("ClubArticle", article);
+            }
             return modelAndView;
         }
         //如果是普通用户跳转到用户个人主页
@@ -292,7 +337,6 @@ public class UserController {
             if (activeVOList.size()!=0){
                 for (ActiveVO activeVO:activeVOList){
                     //完善评论预览、关联社团ID和名字、评论数
-                    activeVO.setComment_count(commentService.getCommentCountByAid(activeVO.getA_id()));
                     ActiveAndClubVO activeAndClubVO = activeAndClubService.getActiveAndClubVO(activeVO.getA_id());
                     if (activeAndClubVO!=null){
                         activeVO.setFrom_uname(activeAndClubVO.getUname());
@@ -349,14 +393,22 @@ public class UserController {
     }
 
     @RequestMapping("join/{clubId}")
-    public ModelAndView joinClub(@PathVariable(value = "clubId")String id) {
+    public ModelAndView joinClub(@PathVariable(value = "clubId")String id,HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("error/500");
+        modelAndView.setViewName("error/404");
+        List<MyClub> clubList=(List<MyClub>)session.getAttribute("myclub_list");
+        Iterator<MyClub> iterator = clubList.iterator();
         int clubId = 0;
         try {
             clubId = Integer.parseInt(id);
         } catch (NumberFormatException e) {
             return modelAndView;
+        }
+        while (iterator.hasNext()){
+            if (iterator.next().getClubId()==clubId){
+                modelAndView.setViewName("index");
+                return modelAndView;
+            }
         }
         if (userService.selectUserById(clubId)==null){
             return modelAndView;
@@ -532,6 +584,27 @@ public class UserController {
         club.setuId(clubId);
         int i=userService.updateClubInfo(club);
         return Msg.success();
+    }
+
+    /**
+     * 获取系统资源数据接口
+     * @return
+     */
+    @ApiDoc
+    @RequestMapping("system/getSysInfo")
+    @ResponseBody
+    public Msg getSysInfo(){
+        LinkedHashMap<String, SysInfo> sysInfoMap = sysInfoThread.getSysInfoMap();
+        List<String> timeList=new ArrayList<>();
+        List<Integer> cpuRatio=new ArrayList<>();
+        List<Integer> memoryRatio=new ArrayList<>();
+        Set<String> set = sysInfoMap.keySet();
+        for (String s:set){
+            timeList.add(s);
+            cpuRatio.add(sysInfoMap.get(s).getCpuRatio());
+            memoryRatio.add(sysInfoMap.get(s).getMemoryRatio());
+        }
+        return Msg.success().addData("timeList",timeList).addData("cpuRatio",cpuRatio).addData("memoryRatio",memoryRatio);
     }
 
 }

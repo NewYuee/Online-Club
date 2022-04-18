@@ -15,17 +15,7 @@
         <div class="col-md-3 col-xs-12" style="padding-left: 7px;padding-right: 7px;padding-top: 30px;">
             <div class="panel panel-warning">
                 <div class="panel-heading">其他热门文章推荐</div>
-                <div class="list-group">
-                    <a href="#" class="list-group-item">重生之我的兄弟叫顺溜额 <span class="label label-default">Hot</span></a>
-                    <a href="#" class="list-group-item">爱的供养 <span class="label label-default">New</span></a>
-                    <a href="#" class="list-group-item">你是我的okbeng</a>
-                    <a href="#" class="list-group-item">黑娘子传奇</a>
-                    <a href="#" class="list-group-item">爱的供养1</a>
-                    <a href="#" class="list-group-item">你是我的ok22beng</a>
-                    <a href="#" class="list-group-item">黑娘子传奇3</a>
-                    <a href="#" class="list-group-item">爱的供养4</a>
-                    <a href="#" class="list-group-item">你是我的21okbeng</a>
-                    <a href="#" class="list-group-item">黑娘子传奇44</a>
+                <div class="list-group" id="HotArticleTable">
                 </div>
             </div>
         </div>
@@ -88,6 +78,25 @@
 <script src="../../static/js/bootstrap.js"></script>
 <script src="../../static/layer/layer.js"></script>
 <script type="text/javascript" th:inline="javascript">
+
+    //获取热门文章内容
+    $.ajax({
+        url:'/active/getHotArticle',
+        type:'GET',
+        success:function (result) {
+            if (result.code==200&&result.data.articles.length!=0){
+                var articles=result.data.articles;
+                $.each(articles,function (i,item) {
+                    var htmlStr='<a href="/active/article/'+item.activeId+'" class="list-group-item">'+item.activeTitle+'</a>';
+                    $('#HotArticleTable').append($.parseHTML(htmlStr));
+                });
+            }
+            else {
+                var htmlStr='暂无热门推荐~';
+                $('#HotArticleTable').append($.parseHTML(htmlStr));
+            }
+        }
+    });
 
     var sourceId=[[${active.activeId}]];
     var commentCount=0;

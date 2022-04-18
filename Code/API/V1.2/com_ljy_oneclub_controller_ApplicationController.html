@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>ApplicationController</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="PR.prettyPrint()">
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">
+                online-club
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://github.com/YeDaxia/JApiDocs" target="_blank">GitHub</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">V1.2<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                            <li><a href="../V1.1/index.html">V1.1</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="book with-summary">
+    <div class="book-summary">
+<div class="search-box form-group">
+    <input type="text" class="form-control" id="inputSearch" placeholder="搜索接口">
+    <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+</div>
+<div id="accordion" class="catalog">
+        <div class="panel">
+            <div id="heading0" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse0" aria-controls="collapse0">
+                <i class="glyphicon glyphicon-align-justify"></i> ActiveController
+            </div>
+            <div id="collapse0" class="collapse in " aria-labelledby="heading0">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#insertActive">
+                        动态发布-一般说说
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#insertArticle">
+                        动态发布-文章
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#collectActive">
+                        根据资源id对活动进行点赞
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#uncollectActive">
+                        根据资源id对活动取消点赞
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#getLikeNum">
+                        根据活动id获取点赞数，以及是否点赞
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#delActiveByid">
+                        用户根据id删除动态
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#adminDelActiveByid">
+                        管理员根据活动id删除活动及其关联数据
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ActiveController.html#getAllActive">
+                        获取全部活动信息
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading1" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse1" aria-controls="collapse1">
+                <i class="glyphicon glyphicon-align-justify"></i> ApplicationController
+            </div>
+            <div id="collapse1" class="collapse in " aria-labelledby="heading1">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ApplicationController.html#getApplications">
+                        获取用户所有申请
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ApplicationController.html#deleteApplicationById">
+                        根据申请单id删除申请
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ApplicationController.html#getApplication">
+                        getApplication
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading2" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse2" aria-controls="collapse2">
+                <i class="glyphicon glyphicon-align-justify"></i> ChatController
+            </div>
+            <div id="collapse2" class="collapse " aria-labelledby="heading2">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ChatController.html#get5Messages">
+                        根据用户id和聊天对象id获取最近聊天记录，默认5条
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ChatController.html#getAllMsgByUidAndToUid">
+                        根据用户id和聊天对象id获取全部聊天记录
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ChatController.html#getMessageNotRead">
+                        根据用户id获取未读消息，由未读消息列表解析
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading3" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse3" aria-controls="collapse3">
+                <i class="glyphicon glyphicon-align-justify"></i> ClubContactController
+            </div>
+            <div id="collapse3" class="collapse " aria-labelledby="heading3">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubContactController.html#getContactByClubId">
+                        根据社团id获取社团联系人
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubContactController.html#getAllContactByClubId">
+                        获取全部社团联系人
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading4" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse4" aria-controls="collapse4">
+                <i class="glyphicon glyphicon-align-justify"></i> ClubController
+            </div>
+            <div id="collapse4" class="collapse " aria-labelledby="heading4">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getClubCountByUid">
+                        根据用户id查找其加入的社团数
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getAllClub">
+                        得到社团列表
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#updateClubInfo">
+                        更新社团信息
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getClubIndexData">
+                        获取管理端首页统计数据
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getApplyList">
+                        根据当前session获取事务申请
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getMemberByClubId">
+                        获取社团成员
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#delMemberById">
+                        根据id删除社团成员
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#addClubMember">
+                        添加社团成员
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#addClubContact">
+                        新增社团联系人
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#addActive">
+                        社团发布一般动态
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#addArticle">
+                        社团发布文章/新闻
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#getAllClubActive">
+                        社团活动列表
+                            <span class="label label-success">新增</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_ClubController.html#dealApplyById">
+                        根据申请id处理事务
+                            <span class="label label-success">新增</span>
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading5" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse5" aria-controls="collapse5">
+                <i class="glyphicon glyphicon-align-justify"></i> CommentController
+            </div>
+            <div id="collapse5" class="collapse " aria-labelledby="heading5">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_CommentController.html#getCommentsByActiveId">
+                        根据活动Id获取评论
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_CommentController.html#getCommentsByUid">
+                        根据用户id获取用自己的评论信息
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_CommentController.html#admindeleteCommentByCid">
+                        根据id删除评论
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_CommentController.html#deleteCommentByCid">
+                        根据id删除评论
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading6" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse6" aria-controls="collapse6">
+                <i class="glyphicon glyphicon-align-justify"></i> LoginController
+            </div>
+            <div id="collapse6" class="collapse " aria-labelledby="heading6">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#loginPage">
+                        返回登录注册页面
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#getVerify">
+                        获取验证码图片
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#checkVerify">
+                        登录的验证码校验
+                            <span class="label label-warning">修改</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#checkUserName">
+                        登录检查用户名是否存在
+                            <span class="label label-warning">修改</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#checkEmailIsValid">
+                        登录检查使用邮箱是否绑定其他用户
+                            <span class="label label-warning">修改</span>
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#verifyMailCode">
+                        用户注册
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#getHtml">
+                        发送验证码到邮箱
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#login">
+                        用户登录
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_LoginController.html#adminLogin">
+                        后台登录处理,成功返回对应管理界面
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading7" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse7" aria-controls="collapse7">
+                <i class="glyphicon glyphicon-align-justify"></i> NoticeController
+            </div>
+            <div id="collapse7" class="collapse " aria-labelledby="heading7">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_NoticeController.html#getNoticeOfLike">
+                        根据用户id查找点赞消息
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_NoticeController.html#getCommentNotice">
+                        根据id获取评论通知
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_NoticeController.html#getApplicationNotice">
+                        根据id获取申请通知列表
+                    </a>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="heading8" data-parent="#accordion" class="catalog-title" data-toggle="collapse"
+                 aria-expanded="true" data-target="#collapse8" aria-controls="collapse8">
+                <i class="glyphicon glyphicon-align-justify"></i> UserController
+            </div>
+            <div id="collapse8" class="collapse " aria-labelledby="heading8">
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#updatePasswordInEmail">
+                        updatePasswordInEmail
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#updateIntro">
+                        更新个人简介
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#getAllUsers">
+                        得到用户列表
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#getDataIndexForAdmin">
+                        得到管理端首页系统数据统计
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#deleteUserByUid">
+                        根据id删除用户
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#insertClub">
+                        新增社团用户
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#insertUser">
+                        新增用户
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#updateClubInfo">
+                        updateClubInfo
+                    </a>
+                    <a class="catalog-item" href="com_ljy_oneclub_controller_UserController.html#getSysInfo">
+                        获取系统资源数据接口
+                            <span class="label label-success">新增</span>
+                    </a>
+            </div>
+        </div>
+</div>    </div>
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header">
+                <div class="d-flex justify-content-between">
+                    <a class="header-menu toggle-catalog" href="javascript:void(0)"><i
+                            class="glyphicon glyphicon-align-justify"></i> 目录</a>
+                </div>
+            </div>
+            <div class="page-wrapper">
+                <div class="page-inner">
+                    <div class="action-list">
+                        <div class="action-item">
+<h2 id="getApplications"><a href="#">获取用户所有申请 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/application/getAll</code>
+        <span class="label label-default">GET</span>
+        <span class="label label-default">POST</span>
+</p>
+        <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
+        <table class="table table-bordered">
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必须</th>
+                <th>描述</th>
+            </tr>
+                    <tr>
+                        <td>uid</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>用户id</td>
+                    </tr>
+        </table>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}</pre>
+        <div class="form-group">
+            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_ApplicationController_getApplications_Msg.html"><i
+                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
+            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_ApplicationController_getApplications_Msg.html"><i class="fa fa-apple"
+                                                                                                 aria-hidden="true"></i>
+                iOS Model</a>
+        </div>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="deleteApplicationById"><a href="#">根据申请单id删除申请 </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/application/delete/{appId}</code>
+        <span class="label label-default">GET</span>
+        <span class="label label-default">POST</span>
+</p>
+        <p><strong>请求参数</strong> <span class="badge">application/x-www-form-urlencoded</span></p>
+        <table class="table table-bordered">
+            <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>必须</th>
+                <th>描述</th>
+            </tr>
+                    <tr>
+                        <td>appId</td>
+                        <td>string</td>
+                        <td>否</td>
+                        <td>申请单id</td>
+                    </tr>
+        </table>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}</pre>
+        <div class="form-group">
+            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_ApplicationController_deleteApplicationById_Msg.html"><i
+                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
+            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_ApplicationController_deleteApplicationById_Msg.html"><i class="fa fa-apple"
+                                                                                                 aria-hidden="true"></i>
+                iOS Model</a>
+        </div>
+                        </div>
+                        <hr>
+                        <div class="action-item">
+<h2 id="getApplication"><a href="#">getApplication </a></h2>
+<p><strong>请求URL</strong></p>
+<p>
+    <code>/application/get/{appId}</code>
+        <span class="label label-default">GET</span>
+        <span class="label label-default">POST</span>
+</p>
+    <p><strong>返回结果</strong></p>
+    <pre class="prettyprint lang-json">{
+	"code":"int",
+	"msg":"string",
+	"data":{}
+}</pre>
+        <div class="form-group">
+            <a type="button" class="btn btn-sm btn-default" href="javaCodes/com_ljy_oneclub_controller_ApplicationController_getApplication_Msg.html"><i
+                        class="fa fa-android" aria-hidden="true"></i> Android Model</a>
+            <a type="button" class="btn btn-sm btn-default" href="iosCodes/com_ljy_oneclub_controller_ApplicationController_getApplication_Msg.html"><i class="fa fa-apple"
+                                                                                                 aria-hidden="true"></i>
+                iOS Model</a>
+        </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.js"></script>
+<script>
+
+    var search_source_data = [
+            {name: 'ActiveController.动态发布-一般说说', url: 'com_ljy_oneclub_controller_ActiveController.html#insertActive'},
+            {name: 'ActiveController.动态发布-文章', url: 'com_ljy_oneclub_controller_ActiveController.html#insertArticle'},
+            {name: 'ActiveController.根据资源id对活动进行点赞', url: 'com_ljy_oneclub_controller_ActiveController.html#collectActive'},
+            {name: 'ActiveController.根据资源id对活动取消点赞', url: 'com_ljy_oneclub_controller_ActiveController.html#uncollectActive'},
+            {name: 'ActiveController.根据活动id获取点赞数，以及是否点赞', url: 'com_ljy_oneclub_controller_ActiveController.html#getLikeNum'},
+            {name: 'ActiveController.用户根据id删除动态', url: 'com_ljy_oneclub_controller_ActiveController.html#delActiveByid'},
+            {name: 'ActiveController.管理员根据活动id删除活动及其关联数据', url: 'com_ljy_oneclub_controller_ActiveController.html#adminDelActiveByid'},
+            {name: 'ActiveController.获取全部活动信息', url: 'com_ljy_oneclub_controller_ActiveController.html#getAllActive'},
+            {name: 'ApplicationController.获取用户所有申请', url: 'com_ljy_oneclub_controller_ApplicationController.html#getApplications'},
+            {name: 'ApplicationController.根据申请单id删除申请', url: 'com_ljy_oneclub_controller_ApplicationController.html#deleteApplicationById'},
+            {name: 'ApplicationController.getApplication', url: 'com_ljy_oneclub_controller_ApplicationController.html#getApplication'},
+            {name: 'ChatController.根据用户id和聊天对象id获取最近聊天记录，默认5条', url: 'com_ljy_oneclub_controller_ChatController.html#get5Messages'},
+            {name: 'ChatController.根据用户id和聊天对象id获取全部聊天记录', url: 'com_ljy_oneclub_controller_ChatController.html#getAllMsgByUidAndToUid'},
+            {name: 'ChatController.根据用户id获取未读消息，由未读消息列表解析', url: 'com_ljy_oneclub_controller_ChatController.html#getMessageNotRead'},
+            {name: 'ClubContactController.根据社团id获取社团联系人', url: 'com_ljy_oneclub_controller_ClubContactController.html#getContactByClubId'},
+            {name: 'ClubContactController.获取全部社团联系人', url: 'com_ljy_oneclub_controller_ClubContactController.html#getAllContactByClubId'},
+            {name: 'ClubController.根据用户id查找其加入的社团数', url: 'com_ljy_oneclub_controller_ClubController.html#getClubCountByUid'},
+            {name: 'ClubController.得到社团列表', url: 'com_ljy_oneclub_controller_ClubController.html#getAllClub'},
+            {name: 'ClubController.更新社团信息', url: 'com_ljy_oneclub_controller_ClubController.html#updateClubInfo'},
+            {name: 'ClubController.获取管理端首页统计数据', url: 'com_ljy_oneclub_controller_ClubController.html#getClubIndexData'},
+            {name: 'ClubController.根据当前session获取事务申请', url: 'com_ljy_oneclub_controller_ClubController.html#getApplyList'},
+            {name: 'ClubController.获取社团成员', url: 'com_ljy_oneclub_controller_ClubController.html#getMemberByClubId'},
+            {name: 'ClubController.根据id删除社团成员', url: 'com_ljy_oneclub_controller_ClubController.html#delMemberById'},
+            {name: 'ClubController.添加社团成员', url: 'com_ljy_oneclub_controller_ClubController.html#addClubMember'},
+            {name: 'ClubController.新增社团联系人', url: 'com_ljy_oneclub_controller_ClubController.html#addClubContact'},
+            {name: 'ClubController.社团发布一般动态', url: 'com_ljy_oneclub_controller_ClubController.html#addActive'},
+            {name: 'ClubController.社团发布文章/新闻', url: 'com_ljy_oneclub_controller_ClubController.html#addArticle'},
+            {name: 'ClubController.社团活动列表', url: 'com_ljy_oneclub_controller_ClubController.html#getAllClubActive'},
+            {name: 'ClubController.根据申请id处理事务', url: 'com_ljy_oneclub_controller_ClubController.html#dealApplyById'},
+            {name: 'CommentController.根据活动Id获取评论', url: 'com_ljy_oneclub_controller_CommentController.html#getCommentsByActiveId'},
+            {name: 'CommentController.根据用户id获取用自己的评论信息', url: 'com_ljy_oneclub_controller_CommentController.html#getCommentsByUid'},
+            {name: 'CommentController.根据id删除评论', url: 'com_ljy_oneclub_controller_CommentController.html#admindeleteCommentByCid'},
+            {name: 'CommentController.根据id删除评论', url: 'com_ljy_oneclub_controller_CommentController.html#deleteCommentByCid'},
+            {name: 'LoginController.返回登录注册页面', url: 'com_ljy_oneclub_controller_LoginController.html#loginPage'},
+            {name: 'LoginController.获取验证码图片', url: 'com_ljy_oneclub_controller_LoginController.html#getVerify'},
+            {name: 'LoginController.登录的验证码校验', url: 'com_ljy_oneclub_controller_LoginController.html#checkVerify'},
+            {name: 'LoginController.登录检查用户名是否存在', url: 'com_ljy_oneclub_controller_LoginController.html#checkUserName'},
+            {name: 'LoginController.登录检查使用邮箱是否绑定其他用户', url: 'com_ljy_oneclub_controller_LoginController.html#checkEmailIsValid'},
+            {name: 'LoginController.用户注册', url: 'com_ljy_oneclub_controller_LoginController.html#verifyMailCode'},
+            {name: 'LoginController.发送验证码到邮箱', url: 'com_ljy_oneclub_controller_LoginController.html#getHtml'},
+            {name: 'LoginController.用户登录', url: 'com_ljy_oneclub_controller_LoginController.html#login'},
+            {name: 'LoginController.后台登录处理,成功返回对应管理界面', url: 'com_ljy_oneclub_controller_LoginController.html#adminLogin'},
+            {name: 'NoticeController.根据用户id查找点赞消息', url: 'com_ljy_oneclub_controller_NoticeController.html#getNoticeOfLike'},
+            {name: 'NoticeController.根据id获取评论通知', url: 'com_ljy_oneclub_controller_NoticeController.html#getCommentNotice'},
+            {name: 'NoticeController.根据id获取申请通知列表', url: 'com_ljy_oneclub_controller_NoticeController.html#getApplicationNotice'},
+            {name: 'UserController.updatePasswordInEmail', url: 'com_ljy_oneclub_controller_UserController.html#updatePasswordInEmail'},
+            {name: 'UserController.更新个人简介', url: 'com_ljy_oneclub_controller_UserController.html#updateIntro'},
+            {name: 'UserController.得到用户列表', url: 'com_ljy_oneclub_controller_UserController.html#getAllUsers'},
+            {name: 'UserController.得到管理端首页系统数据统计', url: 'com_ljy_oneclub_controller_UserController.html#getDataIndexForAdmin'},
+            {name: 'UserController.根据id删除用户', url: 'com_ljy_oneclub_controller_UserController.html#deleteUserByUid'},
+            {name: 'UserController.新增社团用户', url: 'com_ljy_oneclub_controller_UserController.html#insertClub'},
+            {name: 'UserController.新增用户', url: 'com_ljy_oneclub_controller_UserController.html#insertUser'},
+            {name: 'UserController.updateClubInfo', url: 'com_ljy_oneclub_controller_UserController.html#updateClubInfo'},
+            {name: 'UserController.获取系统资源数据接口', url: 'com_ljy_oneclub_controller_UserController.html#getSysInfo'},
+    ];
+
+
+
+    $('.toggle-catalog').click(function () {
+        $('.book').toggleClass('with-summary');
+    });
+
+    $('#inputSearch').autocomplete({hint: false}, [
+        {
+            source: function (query, callback) {
+                var result = [];
+                for(var i = 0; i !== search_source_data.length; i++){
+                    if(search_source_data[i].name.indexOf(query) !== -1){
+                        result.push(search_source_data[i]);
+                    }
+                }
+                callback(result);
+            },
+            displayKey: 'name',
+            templates: {
+                suggestion: function (suggestion) {
+                    return suggestion.name;
+                }
+            }
+        }
+    ]).on('autocomplete:selected', function (event, suggestion, dataset, context) {
+        self.location = suggestion.url;
+    });
+</script>
+</body>
+</html>

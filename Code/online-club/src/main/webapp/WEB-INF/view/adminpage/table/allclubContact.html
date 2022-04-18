@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>社团联系人列表</title>
+    <link rel="stylesheet" href="/static/lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="uName" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/static/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="/static/js/admin/admin.js"></script>
+<script>
+
+
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            usertable = layui.table;
+
+        usertable.render({
+            elem: '#currentTableId',
+            url: '/club/getContact/all',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            cols: [
+                [
+                    {field: 'id', width: 110, title: '编号', sort: true},
+                    {field: 'realName', width: 100, title: '姓名'},
+                    {field: 'telNum', width: 160, title: '联系电话'},
+                    {field: 'email', width: 220, title: '邮箱'},
+                    {field:'departmentInClub',width:240,title:'所在社团部门',sort:true},
+                    {field:'clubId',width:130,title:'所属社团编号',sort:true},
+                    {field: 'positionInClub', width: 180, title: '所在社团职务'},
+                    {field: 'other', width: 240, title: '其它信息'}
+                ]
+            ],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line'
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            //执行搜索重载
+            usertable.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    keyword: data.field.uName
+                }
+            }, 'data');
+            return false;
+        });
+    });
+
+</script>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ActiveTableData</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.css">
+<link href="../style.css" rel="stylesheet" />
+</head>
+<body onload="PR.prettyPrint()">
+<pre class="prettyprint lang-java">
+public class ActiveTableData implements Serializable{
+
+    private int code; //
+    private String msg; //
+    private ActiveJson[] data; //
+    private int count; //
+
+    public int getCode(){
+        return code;
+    }
+
+    public void setCode(int code){
+        this.code = code;
+    }
+
+    public String getMsg(){
+        return msg;
+    }
+
+    public void setMsg(String msg){
+        this.msg = msg;
+    }
+
+    public ActiveJson[] getData(){
+        return data;
+    }
+
+    public void setData(ActiveJson[] data){
+        this.data = data;
+    }
+
+    public int getCount(){
+        return count;
+    }
+
+    public void setCount(int count){
+        this.count = count;
+    }
+
+}
+</pre>
+
+
+<pre class="prettyprint lang-java">
+public class ActiveJson implements Serializable{
+
+    private int aId; //
+    private String aType; //
+    private int uId; //
+    private String uName; //
+    private String updateTime; //
+    private String omitContent; //
+    private int commentCount; //
+
+    public int getAId(){
+        return aId;
+    }
+
+    public void setAId(int aId){
+        this.aId = aId;
+    }
+
+    public String getAType(){
+        return aType;
+    }
+
+    public void setAType(String aType){
+        this.aType = aType;
+    }
+
+    public int getUId(){
+        return uId;
+    }
+
+    public void setUId(int uId){
+        this.uId = uId;
+    }
+
+    public String getUName(){
+        return uName;
+    }
+
+    public void setUName(String uName){
+        this.uName = uName;
+    }
+
+    public String getUpdateTime(){
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime){
+        this.updateTime = updateTime;
+    }
+
+    public String getOmitContent(){
+        return omitContent;
+    }
+
+    public void setOmitContent(String omitContent){
+        this.omitContent = omitContent;
+    }
+
+    public int getCommentCount(){
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount){
+        this.commentCount = commentCount;
+    }
+
+}
+</pre>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.js"></script>
+</body>
+</html>

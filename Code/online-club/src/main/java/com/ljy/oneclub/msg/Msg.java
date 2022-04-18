@@ -1,10 +1,14 @@
 package com.ljy.oneclub.msg;
 
+import io.github.yedaxia.apidocs.ApiDoc;
+import io.github.yedaxia.apidocs.Ignore;
+
 import java.util.HashMap;
 
 /**
  * 返回前端的一个数据实体
  */
+@ApiDoc
 public class Msg {
     private int code;
     private String msg;

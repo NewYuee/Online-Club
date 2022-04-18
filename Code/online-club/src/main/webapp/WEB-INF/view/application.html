@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>申请单详情</title>
+    <link rel="icon" type="image/png" href="../../static/img/MMAD.png">
+    <link rel="stylesheet" href="../../static/css/amazeui.css">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+</head>
+<body style="padding-top: 60px;background-color: rgb(237, 244, 246);">
+<nav class="navbar navbar-inverse  navbar-default navbar-fixed-top"
+     style="background-color: rgb(237, 125, 4);border: 2px solid transparent;">
+    <div class="container ">
+        <div class="navbar-header">
+            <a class="navbar-brand" style="padding-top: 5px;" href="/index">
+                <img alt="Brand" style="width: 40px;height: 40px;" src="../../static/img/MMAD.png">
+            </a>
+        </div>
+        <form action="/searchResult" method="post" class="navbar-form navbar-left" role="search">
+            <!-- 搜索框 -->
+            <div class="col-lg-12 col-md-6 col-xs-6">
+                <div class="input-group">
+                    <input type="text" name="content" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                   <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"
+                                                                       aria-hidden="true"></span></button>
+                 </span>
+                </div>
+            </div>
+        </form>
+        <!-- 导航栏 -->
+        <ul class="nav nav-pills" style="border: 0;">
+            <li role="presentation" class="dropdown navbar-right">
+                <a href="#" data-toggle="dropdown" role="button"
+                   aria-haspopup="true" aria-expanded="false" style="padding: 0 0 8px 0"><img
+                        style="border-radius:50%;width: 40px;height: 40px;" th:src="${session.userInfo.uProfilePhotoName}"></a>
+                <ul class="dropdown-menu" style="min-width: 60px;">
+                    <li role="presentation"><a style="padding: 10px 20px;" href="/homepage">个人中心</a></li>
+                    <li role="presentation"><a style="padding: 10px 20px;" href="/settingCenter">资料设置</a></li>
+                    <li role="presentation"><a style="padding: 10px 20px;" href="/logout">退出登录</a></li>
+                </ul>
+            </li>
+            <li role="presentation" class="dropdown navbar-right">
+                <a href="#" style="padding: 14px 15px;color: black;" data-toggle="dropdown" role="button"
+                   aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell"
+                                                                    aria-hidden="true"></span></a>
+                <ul class="dropdown-menu" style="min-width: 60px;">
+                    <li role="presentation"><a style="padding: 10px 20px;" href="/noticeCenter">通知</a></li>
+                    <li role="presentation"><a style="padding: 10px 20px;" href="/noticeCenter">聊天</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <!-- 中间的栅格 -->
+        <div class="col-md-12 col-xs-12 clearfix" style="padding-left: 7px;padding-right: 7px;padding-top: 30px;">
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-12 am-u-md-pull-12">
+                    <!--表单内容部分-->
+                    <form id="appForm" class="am-form am-form-horizontal">
+                            <div class="am-form-group">
+                                <label for="club-name" class="am-u-sm-3 am-form-label">申请社团</label>
+                                <div class="am-u-sm-9">
+                                    <label id="club-name" style="margin-top: 5px"><a th:href="'/u/'+${club.uId}" th:text="${club.uName}">申请社团</a></label>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>
+                                <div class="am-u-sm-9">
+                                    <label id="user-name" style="margin-top: 5px" th:text="${applicationInfo.appUserName}">姓名</label>
+                                </div>
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="gender" class="am-u-sm-3 am-form-label">性别 / Gender</label>
+                                <div class="am-u-sm-9">
+                                    <label id="gender" style="margin-top: 5px" th:text="${applicationInfo.appGender}">性别</label>
+                                </div>
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-phone" class="am-u-sm-3 am-form-label">电话 / Telephone</label>
+                                <div class="am-u-sm-9">
+                                    <label id="user-phone" style="margin-top: 5px" th:text="${applicationInfo.appUserTelNum}">电话</label>
+                                </div>
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-Info" class="am-u-sm-3 am-form-label">个人详细信息</label>
+                                <div class="am-u-sm-9">
+                                    <label id="user-Info" style="margin-top: 5px" th:text="${applicationInfo.appUserDetailInfo}">详细信息</label>
+                                </div>
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-intro" class="am-u-sm-3 am-form-label">申请理由 / Reason</label>
+                                <div class="am-u-sm-9">
+                                    <textarea class="" rows="3" id="user-intro" name="reason"
+                                              th:placeholder="${applicationInfo.appReason}" disabled></textarea>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="result" class="am-u-sm-3 am-form-label">处理状态</label>
+                                <div class="am-u-sm-9">
+                                    <label th:if="${applicationInfo.appStatus==2}" id="result" style="margin-top: 5px" th:text="待处理"></label>
+                                    <label th:if="${applicationInfo.appStatus==1}" id="result" style="margin-top: 5px" th:text="处理成功"></label>
+                                    <label th:if="${applicationInfo.appStatus==0}" id="result" style="margin-top: 5px" th:text="处理失败"></label>
+                                </div>
+                            </div>
+                            <div class="am-form-group" th:if="${applicationInfo.appStatus!=2}">
+                                <label for="other" class="am-u-sm-3 am-form-label">处理结果</label>
+                                <div class="am-u-sm-9">
+                                    <input type="text" id="other" name="other" th:placeholder="${applicationInfo.appDealResult}" disabled>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="updateTime" class="am-u-sm-3 am-form-label">
+                                    表单更新时间
+                                </label>
+                                <div class="am-u-sm-9">
+                                    <label id="updateTime" style="margin-top: 5px" th:text="${#dates.format(applicationInfo.appTime,'yyyy-MM-dd HH:mm:ss')}">最近更新时间</label>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="addFile" class="am-u-sm-3 am-form-label">
+                                    附件图片信息
+                                </label>
+                                <div class="am-u-sm-9">
+                                    <img id="addFile" class="am-img-circle am-img-thumbnail" th:src="${applicationInfo.appFile}" alt=""/>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="../../static/js/bootstrap.js"></script>
+<script src="../../static/layer/layer.js"></script>
+<script src="../../static/js/amazeui.js"></script>
+<script>
+
+</script>
+</html>

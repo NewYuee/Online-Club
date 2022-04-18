@@ -1,0 +1,11 @@
+@startuml
+start
+:用户登录;
+repeat :输入登录信息;
+    :输入验证码;
+    :点击登录;
+    backward:返回重新登录;
+repeat while(校验是否正确) is(不正确) not(校验通过)
+:登录成功;
+stop
+@enduml

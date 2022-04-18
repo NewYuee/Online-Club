@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ClubContactTableData</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.css">
+<link href="../style.css" rel="stylesheet" />
+</head>
+<body onload="PR.prettyPrint()">
+<pre class="prettyprint lang-java">
+public class ClubContactTableData implements Serializable{
+
+    private int code; //
+    private String msg; //
+    private ClubContact[] data; //
+    private int count; //
+
+    public int getCode(){
+        return code;
+    }
+
+    public void setCode(int code){
+        this.code = code;
+    }
+
+    public String getMsg(){
+        return msg;
+    }
+
+    public void setMsg(String msg){
+        this.msg = msg;
+    }
+
+    public ClubContact[] getData(){
+        return data;
+    }
+
+    public void setData(ClubContact[] data){
+        this.data = data;
+    }
+
+    public int getCount(){
+        return count;
+    }
+
+    public void setCount(int count){
+        this.count = count;
+    }
+
+}
+</pre>
+
+
+<pre class="prettyprint lang-java">
+public class ClubContact implements Serializable{
+
+    private int id; //
+    private int clubId; //
+    private String realName; //
+    private String telNum; //
+    private String email; //
+    private String departmentInClub; //
+    private String positionInClub; //
+    private String other; //
+
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public int getClubId(){
+        return clubId;
+    }
+
+    public void setClubId(int clubId){
+        this.clubId = clubId;
+    }
+
+    public String getRealName(){
+        return realName;
+    }
+
+    public void setRealName(String realName){
+        this.realName = realName;
+    }
+
+    public String getTelNum(){
+        return telNum;
+    }
+
+    public void setTelNum(String telNum){
+        this.telNum = telNum;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail(String email){
+        this.email = email;
+    }
+
+    public String getDepartmentInClub(){
+        return departmentInClub;
+    }
+
+    public void setDepartmentInClub(String departmentInClub){
+        this.departmentInClub = departmentInClub;
+    }
+
+    public String getPositionInClub(){
+        return positionInClub;
+    }
+
+    public void setPositionInClub(String positionInClub){
+        this.positionInClub = positionInClub;
+    }
+
+    public String getOther(){
+        return other;
+    }
+
+    public void setOther(String other){
+        this.other = other;
+    }
+
+}
+</pre>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/google-code-prettify@1.0.5/bin/prettify.min.js"></script>
+</body>
+</html>

@@ -10,7 +10,7 @@
     </settings>
 
     <typeAliases>
-        <package name="com.ljy.entity"/>
+        <package name="com.ljy.oneclub.entity"/>
     </typeAliases>
     <plugins>
         <plugin interceptor="com.github.pagehelper.PageInterceptor">

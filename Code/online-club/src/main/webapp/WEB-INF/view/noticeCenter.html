@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>消息中心</title>
+    <link rel="icon" type="image/png" href="../../static/img/MMAD.png">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/layui/css/layui.css">
+</head>
+<body style="padding-top: 60px;background-color: rgb(237, 244, 246);">
+<th:block th:include="common/common.html :: nav"></th:block>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2 col-xs-2" style="padding-left: 7px;padding-right: 7px;padding-top: 30px;">
+            <div class="panel panel-warning">
+                <div class="panel-heading">消息中心</div>
+                <ul id="myTab" class="nav nav-pills nav-stacked">
+                    <li role="presentation" class="active">
+                        <a href="#application" data-toggle="tab">通知<span style="float: right" class="badge" id="appNoticeCount">0</span></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#like" data-toggle="tab">点赞<span style="float: right" class="badge" id="likeNoticeCount">0</span></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#comment" data-toggle="tab">评论<span style="float: right" class="badge" id="commentNoticeCount">0</span></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#message" data-toggle="tab">私信<span style="float: right" class="badge" id="msgCount">0</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 中间的栅格 -->
+        <div class="col-md-10 col-xs-10 clearfix" style="padding-left: 7px;padding-right: 7px;padding-top: 30px;">
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="application">
+                    <ul class="list-group">
+                    </ul>
+                </div>
+                <div class="tab-pane fade" id="like">
+                    <div class="list-group">
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="comment">
+                    <div class="list-group">
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="message">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="../../static/js/bootstrap.js"></script>
+<script src="../../static/layer/layer.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        $('#myTab li:eq(0) a').tab('show');
+    });
+
+    //得到未读消息列表
+    $.ajax({
+        url:'/getNotReadMsgs/'+[[${session.userInfo.uId}]],
+        type:'GET',
+        success:function (result) {
+            if (result.code==200&&result.data.notReadMessages.length!=0){
+                var msgs=result.data.notReadMessages;
+                var msgCount=0;
+                $.each(msgs,function (i,item) {
+                    var htmlStr='<a href="/chat/'+item.nowUid+'/'+item.uid+'" target="_blank" class="list-group-item">' +
+                        '<div style="padding-right: 10px;display: inline-block">' +
+                        '<img src="'+item.uProfilePicName+'" style="width: 60px;height: 60px"></div>' +
+                        '<div style="display: inline-block;width: 90%">' +
+                        '<div style="font-size: 15px;color: black;">'+item.uname+'<span style="color: rgb(204,204,216);float: right">'+item.lastTime+'</span></div>' +
+                        '<div style="padding-top:4px;font-size: 13px">'+item.messageContent+'<span style="float: right;color: #fff9a0" class="badge">'+item.messageCount+'</span></div></div></a>';
+                    $('#message').append($.parseHTML(htmlStr));
+                    msgCount+=item.messageCount;
+                })
+                $('#msgCount').text(msgCount);
+            }
+        }
+    });
+
+    //得到点赞消息列表
+    $.ajax({
+        url:'/get/notice/like/'+[[${session.userInfo.uId}]],
+        type: 'GET',
+        success:function (result) {
+            if (result.code==200){
+                var notice=result.data.likeNotice;
+                var likeCount=0;
+                $.each(notice,function (i,item) {
+                    if (item.isArticle==1) {
+                        var htmlStr = '<li class="list-group-item list-group-item-info"><a href="/u/' + item.noticeUserId + '">' + item.noticeUserName + '</a> 收藏了你的文章 <a href="/active/article/'+item.noticeSourceId+'">'+item.decrips+'</a></li>';
+                        $('#like').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    if (item.isArticle==0){
+                        var htmlStr = '<li class="list-group-item list-group-item-info"><a href="/u/' + item.noticeUserId + '">' + item.noticeUserName + '</a> 赞了你的动态:'+item.decrips+'</li>';
+                        $('#like').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    likeCount+=1;
+                })
+                $('#likeNoticeCount').text(likeCount);
+            }
+        }
+    });
+
+    //得到评论通知列表
+    $.ajax({
+        url:'/get/notice/comment/'+[[${session.userInfo.uId}]],
+        type: 'GET',
+        success:function (result) {
+            if (result.code==200){
+                var notice=result.data.commentNotice;
+                var noticeCount=0;
+                $.each(notice,function (i,item) {
+                    if (item.isArticle==null){
+                        var htmlStr = '<li class="list-group-item list-group-item-info"><a href="/u/' + item.noticeUserId + '">' + item.noticeUserName + '</a>回复了你的评论:'+item.decrips+'</li>';
+                        $('#comment').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    if (item.isArticle==1) {
+                        var htmlStr = '<li class="list-group-item list-group-item-info"><a href="/u/' + item.noticeUserId + '">' + item.noticeUserName + '</a>评论了你的文章<a href="/active/article/'+item.noticeSourceId+'">'+item.decrips+'</a></li>';
+                        $('#comment').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    if (item.isArticle==0){
+                        var htmlStr = '<li class="list-group-item list-group-item-info"><a href="/u/' + item.noticeUserId + '">' + item.noticeUserName + '</a>评论了你的动态:'+item.decrips+'</li>';
+                        $('#comment').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    noticeCount+=1;
+                })
+                $('#commentNoticeCount').text(noticeCount);
+            }
+        }
+    });
+
+    //得到申请通知结果
+    $.ajax({
+        url:'/get/notice/apply/'+[[${session.userInfo.uId}]],
+        type: 'GET',
+        success:function (result) {
+            if (result.code==200){
+                var applications=result.data.applications;
+                var noticeCount=result.data.appSize;
+                $.each(applications,function (i,item) {
+                    if (item.status=='申请成功') {
+                        var htmlStr = '<li class="list-group-item list-group-item-success"><a href="/u/'+item.applyToUid+'">'+item.applyToName+'</a>的'+item.type+' 申请成功<a class="checkmore" id="'+item.applyId+'" style="float: right">查看备注</a></li>';
+                        $('#application').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                    if (item.status=='申请失败'){
+                        var htmlStr = '<li class="list-group-item list-group-item-danger"><a href="/u/'+item.applyToUid+'">'+item.applyToName+'</a>的'+item.type+' 申请失败<a class="checkmore" id="'+item.applyId+'" style="float: right">查看备注</a></li>';
+                        $('#application').find('.list-group').prepend($.parseHTML(htmlStr));
+                    }
+                });
+                $('#appNoticeCount').text(noticeCount);
+            }
+        }
+    });
+
+    //查看入会或者退会申请的处理结果
+    $('#application').on('click','.checkmore',function () {
+        var applyId=$(this).attr('id');
+        var content='';
+        $.ajax({
+            url:'/application/get/'+applyId,
+            type: 'GET',
+            async:false,
+            success:function (result) {
+                if (result.code==200){
+                    content=result.data.application.appDealResult;
+                }
+            }
+        });
+        console.log(content);
+        layer.alert(content,{closeBtn:false,shift:2,title:'备注'});
+    });
+</script>
+</html>

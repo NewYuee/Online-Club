@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>所有动态列表</title>
+    <link rel="stylesheet" href="/static/lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/static/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="/static/js/admin/admin.js"></script>
+<script>
+
+
+    layui.use(['table'], function () {
+        var $ = layui.jquery,
+            usertable = layui.table;
+
+        usertable.render({
+            elem: '#currentTableId',
+            url: '/active/getAll',
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            cols: [
+                [
+                    {type: "checkbox", width: 50},
+                    {field: 'a_id', width: 130, title: '活动ID', sort: true},
+                    {field: 'a_type', width: 100, title: '类型'},
+                    {field: 'u_id', width: 150, title: '发布者用户ID',sort: true},
+                    {field: 'u_name', width: 160, title: '发布用户名'},
+                    {field: 'updateTime', width: 180, title: '发布时间',sort:true},
+                    {field: 'omitContent', width: 220, title: '预览内容'},
+                    {field: 'comment_count', width: 100, title: '评论数',sort:true},
+                    {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+                ]
+            ],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line'
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        usertable.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'delete') {  // 监听删除操作
+                var checkStatus = usertable.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                var res=0;
+                layer.confirm('真的删除行么', function (index) {
+                    $.each(data,function (i,item) {
+                        res=delActiveByid(item.a_id);
+                    })
+                    layer.close(index);
+                });
+            }
+        });
+
+        //监听表格复选框选择
+        usertable.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
+
+        usertable.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'delete') {
+                layer.confirm('真的删除行么', function (index) {
+                    delActiveByid(data.a_id);
+                    obj.del();
+                    layer.close(index);
+                });
+            }
+        });
+    });
+
+</script>
+</html>

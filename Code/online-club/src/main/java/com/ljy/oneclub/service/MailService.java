@@ -10,4 +10,5 @@ import javax.mail.MessagingException;
 public interface MailService {
     void sendMail(Mail mail) throws MessagingException;
     void sendMailHtml(TemplateEngine templateEngine,Mail mail) throws MessagingException;
+    void sendMailHtmlRemember(TemplateEngine templateEngine, String mail) throws MessagingException;
 }

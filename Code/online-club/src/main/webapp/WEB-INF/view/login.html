@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome!</title>
+    <link rel="icon" type="image/png" href="/static/img/MMAD.png">
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/login/style.css">
+
+</head>
+
+<body>
+<div class="container">
+    <div class="info">
+        <h1>Welcome！<span><i class="fa fa-heart"></i>  </span></h1>
+    </div>
+</div>
+
+<!--表单模块-->
+<div class="form">
+    <div class="thumbnail"><img src="/static/img/hat.svg"/></div>
+
+    <!--注册表单-->
+    <form class="register-form validform">
+      <div class="form-group">
+        <input type="text" class="form-control" name="r_uName" placeholder="用户名"/>
+      </div>
+        <div class="form-group">
+            <input type="password" name="uPassword" class="form-control" placeholder="密码"/>
+        </div>
+        <div class="form-group">
+            <input type="text" name="r_email" class="form-control" placeholder="请输入邮箱"/>
+        </div>
+        <div class="form-group form-inline" style="float:left;display:block">
+            <input type="text" name="emailcode" style="width:58%" class="form-control" placeholder="验证码" />
+            <button id="sendvalidate_btn" style="width:40%;padding-bottom:3px;padding-top:11px">发送</button>
+        </div>
+        <button id="register_btn">注册</button>
+        <p class="message"  id="tochange">已有账号？<a href="#">立即登录</a></p>
+    </form>
+
+    <!--登录表单-->
+    <form class="login-form validform">
+      <div class="form-group">
+        <input type="text" name="uName" class="form-control" placeholder="用户名"/>
+      </div>
+      <div class="form-group">
+        <input type="password" name="uPassword" class="form-control" placeholder="密码"/>
+      </div>
+      <div class="form-group form-inline" style="float: left;display: block">
+          <input type="text" style="width: 42%" id="validateinput" name="verificationCode" class="form-control" placeholder="验证码"/>
+          <a href="javascript:void(0);" title="点击更换验证码">
+              <img id="imgVerify" style="height: 35px;width:56%;padding-right: 25px" src="login/getVerify" alt="更换验证码" onclick="getVerify(this);">
+          </a>
+        </div>
+        <button id="login_btn">登录</button>
+        <p class="message" id="tochange">没有账号？ <a href="#">立即注册</a></p>
+    </form>
+
+</div>
+<script src='/static/js/jquery.min.js'></script>
+<script src="/static/js/bootstrap.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+<script src="/static/layer/layer.js"></script>
+<script>
+    $('#tochange a').click(function () {
+        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+    });
+
+    $("#sendvalidate_btn").click(function () {
+        $.ajax({
+            type: 'post',
+            url:'register/sendmail',
+            data: $('.register-form').serialize(),
+            success:function (result) {
+                if (result.code==200){
+                    disable();
+                    layer.msg("发送成功，请注意查收");
+                }
+                else{
+                    layer.msg(result.data.info);
+                }
+        }
+        });
+    });
+
+    function reloadPage() {
+        var index = layer.load(1, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
+        location.reload();
+    }
+    //注册
+    $("#register_btn").click(function () {
+        $.ajax({
+            type: 'post',
+            url:'register/insert',
+            data: $('.register-form').serialize(),
+            success:function (result) {
+                if (result.code==200){
+                    layer.msg('恭喜注册成功，您现在可以进行登录啦');
+                    setTimeout(reloadPage, 2000);
+                }
+                else {
+                    layer.msg(result.data.info);
+                    setTimeout(reloadPage, 2000);
+                }
+            }
+        });
+    });
+
+    var num=60;
+    function disable(){
+        num--;
+        $("#sendvalidate_btn").attr("disabled", 'disabled');
+        sendvalidate_btn.innerHTML=num+'s后获取';
+        var time=setTimeout('disable()',1000);
+        if (num<=0){
+            clearTimeout(time);
+            sendvalidate_btn.innerHTML="发送";
+            $("#sendvalidate_btn").removeAttr("disabled");
+            num=60;
+        }
+    }
+
+    //登录
+    $('#login_btn').click(function () {
+        var index = layer.load(1, {
+            shade: [0.1, '#fff'] //0.1透明度的白色背景
+        });
+        $.ajax({
+            type:'post',
+            url:'user/login',
+            data:$('.login-form').serialize(),
+            success:function (result) {
+                if (result.code==200){
+                    window.location.href = "/index";
+                }
+                else {
+                    layer.alert(result.data.info);
+                    setTimeout(reloadPage, 2000);
+                }
+            }
+        })
+    });
+
+    //获取验证码
+    function getVerify() {
+      // $("#imgCode").on("click", function() {
+      $("#imgVerify").attr("src", 'login/getVerify?' + Math.random());//jquery方式
+      // });
+    };
+
+    $(function () {
+      $('.validform').bootstrapValidator({
+        //指定反馈图标
+        feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+        },
+        //校验域
+        fields: {//登录名校验
+          r_uName: {	//校验规则
+            validators: {	//校验规则：不能为空
+              notEmpty: {	//如果为空，则提示：...
+                message: '登录名不能为空！'
+              },
+              stringLength:{
+                min:3,
+                max:6,
+                message:'用户名长度在3-6位之间'
+              },
+                threshold: 3,
+                remote: {
+                  url:'login/checkname',
+                    message:'用户已存在',
+                    delay: 2000,
+                }
+            }
+          },
+            uName: {	//校验规则
+                validators: {	//校验规则：不能为空
+                    notEmpty: {	//如果为空，则提示：...
+                        message: '登录名不能为空！'
+                    },
+                    stringLength:{
+                        min:3,
+                        max:6,
+                        message:'用户名长度在3-6位之间'
+                    }
+                }
+            },
+          //密码校验
+          uPassword: {
+            validators: {
+              notEmpty: {
+                message: '密码不能为空！'
+              },
+              stringLength: {
+                min:6,
+                max:20,
+                message:'密码长度在6-20位之间'
+              },
+              regexp:{
+                regexp: /^[a-zA-Z0-9_]+$/,
+                message:'密码只能包含大写、小写、数字和下划线'
+              }
+            }
+          },
+            reuPassword: {
+                validators: {
+                    identical: {
+                        field: 'uPassword',
+                        message: '两次密码须一致'
+                    }
+                }
+            },
+          r_email:{
+            validators:{
+              notEmpty:{
+                message:'邮箱不能为空!'
+              },
+              emailAddress:{
+                message:'邮箱格式有误!'
+              },
+                threshold: 8,
+                remote: {
+                    url:'login/checkemail',
+                    message:'邮箱已被使用',
+                    delay: 2000,
+                }
+            }
+          },
+            email:{
+                validators:{
+                    notEmpty:{
+                        message:'邮箱不能为空!'
+                    },
+                    emailAddress:{
+                        message:'邮箱格式有误!'
+                    }
+                }
+            },
+
+            emailvalidate: {	//校验规则
+                validators: {	//校验规则：不能为空
+                    notEmpty: {	//如果为空，则提示：...
+                        message: '验证码不能为空！'
+                    },
+                    stringLength:{
+                        min:4,
+                        max:4,
+                        message:'请输入四位验证码'
+                    }
+                }
+            },
+          //验证码校验
+          verificationCode: {	//指定触发该校验的最小字符数
+            threshold: 4,
+            validators: {
+              notEmpty: {
+                message: '请输入验证码！'
+              },
+              //远程校验，向后端发送请求
+              remote: {	//请求url
+                url: 'login/checkVerify',
+                //校验错误时的提示信息（根据返回的map表中键valid的值判断，校验成功为true，校验失败为false）
+                message: '验证码错误！',
+                  delay:1000
+              }
+            }
+          }
+        }
+      });
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>私信</title>
+    <link rel="icon" type="image/png" href="../../../static/img/MMAD.png">
+    <link rel="stylesheet" href="../../../static/css/chat/chat.css">
+</head>
+<body>
+<div class="container">
+    <div class="item item-center" style="border-bottom: 1px solid #dadada;padding-bottom: 10px;font-size: 20px" th:text="${toUser.uName}">勇敢的心</div>
+    <div class="content" id="content">
+        <div class="item item-center"><span id="moreMsgs"><a style="text-decoration: none">查看更多</a></span></div>
+        <div id="messageContent">
+        </div>
+    </div>
+    <div class="input-area">
+        <textarea name="text" id="textarea"></textarea>
+        <div class="button-area">
+            <button id="send-btn" onclick="send()">发 送</button>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="../../../static/js/chat.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    //获取历史聊天记录
+    var websocket = null;
+    var from=[[${session.userInfo.uId}]];
+    var to=[[${toUser.uId}]];
+    var userProfilePic=[[${session.userInfo.uProfilePhotoName}]];
+    var toUserProfilePic=[[${toUser.uProfilePhotoName}]];
+    //得到最近的几条聊天记录
+    $.ajax({
+        url:'/get5ChatMsgs/'+[[${session.userInfo.uId}]]+'/'+[[${toUser.uId}]],
+        type:'GET',
+        async:false,
+        success:function (result) {
+            if (result.code==200&&result.data.messages.length!=0){
+                var msgs=result.data.messages;
+                $.each(msgs,function (i,item) {
+                    if (item.fromUid==from){
+                        var myHtmlStr='<div class="item item-center"><span>'+item.updateTime+'</span></div><div class="item item-right"><div class="bubble bubble-right">'+item.content+'</div><div class="avatar"><img src="'+[[${session.userInfo.uProfilePhotoName}]]+'" /></div></div>';
+                        $('#messageContent').prepend($.parseHTML(myHtmlStr));
+                    }
+                    else {
+                        var otherHtmlStr='<div class="item item-center"><span>'+item.updateTime+'</span></div><div class="item item-left"><div class="avatar"><img src="'+[[${toUser.uProfilePhotoName}]]+'" /></div><div class="bubble bubble-left">'+item.content+'</div></div>';
+                        $('#messageContent').prepend($.parseHTML(otherHtmlStr));
+                    }
+                });
+            }
+        }
+    });
+
+    //点击查看更多聊天记录功能
+    $('#moreMsgs').click(function () {
+        $(this).parent('div').remove();
+        $('#messageContent').empty();
+        $.ajax({
+            url:'/getAllMsgs/'+[[${session.userInfo.uId}]]+'/'+[[${toUser.uId}]],
+            type:'GET',
+            async:false,
+            success:function (result) {
+                if (result.code==200&&result.data.messages.length!=0){
+                    var msgs=result.data.messages;
+                    $.each(msgs,function (i,item) {
+                        if (item.fromUid==from){
+                            var myHtmlStr='<div class="item item-center"><span>'+item.updateTime+'</span></div><div class="item item-right"><div class="bubble bubble-right">'+item.content+'</div><div class="avatar"><img src="'+[[${session.userInfo.uProfilePhotoName}]]+'" /></div></div>';
+                            $('#messageContent').prepend($.parseHTML(myHtmlStr));
+                        }
+                        else {
+                            var otherHtmlStr='<div class="item item-center"><span>'+item.updateTime+'</span></div><div class="item item-left"><div class="avatar"><img src="'+[[${toUser.uProfilePhotoName}]]+'" /></div><div class="bubble bubble-left">'+item.content+'</div></div>';
+                            $('#messageContent').prepend($.parseHTML(otherHtmlStr));
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    //WebSocket服务开始
+    //服务器的ws服务地址,部署的时候需要改为下面地址
+    var url = 'wss://mmad.top/websocket/'+from+'/'+to;
+    //本地ws地址
+    //var url = 'ws://localhost/websocket/'+from+'/'+to;
+    console.log(url);
+    //判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {
+        websocket = new WebSocket(url);
+        console.log("websocket===>" + websocket);
+    } else {
+        alert('当前浏览器 Not support websocket')
+    }
+
+    //连接发生错误的回调方法
+    websocket.onerror = function () {
+        console.log('websocket连接出错！')
+    };
+
+    //连接成功建立的回调方法
+    websocket.onopen = function () {
+        console.log('用户'+from+'与用户'+to+'==>websocket建立连接成功！')
+    }
+
+    //接收到消息的回调方法
+    websocket.onmessage = function (event) {
+        receive(event.data,toUserProfilePic);
+    }
+
+    //连接关闭的回调方法
+    websocket.onclose = function () {
+        console.log('用户'+from+'与用户'+to+'==>websocket建立连接断开~');
+    }
+
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        closeWebSocket();
+        alert("关闭socket");
+    }
+
+    //关闭WebSocket连接
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+    //发送消息
+    function send() {
+        let text = document.querySelector('#textarea').value;
+        if (!text){
+            layer.alert("消息不能为空");
+            return;
+        }
+        var msgContent='{"from":"'+from+'","to":"'+to+'","text":"'+text+'"}';
+        websocket.send(msgContent);
+        setMsginHtml(text,userProfilePic);
+    }
+</script>
+</html>

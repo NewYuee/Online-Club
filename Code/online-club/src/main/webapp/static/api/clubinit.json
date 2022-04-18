@@ -1,0 +1,117 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "/clubpage/welcome.html?t=1"
+  },
+  "logoInfo": {
+    "title": "Club Admin",
+    "image": "/static/img/MMAD.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "活动与事务",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "事务审核",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "",
+          "child": [
+            {
+              "title": "事务处理",
+              "href": "/clubpage/table/applyList.html",
+              "icon": "fa fa-lightbulb-o",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "活动管理",
+          "href": "",
+          "icon": "fa fa-quote-left",
+          "target": "",
+          "child": [
+            {
+              "title": "动态管理",
+              "href": "/clubpage/table/activeList.html",
+              "icon": "fa fa-child",
+              "target": "_self"
+            },
+            {
+              "title": "新增动态",
+              "href": "/clubpage/addActive.html",
+              "icon": "fa fa-pencil",
+              "target": "_self"
+            },
+            {
+              "title": "新增文章/新闻",
+              "href": "/clubpage/addArticle.html",
+              "icon": "fa fa-pencil-square-o",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "社团成员",
+      "icon": "fa fa-users",
+      "href": "",
+      "target": "",
+      "child": [
+        {
+          "title": "成员管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "",
+          "child": [
+            {
+              "title": "成员列表",
+              "href": "/clubpage/table/memberList.html",
+              "icon": "fa fa-user",
+              "target": "_self"
+            },
+            {
+              "title": "新增成员",
+              "href": "/clubpage/addmember.html",
+              "icon": "fa fa-plus-square",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "社团联系人",
+      "icon": "fa fa-tags",
+      "href": "",
+      "target": "",
+      "child": [
+        {
+          "title": "社团联系人管理",
+          "href": "",
+          "icon": "fa fa-user-secret",
+          "target": "",
+          "child": [
+            {
+              "title": "联系人列表",
+              "href": "/clubpage/table/clubContact.html",
+              "icon": "fa fa-users",
+              "target": "_self"
+            },
+            {
+              "title": "新增社团联系人",
+              "href": "/clubpage/addClubContact.html",
+              "icon": "fa fa-plus-square-o",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
